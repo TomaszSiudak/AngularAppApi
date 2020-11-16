@@ -33,7 +33,7 @@ namespace PetBookAPI.DataTransferFiles
 
         public async Task<IEnumerable<Pet>> GetPets()
         {
-            return await context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes).Where(pet => pet.Photos.Count > 0).ToListAsync();
+            return await context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes).ToListAsync();
         }
 
         public async Task<bool> Save()

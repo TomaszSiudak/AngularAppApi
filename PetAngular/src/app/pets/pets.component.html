@@ -4,7 +4,7 @@
           <div class="col mb-4">
             <div class="card">
               <div class="card-image">
-                <img src="{{pet.photo}}" class="card-img-top" alt="{{pet.name}}" [routerLink]="['/pets/', pet.id]" >
+                <img src="{{pet.photo || '../../../../assets/empty.jpg'}}" class="card-img-top" alt="{{pet.name}}" [routerLink]="['/pets/', pet.id]" >
               </div>
               <div class="card-body p-2">
               <h5 class="card-title">{{pet.name}}, wiek: {{pet.age}}</h5>

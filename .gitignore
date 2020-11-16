@@ -2,7 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-
+[Nn]ode_modules/
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
