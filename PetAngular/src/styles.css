@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
+@import '../node_modules/alertifyjs/build/css/alertify.min.css';
+
+  
+  .nav-tabs > li.open, .member-tabset > .nav-tabs > li:hover {
+    border-bottom: 4px solid #00e6e6;
+  }
+  
+  .tab > .nav-tabs > li.active {
+    border: 1px solid #00e6e6;
+    border-bottom: 3px solid #00e6e6;
+    position: relative;
+  }
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+    color: #00e6e6;
+    font-weight: bold;
+  }
+  
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
+    color: #00e6e6;
+  }
+
+  .tab > .tab-content {
+    margin-top: -3px;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #eee;
+    padding: 15px 0;
+  }

@@ -1,0 +1,12 @@
+:host .tekst {
+    color: #00e6e6;
+  }
+
+
+  :host button {
+    background-color: #00e6e6;
+    color: white;
+    font-weight: bold;
+    margin-top: 20pt;
+    margin: 5pt;
+  }

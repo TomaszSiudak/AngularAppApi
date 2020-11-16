@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-md navbar-light  bg-light">
+  <a class="navbar-brand" [routerLink]="['/main']">PetBook</a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="router-link-active">
+        <a *ngIf="logged()" class="nav-link link" [routerLink]="['/pets']" >Zdjęcia</a>
+      </li>
+      <li class="nav-item" routerLinkActive="router-link-active">
+        <a *ngIf="logged()" class="nav-link link" [routerLink]="['/pets/', petId]">Mój profil</a>
+      </li>
+    </ul>
+
+
+    <div *ngIf="logged()" class="dropdown">
+      <a class=" dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Moje konto
+      </a>
+    
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item dropdown-item-tekst" [routerLink]="['/pets/edition/', petId]"><i class="fa fa-user" ></i> Edytuj konto</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item dropdown-item-tekst" href="#" (click)="loggedOut()"><i class="fa fa-sign-out"></i>Wyloguj się</a>
+      </div>
+    </div>
+
+
+    <form *ngIf="!logged()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
+      <input class="form-control mr-sm-2" type="text" name="name" placeholder="Nazwa użytkownika" aria-label="Search" required [(ngModel)]="petData.name">
+      <input class="form-control mr-sm-2" type="password" name="password" placeholder="Hasło" aria-label="Search" required [(ngModel)]="petData.password">
+      <button [disabled]="!loginForm.valid" class="btn btn-primary my-2 my-sm-0 button" type="submit">Zaloguj się</button>
+    </form>
+
+</nav>

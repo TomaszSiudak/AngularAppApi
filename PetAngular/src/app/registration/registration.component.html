@@ -1,0 +1,88 @@
+<form id="RegistrationForm" [formGroup]="regForm" (ngSubmit)="register()">
+  <h2 class="text-center tekst">Rejestracja zwierzaka</h2>
+  <hr>
+
+  <div class="form-group">
+     <input id="NazwaUsera" type="text" class="form-control is-invalid" [ngClass]="{'is-invalid': regForm.get('name').errors && regForm.get('name').touched}" formControlName="name" placeholder="Nazwa użytkownika"  >
+     <div id="errorMessage" class="invalid-feedback">Nazwa użytkownika nie może być pusta</div>  
+    </div>
+  
+    <div class="form-group">
+      <input  id="Password" type="password" class="form-control is-invalid" [ngClass]="{'is-invalid': regForm.get('password').errors && regForm.get('password').touched}" formControlName="password"  placeholder="Hasło">
+      <div class="invalid-feedback">Hasło musi zawierać co najmniej 4 znaki</div>  
+    </div>
+
+    <div class="form-group">
+      <input  id="ConfirmPassword" type="password" class="form-control is-invalid" [ngClass]="{'is-invalid': regForm.get('confirmPassword').errors && regForm.get('confirmPassword').touched || regForm.hasError('x') && regForm.get('confirmPassword').touched}"  formControlName="confirmPassword"  placeholder="Potwierdź Hasło">
+      <div class="invalid-feedback"
+      *ngIf="regForm.hasError('x') && regForm.get('confirmPassword').touched">
+      Potwierdzenie hasła jest inne niż powyżej. Sprawdź ponownie. </div>
+      <div class="invalid-feedback"
+      *ngIf="regForm.get('confirmPassword').hasError('required') && regForm.get('confirmPassword').touched">
+      Potwierdź hasło</div>    
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" style="margin-right:10px">Płeć </label>
+      <label class="radio-inline">
+        <input id="MaleGender" class="mr-3" type="radio" value="male" formControlName="gender">Male
+      </label>
+      <label class="radio-inline ml-3">
+        <input id="FemaleGender" class="mr-3" type="radio" value="female" formControlName="gender">Female
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label" style="margin-right:10px">Typ </label>
+      <label class="radio-inline">
+        <select id="AnimalType" class="form-control is-invalid" [ngClass]="{'is-invalid': regForm.get('type').errors && regForm.get('type').touched}" formControlName="type">
+          <option value="dog" [selected]='true'>Pies</option>
+          <option value="cat">Kot</option>
+          <option value="rabbit">Królik</option>
+          <option value="hamster">Chomik</option>
+          <option value="bird">Ptak</option>
+        </select>
+      </label>
+    </div>
+
+      <div class="form-group">
+          <input type="text" name="city" class="form-control" formControlName="city"  placeholder="Miasto">
+      </div>
+  
+    <div class="form-group text-center">
+      <button id="SubmitBtn" class="btn btn-success button" type="submit">Zarejestruj się</button>
+      <button class="btn btn-default button" type="button" (click)="cancelRegistration()">Anuluj</button>
+    </div>
+
+  </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--<div class="form-group">
+    <input type="text" name="name" class="form-control" required placeholder="Nazwa użytkownika" [(ngModel)]="petData.name">
+  </div>
+
+  <div class="form-group">
+    <input type="password" name="password" class="form-control" required placeholder="Hasło" [(ngModel)]="petData.password">
+  </div>
+
+  <div class="form-group text-center">
+    <button class="btn btn-success button" type="submit">Zarejestruj się</button>
+    <button class="btn btn-default button" type="button" (click)="cancelRegistration()">Anuluj</button>
+  </div>-->
+  

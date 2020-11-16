@@ -1,0 +1,43 @@
+:host a {
+    color: white;
+    font-weight: bold;
+  }
+
+  :host button {
+    background-color: white;
+    color: #00e6e6;
+    font-weight: bold;
+  }
+
+  :host button:active {
+    background-color: #00e6e6;
+    color: white;
+    font-weight: bold;
+  }
+
+
+  :host .link {
+    color: white;
+  }
+
+  :host .dropdown-item-tekst {
+    color: #00e6e6;
+    background-color:white;
+  }
+
+  :host .background {
+    background-color:#00e6e6;
+  }
+  
+  :host .dropdown-toggle {
+    cursor: pointer;
+  }
+
+  :host .dropdown-item-tekst:hover {
+    background-color: #e6ffff    ;
+  }
+
+  :host .dropdown-menu {
+    right: 0;
+    left: initial !important;
+  }
