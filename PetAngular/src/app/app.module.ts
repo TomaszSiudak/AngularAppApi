@@ -7,6 +7,7 @@ import { ErrorHandlerProvider } from './APIGetters/error.handler';
 import { NgxGalleryModule } from 'ngx-gallery-9';
 import { AppComponent } from './app.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { MainComponent } from './main/main.component';
 import { MenuComponent } from './menu/menu.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -41,6 +42,7 @@ export function GetToken() {
       BrowserModule,
       FormsModule,
       HttpClientModule,
+      PaginationModule.forRoot(),
       RouterModule.forRoot(routes, {
          onSameUrlNavigation: 'reload',
        }),

@@ -3,6 +3,7 @@ import { Pet } from '../petModel/Pet';
 import { PetService } from '../APIGetters/pet.service';
 import { TokenService } from '../APIGetters/token.service';
 import { AlertifyService } from '../APIGetters/alertify.service';
+import { Pages, Pagination } from '../petModel/Pagination';
 
 @Component({
   selector: 'app-pets',
@@ -12,6 +13,9 @@ import { AlertifyService } from '../APIGetters/alertify.service';
 export class PetsComponent implements OnInit {
   pets: Pet[];
   likerId: any = {};
+  currentPage = 1;
+  pageSize = 8;
+  pagination: Pagination;
 
 
   constructor(private petService: PetService, private tokenService: TokenService, private alertify: AlertifyService) { }
@@ -22,13 +26,32 @@ export class PetsComponent implements OnInit {
 
  getPets()
  {
-   this.petService.getPets().subscribe((pets: Pet[]) =>
+   this.petService.getPets(this.currentPage, this.pageSize).subscribe((pets: Pages<Pet[]>) =>
     {
-      this.pets = pets;
+      this.pets = pets.result;
+      this.pagination = pets.pagination;
+      console.log(this.pagination);
     }, error => {
       console.log(error);
     });
  }
+
+ getPets2(page?, pageSize?)
+ {
+   this.petService.getPets(page, pageSize).subscribe((pets: Pages<Pet[]>) =>
+    {
+      this.pets = pets.result;
+      this.pagination = pets.pagination;
+      console.log(this.pagination);
+    }, error => {
+      console.log(error);
+    });
+ }
+
+ pageChanged(event: any): void {
+  this.pagination.currentPage = event.page;
+  this.getPets2(this.pagination.currentPage, this.pagination.pageSize);
+}
 
  addLike(petId: number, name: any )
  {

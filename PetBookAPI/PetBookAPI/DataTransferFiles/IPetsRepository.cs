@@ -9,7 +9,7 @@ namespace PetBookAPI.DataTransferFiles
     public interface IPetsRepository
     {
         Task<Pet> GetPet(int petId);
-        Task<IEnumerable<Pet>> GetPets();
+        Task<PageList<Pet>> GetPets(PetParameters parameters);
         void AddPet(Pet pet);
         void DeletePet(Pet pet);
         Task<bool> Save();

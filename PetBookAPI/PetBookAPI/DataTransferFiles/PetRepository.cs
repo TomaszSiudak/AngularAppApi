@@ -31,9 +31,10 @@ namespace PetBookAPI.DataTransferFiles
             return await context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes).FirstOrDefaultAsync(pet => pet.Id == petId);
         }
 
-        public async Task<IEnumerable<Pet>> GetPets()
+        public async Task<PageList<Pet>> GetPets(PetParameters parameters)
         {
-            return await context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes).ToListAsync();
+            var pets = context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes);
+            return await PageList<Pet>.CreateAsync(pets, parameters.CurrentPage, parameters.PageSize);
         }
 
         public async Task<bool> Save()

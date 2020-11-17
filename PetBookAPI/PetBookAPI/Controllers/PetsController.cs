@@ -27,14 +27,12 @@ namespace PetBookAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPets()
+        public async Task<IActionResult> GetPets([FromQuery] PetParameters parameters)
         {
-            //List<PetDTO> petsDTO = new List<PetDTO>();
-            var pets = await petsRepository.GetPets();
+            var pets = await petsRepository.GetPets(parameters);
 
             var petsDTO = mapper.Map<IEnumerable<PetDTO>>(pets);
-
-
+            Response.AddPagination(pets.CurrentPage, pets.PageSize, pets.TotalCount, pets.TotalPages);
             return Ok(petsDTO);
         }
 

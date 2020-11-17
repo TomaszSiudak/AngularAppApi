@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Pet } from '../petModel/Pet';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Pages } from '../petModel/Pagination';
+import { map } from 'rxjs/operators';
+
 
 
 @Injectable({
@@ -13,9 +16,35 @@ export class PetService {
 
   constructor(private client: HttpClient) {}
 
-  getPets(): Observable<Pet[]>
+  getPets(page?, pageSize?): Observable<Pages<Pet[]>>
   {
-    return this.client.get<Pet[]>(this.url + 'pets');
+    const pages: Pages<Pet[]> = new Pages<Pet[]>();
+    let params = new HttpParams();
+
+    if(page != null && pageSize != null)
+    { 
+      params = params.append('currentPage', page);
+      params = params.append('pageSize', pageSize);
+    }
+
+    /*return this.client.get<Pet[]>(this.url + 'pets', {observe: 'response', params}).
+    pipe(map(response =>
+      {
+         pages.result = response.body;
+         if(response.headers.get('Pagination') != null)
+      }));*/
+
+      // tslint:disable-next-line: align
+      return this.client.get<Pet[]>(this.url + 'pets', { observe: 'response', params})
+      .pipe(
+        map(response => {
+          pages.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            pages.pagination = JSON.parse(response.headers.get('Pagination'))
+          }
+          return pages;
+        })
+      );
   }
 
   getPet(petId): Observable<Pet>
