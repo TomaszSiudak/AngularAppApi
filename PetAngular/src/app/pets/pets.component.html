@@ -1,5 +1,37 @@
 
+<div class="text-center mt-3">
+  <h2>Znaleziono - {{pagination.totalCount}} zwierzaków</h2>
+</div>
+
+
 <div class="container mt-4">
+    <form class="form-inline justify-content-center" #form="ngForm" (ngSubmit)="getPets()" novalidate>
+        <div class="form-group px-2">
+            <label for="gender">Płeć: </label>
+            <select class="form-control ml-1" style="width: 130px" id="gender"
+              [(ngModel)]="petParams.gender" name="gender">
+              <option *ngFor="let gender of genders" [value]="gender.value">
+                {{gender.display}}
+              </option>
+            </select>
+          </div>
+
+        <div class="form-group px-2">
+            <label for="type">Typ: </label>
+            <select class="form-control ml-1" style="width: 130px" id="type"
+              [(ngModel)]="petParams.type" name="type"> 
+              <option *ngFor="let type of types" [value]="type.value">
+                {{type.display}}
+              </option>
+            </select>
+          </div>
+        <button type="submit" class="btn btn-primary" style="margin-left:10px">Zastosuj</button>
+        <button type="button" class="btn btn-info" (click)="resetFilters()" style="margin-left:10px">
+            Resetuj filter
+        </button>
+      </form>
+      <br>
+
       <div class="row">
           <div *ngFor="let pet of pets" class="col-lg-3 col-md-6 col-sm-6">
           <div class="col mb-4">

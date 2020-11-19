@@ -17,5 +17,8 @@ namespace PetBookAPI
 			set { pageSize = (value > Max) ? Max : value; }
 		}
 
+		public string Gender { get; set; }
+		public string Type { get; set; }
+
 	}
 }

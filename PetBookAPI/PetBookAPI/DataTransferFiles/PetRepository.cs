@@ -33,7 +33,9 @@ namespace PetBookAPI.DataTransferFiles
 
         public async Task<PageList<Pet>> GetPets(PetParameters parameters)
         {
-            var pets = context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes);
+            var pets = context.Pets.Include(pet => pet.Photos).Include(pet => pet.Likes).AsQueryable();
+            if (!string.IsNullOrEmpty(parameters.Gender)) pets = pets.Where(pet => pet.Gender.Equals(parameters.Gender));
+            if (!string.IsNullOrEmpty(parameters.Type)) pets = pets.Where(pet => pet.Type.Equals(parameters.Type));
             return await PageList<Pet>.CreateAsync(pets, parameters.CurrentPage, parameters.PageSize);
         }
 

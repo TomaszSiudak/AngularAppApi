@@ -16,7 +16,7 @@ export class PetService {
 
   constructor(private client: HttpClient) {}
 
-  getPets(page?, pageSize?): Observable<Pages<Pet[]>>
+  getPets(page?, pageSize?, petGender?, petType?): Observable<Pages<Pet[]>>
   {
     const pages: Pages<Pet[]> = new Pages<Pet[]>();
     let params = new HttpParams();
@@ -25,6 +25,15 @@ export class PetService {
     { 
       params = params.append('currentPage', page);
       params = params.append('pageSize', pageSize);
+    }
+
+    if(petGender != null)
+    { 
+      params = params.append('gender', petGender);
+    }
+    if(petType != null)
+    { 
+      params = params.append('type', petType);
     }
 
     /*return this.client.get<Pet[]>(this.url + 'pets', {observe: 'response', params}).

@@ -16,17 +16,23 @@ export class PetsComponent implements OnInit {
   currentPage = 1;
   pageSize = 8;
   pagination: Pagination;
+  genders = [{value: 'female', display: 'Female'}, {value: 'male', display: 'Male'} ];
+  types = [{value: 'dog', display: 'Pies'}, {value: 'cat', display: 'Kot'},
+   {value: 'rabbit', display: 'Królik'}, {value: 'hamster', display: 'Chomik'}, {value: 'parrot', display: 'Papuga'} ];
+   petParams: any = {};
 
 
   constructor(private petService: PetService, private tokenService: TokenService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.getPets();
+    this.petParams.gender = null;
+    this.petParams.type = null;
   }
 
  getPets()
  {
-   this.petService.getPets(this.currentPage, this.pageSize).subscribe((pets: Pages<Pet[]>) =>
+   this.petService.getPets(this.currentPage, this.pageSize, this.petParams.gender, this.petParams.type).subscribe((pets: Pages<Pet[]>) =>
     {
       this.pets = pets.result;
       this.pagination = pets.pagination;
@@ -38,7 +44,7 @@ export class PetsComponent implements OnInit {
 
  getPets2(page?, pageSize?)
  {
-   this.petService.getPets(page, pageSize).subscribe((pets: Pages<Pet[]>) =>
+   this.petService.getPets(page, pageSize, this.petParams.gender, this.petParams.type).subscribe((pets: Pages<Pet[]>) =>
     {
       this.pets = pets.result;
       this.pagination = pets.pagination;
@@ -47,6 +53,12 @@ export class PetsComponent implements OnInit {
       console.log(error);
     });
  }
+
+ resetFilters() {
+  this.petParams.gender = null;
+  this.petParams.type = null;
+  this.getPets();
+}
 
  pageChanged(event: any): void {
   this.pagination.currentPage = event.page;
