@@ -23,35 +23,6 @@ namespace Tests
             new Pet() { Name = "Andrew", Password = "" }
         };
         
-        
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
-        public void GetPhotoByIdTest()
-        {
-            //Arrange
-            var dbContextMock = new Mock<Context>();
-            var dbSetMock = new Mock<DbSet<Photo>>();
-            dbSetMock.Setup(s => s.FindAsync(It.IsAny<int>())).Returns(Task.FromResult(new Photo() {Description = "TestPhoto", Url = "www.test.com.pl" }));
-            dbContextMock.Setup(s => s.Photos).Returns(dbSetMock.Object); 
-
-            //Act
-            var petRepository = new PetRepository(dbContextMock.Object);
-            var photo = petRepository.GetPhoto(new Random().Next(1, 100)).Result;
-
-            //Assert
-            Assert.Multiple(() =>
-            {
-                dbContextMock.VerifyGet(x => x.Photos);
-                dbSetMock.Verify(x => x.FindAsync(It.IsAny<int>()));
-                Assert.IsNotNull(photo, "Retrieved object cannot be null");
-                Assert.AreEqual("TestPhoto", photo.Description, "Expected description should match actual");
-                Assert.AreEqual("www.test.com.pl", photo.Url, "Expected description should match actual");
-            });
-        }
 
         [Test]
         public void VerifyLoginWithCorrectDataTest()
@@ -139,12 +110,111 @@ namespace Tests
             Assert.Multiple(() =>
             {
                 dbContextMock.VerifyGet(x => x.Pets);
-                dbSetMock.Verify(x => x.AddAsync(testPet, default));
-                dbContextMock.Verify(x => x.SaveChangesAsync(default));
+                dbSetMock.Verify(x => x.AddAsync(testPet, default), Times.Once);
+                dbContextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
                 Assert.IsNotNull(pet, "Retrieved object cannot be null");
                 Assert.AreEqual("Tom", pet.Name);
             });
         }
+
+        [Test]
+        public void VerifyPetExistsTest()
+        {
+            //Arrange
+            string username = "Tomek";
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
+
+            //Act
+            var authRepo = new AuthorizationRepo(dbContextMock.Object);
+            var petExists = authRepo.Exists(username);
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                dbContextMock.VerifyGet(x => x.Pets, Times.Once);
+                Assert.IsTrue(petExists, "Pet should exists");
+            });
+        }
+
+        [Test]
+        public void VerifyPetNotExistsTest()
+        {
+            //Arrange
+            string username = "Tom";
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
+
+            //Act
+            var authRepo = new AuthorizationRepo(dbContextMock.Object);
+            var petExists = authRepo.Exists(username);
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                dbContextMock.VerifyGet(x => x.Pets, Times.Once);
+                Assert.IsFalse(petExists, "Pet should not exists");
+            });
+        }
+
+        [Test]
+        public void VerifyAddPetWasCalledTest()
+        {
+            //Arrange
+            var testPet = new Pet() { Name = "Tom", Age = 10, City = "Katowice", Gender = "male" };
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+
+            //Act
+            var petRepo = new PetRepository(dbContextMock.Object);
+            petRepo.AddPet(testPet);
+
+            //Assert
+            dbContextMock.Verify(x => x.Add(testPet), Times.Once);
+        }
+
+        [Test]
+        public void VerifyDeletePetWasCalledTest()
+        {
+            //Arrange
+            var testPet = new Pet() { Name = "Tom", Age = 10, City = "Katowice", Gender = "male" };
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+
+            //Act
+            var petRepo = new PetRepository(dbContextMock.Object);
+            petRepo.DeletePet(testPet);
+
+            //Assert
+            dbContextMock.Verify(x => x.Remove(testPet), Times.Once); ;
+        }
+
+        [Test]
+        public void GetPhotoByIdTest()
+        {
+            //Arrange
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = new Mock<DbSet<Photo>>();
+            dbSetMock.Setup(s => s.FindAsync(It.IsAny<int>())).Returns(Task.FromResult(new Photo() { Description = "TestPhoto", Url = "www.test.com.pl" }));
+            dbContextMock.Setup(s => s.Photos).Returns(dbSetMock.Object);
+
+            //Act
+            var petRepository = new PetRepository(dbContextMock.Object);
+            var photo = petRepository.GetPhoto(new Random().Next(1, 100)).Result;
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                dbContextMock.VerifyGet(x => x.Photos, Times.Once);
+                dbSetMock.Verify(x => x.FindAsync(It.IsAny<int>()), Times.Once);
+                Assert.IsNotNull(photo, "Retrieved object cannot be null");
+                Assert.AreEqual("TestPhoto", photo.Description, "Expected description should match actual");
+                Assert.AreEqual("www.test.com.pl", photo.Url, "Expected description should match actual");
+            });
+        }
+
 
 
         internal Mock<DbSet<T>> GetMockDbSet<T>(ICollection<T> entities) where T : class
