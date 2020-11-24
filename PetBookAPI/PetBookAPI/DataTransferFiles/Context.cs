@@ -9,14 +9,18 @@ namespace PetBookAPI.DataTransferFiles
 {
     public class Context : DbContext
     {
+        public Context()
+        {
+        }
+
         public Context(DbContextOptions<Context> options) : base(options)
         {
 
         }
 
-        public DbSet<Pet> Pets { get; set; }
-        public DbSet<Photo> Photos { get; set; }
-        public DbSet<Likes> Likes { get; set; }
+        public virtual DbSet<Pet> Pets { get; set; }
+        public virtual DbSet<Photo> Photos { get; set; }
+        public virtual DbSet<Likes> Likes { get; set; }
 
     }
 }

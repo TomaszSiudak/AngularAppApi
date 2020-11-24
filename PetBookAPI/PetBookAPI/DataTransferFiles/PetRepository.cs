@@ -46,7 +46,7 @@ namespace PetBookAPI.DataTransferFiles
 
         public async Task<Photo> GetPhoto(int photoId)
         {
-            return await context.Photos.FirstOrDefaultAsync(photo => photo.Id == photoId);
+            return await context.Photos.FindAsync(photoId);
         }
 
         public async Task<Photo> GetMainPhoto(int petId)
