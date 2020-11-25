@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
+using PetBookAPI;
 using PetBookAPI.Controllers;
 using PetBookAPI.DataTransferFiles;
 using PetBookAPI.Model;
@@ -18,11 +18,36 @@ namespace Tests
     public class PetRepoTests
     {
         List<Pet> loginTestData = new List<Pet>
-        { 
-            new Pet() { Name = "Tomek", Password = "test!123" }, 
+        {
+            new Pet() { Name = "Tomek", Password = "test!123" },
             new Pet() { Name = "Andrew", Password = "" }
         };
-        
+
+        List<Likes> likesTestData = new List<Likes>
+        {
+            new Likes() { Id = 1, Pet = new Pet(){ Name = "Rex" }, PetId = 1, PetWhichLikedId = 2 },
+            new Likes() { Id = 2, Pet = new Pet(){ Name = "Andrew" }, PetId = 2, PetWhichLikedId = 1 },
+            new Likes() { Id = 3, Pet = new Pet(){ Name = "Rex" }, PetId = 1, PetWhichLikedId = 3 },
+            new Likes() { Id = 4, Pet = new Pet(){ Name = "Salazar" }, PetId = 2, PetWhichLikedId = 2 },
+            new Likes() { Id = 5, Pet = new Pet(){ Name = "Rex" }, PetId = 1, PetWhichLikedId = 4 },
+        };
+        List<Pet> pagingTestData = new List<Pet>()
+        {
+            new Pet() { Name = "Tomek", Password = "test!123" },
+            new Pet() { Name = "Andrew", Password = "" },
+            new Pet() { Name = "Tomek", Password = "test!123" },
+            new Pet() { Name = "Andrew", Password = "" },
+            new Pet() { Name = "Tomek", Password = "test!123" },
+            new Pet() { Name = "Andrew", Password = "" },
+            new Pet() { Name = "Tomek", Password = "test!123" },
+            new Pet() { Name = "Andrew", Password = "" },
+            new Pet() { Name = "Tomek", Password = "test!123" },
+            new Pet() { Name = "Andrew", Password = "" },
+            new Pet() { Name = "Tomek", Password = "test!123" },
+            new Pet() { Name = "Andrew", Password = "" },
+            new Pet() { Name = "Tomek", Password = "test!123" }
+        };
+
 
         [Test]
         public void VerifyLoginWithCorrectDataTest()
@@ -33,7 +58,7 @@ namespace Tests
             var dbContextMock = new Mock<Context>();
             var dbSetMock = GetMockDbSet<Pet>(loginTestData);
             dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
- 
+
             //Act
             var authRepo = new AuthorizationRepo(dbContextMock.Object);
             var pet = authRepo.Login(username, password).Result;
@@ -181,7 +206,6 @@ namespace Tests
             //Arrange
             var testPet = new Pet() { Name = "Tom", Age = 10, City = "Katowice", Gender = "male" };
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
 
             //Act
             var petRepo = new PetRepository(dbContextMock.Object);
@@ -215,7 +239,96 @@ namespace Tests
             });
         }
 
+        [Test]
+        public void VerifyDeletePhotoWasCalledTest()
+        {
+            //Arrange
+            var testPhoto = new Photo() { Url = "www.test.pl", Description = "photo", MainPhoto = true };
+            var dbContextMock = new Mock<Context>();
 
+            //Act
+            var petRepo = new PetRepository(dbContextMock.Object);
+            petRepo.DeletePhoto(testPhoto);
+
+            //Assert
+            dbContextMock.Verify(x => x.Remove(testPhoto), Times.Once); ;
+        }
+
+        [Test]
+        public void VerifyAddingLikeWasCalledTest()
+        {
+            //Arrange
+            var testLike = new Likes() { Pet = new Pet() { Name = "Rex" }, PetId = 3, PetWhichLikedId = 1 };
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = new Mock<DbSet<Likes>>();
+            dbSetMock.Setup(s => s.Add(It.Is<Likes>(like => like.PetWhichLikedId == testLike.PetWhichLikedId && like.PetId == testLike.PetId)));
+            dbContextMock.Setup(s => s.Likes).Returns(dbSetMock.Object);
+
+            //Act
+            var petRepo = new PetRepository(dbContextMock.Object);
+            petRepo.AddLike(testLike.PetWhichLikedId, testLike.PetId);
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                dbContextMock.VerifyGet(x => x.Likes);
+                dbSetMock.Verify(x => x.Add(It.Is<Likes>(like => like.PetWhichLikedId == testLike.PetWhichLikedId && like.PetId == testLike.PetId)), Times.Once);
+            });
+        }
+
+        [Test]
+        public void GetLikeByIdTest()
+        {
+            //Arrange
+            List<int> expectedIds = new List<int>() { 2, 3, 4 };
+            var testLikeId = 1;
+            var dbContextMock = new Mock<Context>();
+            var dbSetMock = GetMockDbSet<Likes>(likesTestData);
+            dbContextMock.Setup(s => s.Likes).Returns(dbSetMock.Object);
+
+            //Act
+            var petRepo = new PetRepository(dbContextMock.Object);
+            var actualLikesList = petRepo.GetLikes(testLikeId);
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                dbContextMock.VerifyGet(x => x.Likes);
+                CollectionAssert.AreEquivalent(expectedIds, actualLikesList, "The number of expected Ids obtained by PetId should match actual and contain proper values");
+            });
+        }
+
+        [Test, TestCaseSource(nameof(PagingDataProvider))]
+        public void VerifyPagingMethodPageNumber3PageSize5(int pageNumber, int pageSize, int expectedItemsNumber, int expectedTotalPages)
+        {
+            //Arrange
+            int numberOfPetsInTestData = pagingTestData.Count();
+            var pagingMock = pagingTestData.AsQueryable().BuildMock().Object;
+
+            //Act
+            var page = PageList<Pet>.CreateAsync(pagingMock.AsQueryable(), pageNumber, pageSize).Result;
+
+            //Assert
+            Assert.Multiple(() =>
+            {
+                Assert.IsNotNull(page, "Created object cannot be null");
+                Assert.IsInstanceOf(typeof(IList<Pet>), page, $"The created object should be of type {typeof(IEnumerable<Pet>)}");
+                Assert.AreEqual(expectedItemsNumber, page.Count, $"Expected number of items for pageNumber '{pageNumber}' and PageSize '{pageSize}': {expectedItemsNumber}, but was {page.Count}");
+                Assert.AreEqual(expectedTotalPages, page.TotalPages, $"Expected number of pages for pageNumber '{pageNumber}' and PageSize '{pageSize}': {expectedTotalPages}, but was {page.TotalPages}");
+                Assert.AreEqual(13, pagingTestData.Count(), $"The number of used items should match expected");
+            });
+        }
+
+        //pageNumber, pageSize, expectedItemsNumber, totalPages -> total items 13
+        public static IEnumerable<int[]> PagingDataProvider()
+        {
+            yield return new int[] { 1, 4, 4, 4 };
+            yield return new int[] { 4, 4, 1, 4 };
+            yield return new int[] { 1, 8, 8, 2 };
+            yield return new int[] { 2, 8, 5, 2 };
+            yield return new int[] { 10, 4, 0, 4 };
+            yield return new int[] { 5, 8, 0, 2 };
+        }
 
         internal Mock<DbSet<T>> GetMockDbSet<T>(ICollection<T> entities) where T : class
         {
