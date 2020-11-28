@@ -11,19 +11,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Tests.Helpers;
 
 namespace Tests
 {
     [TestFixture]
     public class PetRepoTests
     {
-        List<Pet> loginTestData = new List<Pet>
+        readonly List<Pet> loginTestData = new List<Pet>
         {
             new Pet() { Name = "Tomek", Password = "test!123" },
             new Pet() { Name = "Andrew", Password = "" }
         };
 
-        List<Likes> likesTestData = new List<Likes>
+        readonly List<Likes> likesTestData = new List<Likes>
         {
             new Likes() { Id = 1, Pet = new Pet(){ Name = "Rex" }, PetId = 1, PetWhichLikedId = 2 },
             new Likes() { Id = 2, Pet = new Pet(){ Name = "Andrew" }, PetId = 2, PetWhichLikedId = 1 },
@@ -31,7 +32,7 @@ namespace Tests
             new Likes() { Id = 4, Pet = new Pet(){ Name = "Salazar" }, PetId = 2, PetWhichLikedId = 2 },
             new Likes() { Id = 5, Pet = new Pet(){ Name = "Rex" }, PetId = 1, PetWhichLikedId = 4 },
         };
-        List<Pet> pagingTestData = new List<Pet>()
+        readonly List<Pet> pagingTestData = new List<Pet>()
         {
             new Pet() { Name = "Tomek", Password = "test!123" },
             new Pet() { Name = "Andrew", Password = "" },
@@ -56,7 +57,7 @@ namespace Tests
             string username = "Tomek";
             string password = "test!123";
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Pet>(loginTestData);
             dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
 
             //Act
@@ -80,7 +81,7 @@ namespace Tests
             string username = "NotExistingName";
             string password = "test!123";
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Pet>(loginTestData);
             dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
 
             //Act
@@ -102,7 +103,7 @@ namespace Tests
             string username = "Tomek";
             string password = "test";
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Pet>(loginTestData);
             dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
 
             //Act
@@ -148,7 +149,7 @@ namespace Tests
             //Arrange
             string username = "Tomek";
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Pet>(loginTestData);
             dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
 
             //Act
@@ -169,7 +170,7 @@ namespace Tests
             //Arrange
             string username = "Tom";
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Pet>(loginTestData);
             dbContextMock.Setup(s => s.Pets).Returns(dbSetMock.Object);
 
             //Act
@@ -190,7 +191,7 @@ namespace Tests
             //Arrange
             var testPet = new Pet() { Name = "Tom", Age = 10, City = "Katowice", Gender = "male" };
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Pet>(loginTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Pet>(loginTestData);
 
             //Act
             var petRepo = new PetRepository(dbContextMock.Object);
@@ -283,7 +284,7 @@ namespace Tests
             List<int> expectedIds = new List<int>() { 2, 3, 4 };
             var testLikeId = 1;
             var dbContextMock = new Mock<Context>();
-            var dbSetMock = GetMockDbSet<Likes>(likesTestData);
+            var dbSetMock = HelperMethods.GetMockDbSet<Likes>(likesTestData);
             dbContextMock.Setup(s => s.Likes).Returns(dbSetMock.Object);
 
             //Act
@@ -330,7 +331,7 @@ namespace Tests
             yield return new int[] { 5, 8, 0, 2 };
         }
 
-        internal Mock<DbSet<T>> GetMockDbSet<T>(ICollection<T> entities) where T : class
+        /*internal Mock<DbSet<T>> GetMockDbSet<T>(ICollection<T> entities) where T : class
         {
             var mockSet = new Mock<DbSet<T>>();
             mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(entities.AsQueryable().Provider);
@@ -339,6 +340,6 @@ namespace Tests
             mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(entities.AsQueryable().GetEnumerator());
             mockSet.Setup(m => m.Add(It.IsAny<T>())).Callback<T>(entities.Add);
             return mockSet;
-        }
+        }*/
     }
 }

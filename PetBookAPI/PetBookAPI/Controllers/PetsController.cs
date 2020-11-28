@@ -57,10 +57,9 @@ namespace PetBookAPI.Controllers
 
             if (await petsRepository.Save())
             {
-                return NoContent();
+                return CreatedAtRoute("GetPet", new { controller = "Pets", petId = pet.Id }, editPetDTO);
             }
-            throw new Exception("Server nie zapisał zmian");
-
+            return new BadRequestObjectResult("Error: Server nie zapisał zmian");
         }
 
         [HttpPost("{petId}/likes/{likerId}")]
@@ -83,7 +82,7 @@ namespace PetBookAPI.Controllers
             {
                 return Ok();
             }
-            return BadRequest("Server nie zapisał zmian");
+            return BadRequest("Error: Server nie zapisał zmian");
 
         }
 
