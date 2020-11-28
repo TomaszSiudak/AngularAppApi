@@ -24,6 +24,15 @@ namespace Tests
     [TestFixture]
     class ControllerTests
     {
+        readonly List<Pet> petsData = new List<Pet>
+        {
+            new Pet() { Id = 1  ,Name = "Rex", Age = 5 },
+            new Pet() { Id = 2  ,Name = "Salazar", Age = 3 },
+            new Pet() { Id = 3  ,Name = "Bunia", Age = 1 },
+            new Pet() { Id = 4  ,Name = "Mruczek", Age = 2 },
+            new Pet() { Id = 5  ,Name = "Tomek", Age = 5 }
+        };
+
         readonly List<Likes> likesTestData = new List<Likes>
         {
             new Likes() { Id = 1, Pet = new Pet(){ Name = "Rex" }, PetId = 1, PetWhichLikedId = 2 },
@@ -52,7 +61,7 @@ namespace Tests
             PetDTO actualPetDto = ((OkObjectResult)controllerResult).Value as PetDTO;
             Assert.Multiple(() =>
             {
-                Assert.IsInstanceOf<IActionResult>(controllerResult);
+                Assert.IsInstanceOf<OkObjectResult>(controllerResult);
                 mapper.Verify(s => s.Map<PetDTO>(pet), Times.Once);
                 Assert.AreEqual(200, statusCode, $"Expected status code {200}, but was {statusCode}");
                 Assert.AreEqual(expectedPetDto.Name, actualPetDto.Name, $"Expected pet name of retrieved object {expectedPetDto.Name}, but was {actualPetDto.Name}");
@@ -93,7 +102,7 @@ namespace Tests
             EditPetDTO returnedObject = ((ObjectResult)controllerResult).Value as EditPetDTO;
             Assert.Multiple(() =>
             {
-                Assert.IsInstanceOf<IActionResult>(controllerResult);
+                Assert.IsInstanceOf<ObjectResult>(controllerResult);
                 petRepoMock.Verify(s => s.Save(), Times.Once);
                 Assert.AreEqual(201, statusCode, $"Expected status code {201}, but was {statusCode}");
                 Assert.AreEqual(petDto.Name, returnedObject.Name, $"Expected name of returned object {petDto.Name}, but was {returnedObject.Name}");
@@ -331,8 +340,91 @@ namespace Tests
             int? statusCode = ((UnauthorizedResult)controllerResult).StatusCode;
             Assert.Multiple(() =>
             {
-                Assert.IsInstanceOf<IActionResult>(controllerResult);
+                Assert.IsInstanceOf<UnauthorizedResult>(controllerResult);
                 petRepoMock.Verify(s => s.GetPet(petId), Times.Never);
+                Assert.AreEqual(401, statusCode, $"Expected status code {401}, but was {statusCode}");
+            });
+        }
+
+        [Test]
+        public void PetControllerGetLikesCorrectActionTest()
+        {
+            //Arrange
+            var PetsWhichLikedIds = likesTestData.Select(like => like.PetWhichLikedId).ToList();
+            var expectedPetsList = petsData.Where(pet => PetsWhichLikedIds.Contains(pet.Id)).Select(pet => new PetDTO() { Name = pet.Name, Age = pet.Age });
+            var petId = 1;
+            var petRepoMock = new Mock<IPetsRepository>();
+            var mapper = new Mock<IMapper>();
+            petRepoMock.Setup(s => s.GetLikes(petId)).Returns(PetsWhichLikedIds);
+            petRepoMock.SetupSequence(s => s.GetPet(It.IsAny<int>()))
+                .Returns(Task.FromResult(petsData.FirstOrDefault(pet => pet.Id == PetsWhichLikedIds[0])))
+                .Returns(Task.FromResult(petsData.FirstOrDefault(pet => pet.Id == PetsWhichLikedIds[1])))
+                .Returns(Task.FromResult(petsData.FirstOrDefault(pet => pet.Id == PetsWhichLikedIds[2])));
+            mapper.Setup(s => s.Map<IEnumerable<PetDTO>>(It.IsAny<IEnumerable<Pet>>())).Returns(expectedPetsList);
+
+            var claimsPrincipal = new ClaimsPrincipal();
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, petId.ToString()) });
+            claimsPrincipal.AddIdentity(claimsIdentity);
+
+            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        User = claimsPrincipal
+                    }
+                }
+            };
+
+            //Act
+            var controllerResult = petRepo.GetLikes(petId).Result;
+
+            //Assert
+            int? statusCode = ((OkObjectResult)controllerResult).StatusCode;
+            var actualPetDto = ((OkObjectResult)controllerResult).Value as IEnumerable<PetDTO>;
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf<OkObjectResult>(controllerResult);
+                petRepoMock.Verify(s => s.GetLikes(petId), Times.Once);
+                petRepoMock.Verify(s => s.GetPet(It.IsAny<int>()), Times.Exactly(PetsWhichLikedIds.Count));
+                Assert.AreEqual(200, statusCode, $"Expected status code {200}, but was {statusCode}");
+                CollectionAssert.AreEquivalent(expectedPetsList.Select(p => p.Name), actualPetDto.Select(p => p.Name));
+            });
+        }
+
+        [Test]
+        public void PetControllerGetLikesUnauthorizedUserTest()
+        {
+            //Arrange
+            var petId = 1;
+            var PetWhichLikedIdNotLoggedIn = 6;
+            var petRepoMock = new Mock<IPetsRepository>();
+            var mapper = new Mock<IMapper>();
+            var claimsPrincipal = new ClaimsPrincipal();
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, petId.ToString()) });
+            claimsPrincipal.AddIdentity(claimsIdentity);
+
+            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        User = claimsPrincipal
+                    }
+                }
+            };
+
+            //Act
+            var controllerResult = petRepo.GetLikes(PetWhichLikedIdNotLoggedIn).Result;
+
+            //Assert
+            int? statusCode = ((UnauthorizedResult)controllerResult).StatusCode;
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf<UnauthorizedResult>(controllerResult);
+                petRepoMock.Verify(s => s.GetLikes(It.IsAny<int>()), Times.Never);
                 Assert.AreEqual(401, statusCode, $"Expected status code {401}, but was {statusCode}");
             });
         }
