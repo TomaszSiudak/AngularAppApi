@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -53,8 +53,8 @@ namespace Tests
             mapper.Setup(s => s.Map<PetDTO>(pet)).Returns(expectedPetDto);
 
             //Act
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object);
-            var controllerResult = petRepo.GetPet(expectedId).Result;
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object);
+            var controllerResult = petsController.GetPet(expectedId).Result;
 
             //Assert
             int? statusCode = ((OkObjectResult)controllerResult).StatusCode;
@@ -83,7 +83,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>(){new Claim(ClaimTypes.NameIdentifier, pet.Id.ToString())});
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -95,7 +95,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.Update(petDto, pet.Id).Result;
+            var controllerResult = petsController.Update(petDto, pet.Id).Result;
 
             //Assert
             int? statusCode = ((ObjectResult) controllerResult).StatusCode;
@@ -123,7 +123,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, pet.Id.ToString())});
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -135,7 +135,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.Update(petDto, notAuthorizedPetId).Result;
+            var controllerResult = petsController.Update(petDto, notAuthorizedPetId).Result;
 
             //Assert
             int? statusCode = ((UnauthorizedResult)controllerResult).StatusCode;
@@ -163,7 +163,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, pet.Id.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -175,7 +175,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.Update(petDto, pet.Id).Result;
+            var controllerResult = petsController.Update(petDto, pet.Id).Result;
 
             //Assert
             int? statusCode = ((ObjectResult)controllerResult).StatusCode;
@@ -204,7 +204,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, PetWhichLikedId.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -216,7 +216,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.AddLike(petId, PetWhichLikedId).Result;
+            var controllerResult = petsController.AddLike(petId, PetWhichLikedId).Result;
 
             //Assert
             int? statusCode = ((OkResult)controllerResult).StatusCode;
@@ -242,7 +242,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, PetWhichLikedId.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -254,7 +254,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.AddLike(petId, PetWhichLikedId).Result;
+            var controllerResult = petsController.AddLike(petId, PetWhichLikedId).Result;
 
             //Assert
             int? statusCode = ((ObjectResult)controllerResult).StatusCode;
@@ -284,7 +284,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, PetWhichLikedId.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -296,7 +296,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.AddLike(petId, PetWhichLikedId).Result;
+            var controllerResult = petsController.AddLike(petId, PetWhichLikedId).Result;
 
             //Assert
             int? statusCode = ((ObjectResult)controllerResult).StatusCode;
@@ -322,7 +322,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, petId.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -334,7 +334,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.AddLike(petId, PetWhichLikedIdNotLoggedIn).Result;
+            var controllerResult = petsController.AddLike(petId, PetWhichLikedIdNotLoggedIn).Result;
 
             //Assert
             int? statusCode = ((UnauthorizedResult)controllerResult).StatusCode;
@@ -366,7 +366,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, petId.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -378,7 +378,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.GetLikes(petId).Result;
+            var controllerResult = petsController.GetLikes(petId).Result;
 
             //Assert
             int? statusCode = ((OkObjectResult)controllerResult).StatusCode;
@@ -405,7 +405,7 @@ namespace Tests
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new List<Claim>() { new Claim(ClaimTypes.NameIdentifier, petId.ToString()) });
             claimsPrincipal.AddIdentity(claimsIdentity);
 
-            var petRepo = new PetsController(petRepoMock.Object, mapper.Object)
+            var petsController = new PetsController(petRepoMock.Object, mapper.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -417,7 +417,7 @@ namespace Tests
             };
 
             //Act
-            var controllerResult = petRepo.GetLikes(PetWhichLikedIdNotLoggedIn).Result;
+            var controllerResult = petsController.GetLikes(PetWhichLikedIdNotLoggedIn).Result;
 
             //Assert
             int? statusCode = ((UnauthorizedResult)controllerResult).StatusCode;
@@ -426,6 +426,69 @@ namespace Tests
                 Assert.IsInstanceOf<UnauthorizedResult>(controllerResult);
                 petRepoMock.Verify(s => s.GetLikes(It.IsAny<int>()), Times.Never);
                 Assert.AreEqual(401, statusCode, $"Expected status code {401}, but was {statusCode}");
+            });
+        }
+
+        [Test]
+        public void PetControllerVerifyPetRegistrationTest()
+        {
+            //Arrange
+            string expectedRouteName = "GetPet";
+            string expectedControllerName = "Pets";
+            var newPet = new Pet() { Id = 5, Name = "Mruczek", Age = 3, Password = "test123", Type = "cat", City = "Katowice" };
+            int expectedIdUsedInController = newPet.Id;
+            var petDto = new PetDTO() { Name = newPet.Name, Age = newPet.Age, City = newPet.City };
+            var authRepoMock = new Mock<IAuthorizationRepository>();
+            var mapper = new Mock<IMapper>();
+            var config = new Mock<IConfiguration>();
+            authRepoMock.Setup(s => s.Exists(newPet.Name)).Returns(false);
+            authRepoMock.Setup(s => s.Register(newPet)).Returns(Task.FromResult(newPet));
+            mapper.Setup(s => s.Map<PetDTO>(newPet)).Returns(petDto);
+            var authController = new AuthorizationController(authRepoMock.Object, config.Object, mapper.Object);
+            //Act
+            var controllerResult = authController.Register(newPet).Result;
+            var routeResult = (CreatedAtRouteResult)controllerResult;
+            //Assert
+            int? statusCode = routeResult.StatusCode;
+            string routeName = routeResult.RouteName;
+            var routeValues = routeResult.RouteValues;
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf<ObjectResult>(controllerResult);
+                authRepoMock.Verify(s => s.Register(It.IsAny<Pet>()), Times.Once);
+                Assert.AreEqual(201, statusCode, $"Expected status code {201}, but was {statusCode}");
+                Assert.AreEqual(expectedRouteName, routeName, $"Expected route name {expectedRouteName}, but was {routeName}");
+                Assert.AreEqual(expectedControllerName, routeValues["controller"], $"Expected controller name {expectedControllerName}, but was {routeValues["controller"]}");
+                Assert.AreEqual(expectedIdUsedInController, routeValues["petId"], $"Expected petId used in controller {expectedIdUsedInController}, but was {routeValues["petId"]}");
+            });
+        }
+
+        [Test]
+        public void PetControllerVerifyRegistrationPetAlreadyExistsTest()
+        {
+            //Arrange
+            string expectedErrorMessage = "Użytkownik o tej nazwie już istnieje. Wybierz inną.";
+            var newPet = new Pet() { Id = 5, Name = "Mruczek", Age = 3, Password = "test123", Type = "cat", City = "Katowice" };
+            var authRepoMock = new Mock<IAuthorizationRepository>();
+            var mapper = new Mock<IMapper>();
+            var config = new Mock<IConfiguration>();
+            authRepoMock.Setup(s => s.Exists(newPet.Name)).Returns(true);
+            authRepoMock.Setup(s => s.Register(newPet)).Returns(Task.FromResult(newPet));
+            var authController = new AuthorizationController(authRepoMock.Object, config.Object, mapper.Object);
+
+            //Act
+            var controllerResult = authController.Register(newPet).Result;
+            var objectResult = (ObjectResult)controllerResult;
+
+            //Assert
+            int? statusCode = objectResult.StatusCode;
+            string actualErrorMessage = objectResult.Value.ToString();
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf<BadRequestObjectResult>(controllerResult);
+                authRepoMock.Verify(s => s.Register(It.IsAny<Pet>()), Times.Never);
+                Assert.AreEqual(400, statusCode, $"Expected status code {400}, but was {statusCode}");
+                Assert.AreEqual(expectedErrorMessage, actualErrorMessage, $"Expected error  {expectedErrorMessage}, but was {actualErrorMessage}");
             });
         }
     }

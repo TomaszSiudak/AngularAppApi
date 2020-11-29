@@ -40,7 +40,6 @@ namespace PetBookAPI.Controllers
 
             var newPet = await authorizationRepository.Register(pet);
             var PetDTO = mapper.Map<PetDTO>(pet);
-            //return StatusCode(201);
             return CreatedAtRoute("GetPet", new { controller = "Pets", petId = newPet.Id }, PetDTO);
         }
 
