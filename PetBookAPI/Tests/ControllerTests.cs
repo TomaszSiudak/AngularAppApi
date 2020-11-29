@@ -430,7 +430,7 @@ namespace Tests
         }
 
         [Test]
-        public void PetControllerVerifyPetRegistrationTest()
+        public void AuthControllerVerifyPetRegistrationTest()
         {
             //Arrange
             string expectedRouteName = "GetPet";
@@ -445,9 +445,11 @@ namespace Tests
             authRepoMock.Setup(s => s.Register(newPet)).Returns(Task.FromResult(newPet));
             mapper.Setup(s => s.Map<PetDTO>(newPet)).Returns(petDto);
             var authController = new AuthorizationController(authRepoMock.Object, config.Object, mapper.Object);
+
             //Act
             var controllerResult = authController.Register(newPet).Result;
             var routeResult = (CreatedAtRouteResult)controllerResult;
+            
             //Assert
             int? statusCode = routeResult.StatusCode;
             string routeName = routeResult.RouteName;
@@ -464,7 +466,7 @@ namespace Tests
         }
 
         [Test]
-        public void PetControllerVerifyRegistrationPetAlreadyExistsTest()
+        public void AuthControllerVerifyRegistrationPetAlreadyExistsTest()
         {
             //Arrange
             string expectedErrorMessage = "Użytkownik o tej nazwie już istnieje. Wybierz inną.";
@@ -488,6 +490,66 @@ namespace Tests
                 Assert.IsInstanceOf<BadRequestObjectResult>(controllerResult);
                 authRepoMock.Verify(s => s.Register(It.IsAny<Pet>()), Times.Never);
                 Assert.AreEqual(400, statusCode, $"Expected status code {400}, but was {statusCode}");
+                Assert.AreEqual(expectedErrorMessage, actualErrorMessage, $"Expected error  {expectedErrorMessage}, but was {actualErrorMessage}");
+            });
+        }
+
+        [Test]
+        public void AuthControllerVerifyPetCorrectLoginTest()
+        {
+            //Arrange
+            var pet = new Pet() { Id = 5, Name = "Mruczek", Age = 3, Password = "test123", Type = "cat", City = "Katowice" };
+            var authRepoMock = new Mock<IAuthorizationRepository>();
+            var mapper = new Mock<IMapper>();
+            var config = new Mock<IConfiguration>();
+            var oneSectionMock = new Mock<IConfigurationSection>();
+            oneSectionMock.Setup(s => s.Value).Returns("asdfghjklqweryuiop");
+            authRepoMock.Setup(s => s.Login(pet.Name, pet.Password)).Returns(Task.FromResult(pet));
+            config.Setup(s => s.GetSection(It.IsAny<string>())).Returns(oneSectionMock.Object);
+            var authController = new AuthorizationController(authRepoMock.Object, config.Object, mapper.Object);
+
+            //Act
+            var controllerResult = authController.Login(pet).Result;
+            var okResult = (OkObjectResult)controllerResult;
+
+            //Assert
+            int? statusCode = okResult.StatusCode;
+            var obj = okResult.Value;
+            var token = obj.GetType().GetProperty("token").GetValue(obj).ToString(); 
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf<OkObjectResult>(controllerResult);
+                authRepoMock.Verify(s => s.Login(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                Assert.AreEqual(200, statusCode, $"Expected status code {200}, but was {statusCode}");
+                Assert.IsTrue(!string.IsNullOrEmpty(token), "Created token cannot be empty");
+            });
+        }
+
+        [Test]
+        public void AuthControllerVerifyPetNOTCorrectLoginTest()
+        {
+            //Arrange
+            string expectedErrorMessage = "Nieprawidłowy login lub hasło";
+            var pet = new Pet() { Id = 5, Name = "Mruczek", Password = "test" };
+            int expectedIdUsedInController = pet.Id;
+            var authRepoMock = new Mock<IAuthorizationRepository>();
+            var mapper = new Mock<IMapper>();
+            var config = new Mock<IConfiguration>();
+            authRepoMock.Setup(s => s.Login(pet.Name, pet.Password)).Returns(Task.FromResult((Pet)null));
+            var authController = new AuthorizationController(authRepoMock.Object, config.Object, mapper.Object);
+
+            //Act
+            var controllerResult = authController.Login(pet).Result;
+            var result = (UnauthorizedObjectResult)controllerResult;
+
+            //Assert
+            int? statusCode = result.StatusCode;
+            string actualErrorMessage = result.Value.ToString();
+            Assert.Multiple(() =>
+            {
+                Assert.IsInstanceOf<UnauthorizedObjectResult>(controllerResult);
+                authRepoMock.Verify(s => s.Login(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+                Assert.AreEqual(401, statusCode, $"Expected status code {401}, but was {statusCode}");
                 Assert.AreEqual(expectedErrorMessage, actualErrorMessage, $"Expected error  {expectedErrorMessage}, but was {actualErrorMessage}");
             });
         }
