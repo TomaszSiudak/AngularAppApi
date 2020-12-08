@@ -21,5 +21,10 @@ namespace Framework.Extensions
         {
             return JsonConvert.DeserializeObject<JObject>(response.Content);
         }
+
+        public static T DeserializeResponse<T>(this IRestResponse response)
+        {
+            return JsonConvert.DeserializeObject<T>(response.Content);
+        }
     }
 }
