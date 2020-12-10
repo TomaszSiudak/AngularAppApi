@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Framework.API;
+using Framework.Constants;
+using Framework.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -11,10 +14,11 @@ namespace Framework.Extensions
 {
     public static class RESTExtensions
     {
-        public static void AddRESTHeaders(this RestRequest request, DataFormat requestFormat = DataFormat.Json, string contentType = "application/json")
+        public static void AddRESTHeaders(this RestRequest request, bool withAuthorization = true, DataFormat requestFormat = DataFormat.Json, string contentType = "application/json")
         {
             request.RequestFormat = requestFormat;
             request.AddHeader("Content-Type", contentType);
+            if (withAuthorization) request.AddHeader("Authorization", string.Format("Bearer {0}", GetToken())); ;
         }
 
         public static JObject GetJObjectFromResponse(this IRestResponse response)
@@ -26,5 +30,8 @@ namespace Framework.Extensions
         {
             return JsonConvert.DeserializeObject<T>(response.Content);
         }
+
+
+        private static string GetToken() => new AuthorizationAPI().Login(Variables.DefaultPet).GetJObjectFromResponse().Value<string>("token");
     }
 }

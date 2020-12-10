@@ -3,6 +3,7 @@ using Framework.Base;
 using Framework.Constants;
 using Framework.Extensions;
 using Framework.Helpers;
+using Framework.Helpers.SqlHelper;
 using Framework.Models;
 using NUnit.Framework;
 using System;
@@ -71,7 +72,7 @@ namespace Tests
 
             var registeredPet = response.DeserializeResponse<Pet>();
             int actualStatusCode = (int)response.StatusCode;
-            bool wasPetAddedToDb = SqlServerClient.IsPetInDb(expectedPet.Name);
+            bool wasPetAddedToDb = SqlHelper.Pets.IsPetInDb(expectedPet.Name);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(201, actualStatusCode, $"Expected status code {201}, but was {actualStatusCode}");

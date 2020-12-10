@@ -1,10 +1,7 @@
-﻿using RestSharp;
-using System;
-using System.Collections.Generic;
+﻿
+using RestSharp;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Framework.Base
 {
@@ -18,5 +15,6 @@ namespace Framework.Base
         {
             this.restClient = new RestClient($"{Environment}");
         }
+
     }
 }

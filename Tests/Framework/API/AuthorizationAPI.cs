@@ -18,7 +18,6 @@ namespace Framework.API
         public IRestResponse Login(Pet pet)
         {
             restRequest = new RestRequest($"{controllerName}/login", Method.POST);
-            restRequest.AddRESTHeaders();
             restRequest.AddJsonBody(pet);
             var response = restClient.Execute(restRequest);
             return response;

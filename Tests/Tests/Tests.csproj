@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APITests\AuthorizationTests.cs" />
+    <Compile Include="APITests\PetsTests.cs" />
     <Compile Include="Base\BaseAPITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

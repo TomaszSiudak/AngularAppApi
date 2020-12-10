@@ -69,11 +69,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\AuthorizationAPI.cs" />
+    <Compile Include="API\PetsAPI.cs" />
     <Compile Include="Base\BaseAPI.cs" />
     <Compile Include="Constants\Messages.cs" />
     <Compile Include="Constants\PetsColumns.cs" />
+    <Compile Include="Constants\Variables.cs" />
     <Compile Include="Extensions\RESTExtensions.cs" />
-    <Compile Include="Helpers\SqlServerClient.cs" />
+    <Compile Include="Helpers\SqlHelper\PetsDB.cs" />
+    <Compile Include="Helpers\SqlHelper\SqlHelper.cs" />
+    <Compile Include="Helpers\SqlHelper\SqlServerClient.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Models\Pet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
