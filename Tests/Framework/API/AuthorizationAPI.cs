@@ -14,19 +14,18 @@ namespace Framework.API
     {
         private static string controllerName = "authorization";
 
-
-        public IRestResponse Login(Pet pet)
+        public IRestResponse AddPet(Pet pet)
         {
-            restRequest = new RestRequest($"{controllerName}/login", Method.POST);
+            restRequest = new RestRequest($"{controllerName}/registration", Method.POST);
+            restRequest.AddRESTHeaders(withAuthorization: false);
             restRequest.AddJsonBody(pet);
             var response = restClient.Execute(restRequest);
             return response;
         }
 
-        public IRestResponse Register(Pet pet)
+        public IRestResponse Login(Pet pet)
         {
-            restRequest = new RestRequest($"{controllerName}/registration", Method.POST);
-            restRequest.AddRESTHeaders();
+            restRequest = new RestRequest($"{controllerName}/login", Method.POST);
             restRequest.AddJsonBody(pet);
             var response = restClient.Execute(restRequest);
             return response;

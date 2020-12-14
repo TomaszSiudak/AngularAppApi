@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Framework.Extensions;
+using Framework.Helpers.SqlHelper;
 
 namespace Framework.API
 {
     public class PetsAPI : BaseAPI
     {
         private static string controllerName = "pets";
-
 
         public IRestResponse GetPetById(int id)
         {
@@ -32,13 +32,22 @@ namespace Framework.API
             return response;
         }
 
-        public void AddQueryParameters(RestRequest restRequest, PetQueryParameters parameters)
+        public IRestResponse UpdatePet(Pet pet, int id)
+        {
+            restRequest = new RestRequest($"{controllerName}/pets/{id}", Method.PUT);
+            restRequest.AddRESTHeaders();
+            restRequest.AddJsonBody(pet);
+            return restClient.Execute(restRequest);
+        }
+
+        private void AddQueryParameters(RestRequest restRequest, PetQueryParameters parameters)
         {
             foreach (var field in parameters.GetType().GetFields())
             {
                 restRequest.AddParameter(field.Name, field.GetValue(parameters));
             }
         }
+
     }
 
 
@@ -50,7 +59,11 @@ namespace Framework.API
         public string gender;
         public string type;
 
-        public PetQueryParameters(string gender, string type, int currentPage = 1, int pageSize = 5)
+        public PetQueryParameters()
+        {
+        }
+
+        public PetQueryParameters(string gender, string type, int currentPage = 1, int pageSize = 8)
         {
             this.currentPage = currentPage;
             this.pageSize = pageSize;

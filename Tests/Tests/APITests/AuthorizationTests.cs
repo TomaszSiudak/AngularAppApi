@@ -9,7 +9,7 @@ using NUnit.Framework;
 using System;
 using Tests.Base;
 
-namespace Tests
+namespace Tests.APITests
 {
     [TestFixture]
     public class AuthorizationTests : BaseAPITest
@@ -68,7 +68,7 @@ namespace Tests
         {
             Pet expectedPet = new Pet() { Name = "Tom_" + StringHelper.GenerateRandomNumberString(4), Password = "test123", Age = 12, Gender = "male", City = "Katowice" };
 
-            var response = AuthorizationAPI.Register(expectedPet);
+            var response = AuthorizationAPI.AddPet(expectedPet);
 
             var registeredPet = response.DeserializeResponse<Pet>();
             int actualStatusCode = (int)response.StatusCode;
@@ -88,7 +88,7 @@ namespace Tests
             string existingName = "Tom";
             Pet expectedPet = new Pet() { Name = existingName, Password = "test123", Age = 12, Gender = "male", City = "Katowice" };
 
-            var response = AuthorizationAPI.Register(expectedPet);
+            var response = AuthorizationAPI.AddPet(expectedPet);
 
             var actualMessage = response.Content.Trim('"');
             int actualStatusCode = (int)response.StatusCode;

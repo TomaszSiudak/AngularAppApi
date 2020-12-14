@@ -32,6 +32,22 @@ namespace Framework.Helpers.SqlHelper
             return GetPetFromDb(query);
         }
 
+        public List<Pet> GetPets()
+        {
+            string query = $"SELECT * FROM dbo.Pets ";
+
+            return GetPetsFromDb(query);
+        }
+
+        public List<Pet> GetPetsByCriterium(string key, string value)
+        {
+            string query =
+                $" SELECT * FROM dbo.Pets " +
+                $" WHERE {key} = '{value}'";
+
+            return GetPetsFromDb(query);
+        }
+
         private static Pet GetPetFromDb(string query)
         {
             var row = ExecuteCommand(query).FirstOrDefault();
@@ -51,6 +67,28 @@ namespace Framework.Helpers.SqlHelper
                 return pet;
             }
             return null;
+        }
+
+        private static List<Pet> GetPetsFromDb(string query)
+        {
+            List<Pet> pets = new List<Pet>();
+            var rows = ExecuteCommand(query);
+
+            foreach (var row in rows)
+            {
+                Pet pet = new Pet()
+                {
+                    Id = int.Parse(row[PetsColumns.Id]),
+                    Name = row[PetsColumns.Name],
+                    Age = int.Parse(row[PetsColumns.Age]),
+                    Type = row[PetsColumns.Type],
+                    Description = row[PetsColumns.Description],
+                    City = row[PetsColumns.City],
+                    Gender = row[PetsColumns.Gender]
+                };
+                pets.Add(pet);
+            }
+            return pets;
         }
     }
 }
