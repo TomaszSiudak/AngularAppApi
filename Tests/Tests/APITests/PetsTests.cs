@@ -35,6 +35,20 @@ namespace Tests.APITests
             });
         }
 
+        [Test]
+        public void GetPetWithNotExistingIdTest()
+        {
+            int notExistingId = 12345678;
+            var response = PetsAPI.GetPetById(notExistingId);
+
+            int actualStatusCode = (int)response.StatusCode;
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(204, actualStatusCode, $"Expected status code {204}, but was {actualStatusCode}");
+                Assert.IsEmpty(response.Content, $"No content should be present when getting pet with not existing Id");
+            });
+        }
+
 
         [Test]
         public void CheckGetPetsEnpointTest()
@@ -110,6 +124,51 @@ namespace Tests.APITests
             {
                 Assert.AreEqual(200, actualStatusCode, $"Expected status code {200}, but was {actualStatusCode}");
                 Assert.AreEqual(pageSize, retrievedPets.Count, $"Expected number of retrieved pets should equal {pageSize}, but was {retrievedPets.Count}");
+            });
+        }
+
+
+        [Test]
+        public void UpdateExistingPetTest()
+        {
+            Pet pet = new Pet() { Name = "Tom_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", Age = 5, Gender = "male", City = "Katowice" };
+            AuthorizationAPI.AddPet(pet);
+            var petFromDbBeforeEdit = SqlHelper.Pets.GetPetByName(pet.Name);
+            petFromDbBeforeEdit.Password = pet.Password;
+            Pet dataToEdit = new Pet() {Name = pet.Name, Age = 6, Gender = pet.Gender, City = "Bytom", Description = "Super pies" };
+
+            var response = PetsAPI.UpdatePet(dataToEdit, petFromDbBeforeEdit.Id, petFromDbBeforeEdit);
+            var updatedPet = response.DeserializeResponse<Pet>();
+
+            int actualStatusCode = (int)response.StatusCode;
+            var petFromDbAfterEdit = SqlHelper.Pets.GetPetByName(pet.Name);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(201, actualStatusCode, $"Expected status code {201}, but was {actualStatusCode}");
+                petFromDbAfterEdit.Should().BeEquivalentTo(dataToEdit, options => options.Excluding(p => p.Password).Excluding(p => p.Type).Excluding(p => p.Id), "The Pet returned from DB should be equivalent to expected data excluding password, Id and Type");
+                Assert.AreEqual(petFromDbBeforeEdit.Name, updatedPet.Name, "The returned Pet from request should have the same Name as initial Pet from Db");
+            });
+        }
+
+        [Test]
+        public void UpdateExistingPetWithAllValuesTest()
+        {
+            Pet pet = new Pet() { Name = "PetAllValues_" + StringHelper.GenerateRandomNumberString(4), Password = "test123" };
+            AuthorizationAPI.AddPet(pet);
+            var petFromDbBeforeEdit = SqlHelper.Pets.GetPetByName(pet.Name);
+            petFromDbBeforeEdit.Password = pet.Password;
+            Pet dataToEdit = new Pet() { Name = pet.Name, Age = 10, Gender = "female", City = "Katowice", Description = "Super kot", Type = "cat" };
+
+            var response = PetsAPI.UpdatePet(dataToEdit, petFromDbBeforeEdit.Id, petFromDbBeforeEdit);
+            var updatedPet = response.DeserializeResponse<Pet>();
+
+            int actualStatusCode = (int)response.StatusCode;
+            var petFromDbAfterEdit = SqlHelper.Pets.GetPetByName(pet.Name);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(201, actualStatusCode, $"Expected status code {201}, but was {actualStatusCode}");
+                petFromDbAfterEdit.Should().BeEquivalentTo(dataToEdit, options => options.Excluding(p => p.Password).Excluding(p => p.Type).Excluding(p => p.Id), "The Pet returned from DB should be equivalent to expected data excluding password, Id and Type");
+                Assert.AreEqual(petFromDbBeforeEdit.Name, updatedPet.Name, "The returned Pet from request should have the same Name as initial Pet from Db");
             });
         }
     }

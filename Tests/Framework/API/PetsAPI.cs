@@ -32,10 +32,10 @@ namespace Framework.API
             return response;
         }
 
-        public IRestResponse UpdatePet(Pet pet, int id)
+        public IRestResponse UpdatePet(Pet pet, int id, Pet petToAuthorize = null)
         {
-            restRequest = new RestRequest($"{controllerName}/pets/{id}", Method.PUT);
-            restRequest.AddRESTHeaders();
+            restRequest = new RestRequest($"{controllerName}/{id}", Method.PUT);
+            restRequest.AddRESTHeaders(petToAuthorize: petToAuthorize);
             restRequest.AddJsonBody(pet);
             return restClient.Execute(restRequest);
         }

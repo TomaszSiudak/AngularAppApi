@@ -14,11 +14,11 @@ namespace Framework.Extensions
 {
     public static class RESTExtensions
     {
-        public static void AddRESTHeaders(this RestRequest request, bool withAuthorization = true, DataFormat requestFormat = DataFormat.Json, string contentType = "application/json")
+        public static void AddRESTHeaders(this RestRequest request, bool withAuthorization = true, Pet petToAuthorize = null, DataFormat requestFormat = DataFormat.Json, string contentType = "application/json")
         {
             request.RequestFormat = requestFormat;
             request.AddHeader("Content-Type", contentType);
-            if (withAuthorization) request.AddHeader("Authorization", string.Format("Bearer {0}", GetToken())); ;
+            if (withAuthorization) request.AddHeader("Authorization", string.Format("Bearer {0}", GetToken(petToAuthorize)));
         }
 
         public static JObject GetJObjectFromResponse(this IRestResponse response)
@@ -32,6 +32,6 @@ namespace Framework.Extensions
         }
 
 
-        private static string GetToken() => new AuthorizationAPI().Login(Variables.DefaultPet).GetJObjectFromResponse().Value<string>("token");
+        private static string GetToken(Pet pet) => new AuthorizationAPI().Login(pet == null ? Variables.DefaultPet : pet).GetJObjectFromResponse().Value<string>("token");
     }
 }
