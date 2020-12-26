@@ -7,7 +7,7 @@ namespace PetBookAPI
 {
     public class PetParameters
     {
-		private int Max { get; set; } = 12;
+		private int Max { get; set; } = 100;
 		public int CurrentPage { get; set; } = 1;
 		private int pageSize;
 

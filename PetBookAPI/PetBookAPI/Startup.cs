@@ -19,14 +19,18 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PetBookAPI.DataTransferFiles;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace PetBookAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment CurrentEnvironment { get; set; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -34,7 +38,10 @@ namespace PetBookAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string envName = CurrentEnvironment.EnvironmentName;
             services.AddDbContext<Context>(db => db.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //if(CurrentEnvironment.IsEnvironment("Production")) 
+            //else services.AddDbContext<Context>(db => db.UseInMemoryDatabase("Test"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;           
             });
@@ -54,6 +61,16 @@ namespace PetBookAPI
 
             });
             services.AddTransient<SeedData>();
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Info { Title = "Pets API", Version = "V1" });
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,6 +108,10 @@ namespace PetBookAPI
             app.UseAuthentication();
             app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "post API V1");
+            });
         }
     }
 }
