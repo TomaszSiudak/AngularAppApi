@@ -7,7 +7,7 @@ namespace Framework.Base
 {
     public abstract class BaseAPI
     {
-        public static string Environment = ConfigurationManager.AppSettings["environment"];
+        public static string Environment = ConfigurationManager.AppSettings["apiBaseURL"];
         protected RestClient restClient;
         protected RestRequest restRequest;
 
