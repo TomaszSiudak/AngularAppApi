@@ -18,7 +18,73 @@ namespace Tests.APITests
     class PetsTests : BaseAPITest
     {
         [Test]
-        public void CheckGetPetEnpointTest()
+        public void AddLikeToPetTest()
+        {
+            Pet existingPet = Variables.DefaultPet;
+            Pet newPet = new Pet() { Name = "AddLikePet_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", City = "Katowice" };
+            AuthorizationAPI.AddPet(newPet);
+            var newPetFromDb = SqlHelper.Pets.GetPetByName(newPet.Name);
+            var existingPetFromDb = SqlHelper.Pets.GetPetByName(existingPet.Name);
+
+            var response = PetsAPI.AddLikeToPet(newPetFromDb.Id, likerId: existingPetFromDb.Id, petToAuthorize: existingPet);
+
+            int actualStatusCode = (int)response.StatusCode;
+            var petLikesIds = SqlHelper.Likes.GetLikesOfPetById(newPetFromDb.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(200, actualStatusCode, $"Expected status code {200}, but was {actualStatusCode}");
+                Assert.IsEmpty(response.Content, $"No content should be returned when adding like to pet");
+                Assert.AreEqual(1, petLikesIds.Count, "Only one like should be added");
+                Assert.AreEqual(existingPetFromDb.Id, petLikesIds.FirstOrDefault(), "Like should be added from expected pet and match its Id");
+            });
+        }
+
+        [Test]
+        public void AddSeveralLikesToPetTest()
+        {
+            Pet existingPet = Variables.DefaultPet;
+            Pet newPet = new Pet() { Name = "AddFewLikesPet_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", City = "Katowice" };
+            AuthorizationAPI.AddPet(newPet);
+            var newPetFromDb = SqlHelper.Pets.GetPetByName(newPet.Name);
+            var existingPetFromDb = SqlHelper.Pets.GetPetByName(existingPet.Name);
+
+            PetsAPI.AddLikeToPet(newPetFromDb.Id, likerId: existingPetFromDb.Id, petToAuthorize: existingPet);
+            PetsAPI.AddLikeToPet(newPetFromDb.Id, likerId: existingPetFromDb.Id, petToAuthorize: existingPet);
+            var response = PetsAPI.AddLikeToPet(newPetFromDb.Id, existingPetFromDb.Id, petToAuthorize: existingPet);
+
+            int actualStatusCode = (int)response.StatusCode;
+            var petLikesIds = SqlHelper.Likes.GetLikesOfPetById(newPetFromDb.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(400, actualStatusCode, $"Expected status code {400}, but was {actualStatusCode}");
+                Assert.AreEqual(Messages.PetWasAlreadyLiked, response.Content.Trim('"'), $"Returned response content should match expected message");
+                Assert.AreEqual(1, petLikesIds.Count, "Only one like should be added from existing pet");
+            });
+        }
+
+        [Test]
+        public void CheckGetLikesFromPetEndpointTest()
+        {
+            Pet testPetWithId4 = SqlHelper.Pets.GetPetById(4);
+            Pet petWithId2 = SqlHelper.Pets.GetPetById(2);
+            PetsAPI.AddLikeToPet(testPetWithId4.Id, likerId: petWithId2.Id, petWithId2);
+
+            var response = PetsAPI.GetPetsWhichLikedCurrentProfile(testPetWithId4.Id, petToAuthorize: testPetWithId4);
+
+            var retrievedPets = response.DeserializeResponse<List<Pet>>();
+            Pet petWithId2FromResponse = retrievedPets.FirstOrDefault(pet => pet.Name.Equals(petWithId2.Name));
+            int actualStatusCode = (int)response.StatusCode;
+            var expectedNumberOfPetsWhichLikedCurrentProfile = SqlHelper.Likes.GetLikesOfPetById(testPetWithId4.Id).Count;
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(200, actualStatusCode, $"Expected status code {200}, but was {actualStatusCode}");
+                petWithId2.Should().BeEquivalentTo(petWithId2FromResponse, options => options.Excluding(p => p.Password), "The Pet returned from API response should be equivalent to expected pet's data from DB excluding password");
+                Assert.AreEqual(expectedNumberOfPetsWhichLikedCurrentProfile, retrievedPets.Count, $"Expected number of likes should match those from API response");
+            });
+        }
+
+        [Test]
+        public void CheckGetPetEndpointTest()
         {
             Pet expectedPet = SqlHelper.Pets.GetRandomPet();
 
@@ -51,7 +117,7 @@ namespace Tests.APITests
 
 
         [Test]
-        public void CheckGetPetsEnpointTest()
+        public void CheckGetPetsEndpointTest()
         {
             var expectedPets = SqlHelper.Pets.GetPets();
             var parameters = new PetQueryParameters() { currentPage = 1, pageSize = 10000 };

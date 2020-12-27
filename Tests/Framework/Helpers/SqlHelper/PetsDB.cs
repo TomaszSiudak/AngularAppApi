@@ -1,10 +1,7 @@
 ﻿using Framework.Constants;
 using Framework.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework.Helpers.SqlHelper
 {
@@ -16,6 +13,13 @@ namespace Framework.Helpers.SqlHelper
             string query = $"SELECT TOP 1 * FROM dbo.Pets WHERE Name = '{name}'";
 
             return ExecuteCommand(query).Count == 1 ? true : false;
+        }
+
+        public Pet GetPetById(int id)
+        {
+            string query = $"SELECT TOP 1 * FROM dbo.Pets WHERE Id = '{id}'";
+
+            return GetPetFromDb(query);
         }
 
         public Pet GetPetByName(string name)
@@ -57,6 +61,7 @@ namespace Framework.Helpers.SqlHelper
                 Pet pet = new Pet()
                 {
                     Id = int.Parse(row[PetsColumns.Id]),
+                    Password = row[PetsColumns.Password],
                     Name = row[PetsColumns.Name],
                     Age = int.Parse(row[PetsColumns.Age]),
                     Type = row[PetsColumns.Type],

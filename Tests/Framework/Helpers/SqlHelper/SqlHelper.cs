@@ -18,5 +18,16 @@ namespace Framework.Helpers.SqlHelper
                 return _pets;
             }
         }
+
+        private LikesDB _likes;
+        public LikesDB Likes
+        {
+            get
+            {
+                if (_likes == null)
+                    return _likes = new LikesDB();
+                return _likes;
+            }
+        }
     }
 }

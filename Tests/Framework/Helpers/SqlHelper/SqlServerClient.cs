@@ -13,7 +13,7 @@ namespace Framework.Helpers
 {
     public class SqlServerClient
     {
-        private static string ConnectionString = "Data Source=TOM\\SQLEXPRESS01;Initial Catalog=PetBook;Trusted_Connection=true;";
+        private static string ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=PetBook;Trusted_Connection=true;";
 
 
         protected static List<Dictionary<string, string>> ExecuteCommand(string queryString)

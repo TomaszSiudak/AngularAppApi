@@ -15,6 +15,20 @@ namespace Framework.API
     {
         private static string controllerName = "pets";
 
+        public IRestResponse AddLikeToPet(int petId, int likerId, Pet petToAuthorize = null)
+        {
+            restRequest = new RestRequest($"{controllerName}/{petId}/likes/{likerId}", Method.POST);
+            restRequest.AddRESTHeaders(petToAuthorize: petToAuthorize);
+            return restClient.Execute(restRequest);
+        }
+
+        public IRestResponse GetPetsWhichLikedCurrentProfile(int petId, Pet petToAuthorize = null)
+        {
+            restRequest = new RestRequest($"{controllerName}/{petId}/likes");
+            restRequest.AddRESTHeaders(petToAuthorize: petToAuthorize);
+            return restClient.Execute(restRequest);
+        }
+
         public IRestResponse GetPetById(int id)
         {
             restRequest = new RestRequest($"{controllerName}/{id}");
