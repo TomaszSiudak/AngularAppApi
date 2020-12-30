@@ -2,14 +2,14 @@
   
 <div class="container mt-5">
   <div *ngIf="!registration"  style="text-align: center">
-    <h1 class="text-center tekst">Oglądaj i udostępniaj zdjęcia swoich pupili</h1>
+    <h1 id="mainPageHeader" class="text-center tekst">Oglądaj i udostępniaj zdjęcia swoich pupili</h1>
     <h2 class="lead text-center tekst2">Rejestracja swojego podopiecznego jest łatwa i szybka</h2>
     <div class="text-center">
-      <button id="RegistrationBtn" class="btn btn-primary button btn-lg" (click)="goToRegistration()">Rejestracja</button>
+      <button id="registrationBtn" class="btn btn-primary button btn-lg" (click)="goToRegistration()">Rejestracja</button>
     </div>
   </div>
 
-  <div *ngIf="registration" class="container">
+  <div id="registration_Div" *ngIf="registration" class="container">
     <div class="row justify-content-center">
       <div class="col-4">
         <app-registration (cancel)="cancelRegistration($event)"></app-registration>

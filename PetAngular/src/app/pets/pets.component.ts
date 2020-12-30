@@ -71,7 +71,7 @@ export class PetsComponent implements OnInit {
     {
       this.alertify.ok('Polubiłeś użytkownika ' + name);
     }, error => {
-      this.alertify.info("Użytkownik został już polubiony");
+      this.alertify.info('Użytkownik został już polubiony');
     });
  }
 
