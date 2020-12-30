@@ -62,10 +62,16 @@
     <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
     </Reference>
+    <Reference Include="WebDriver.Support, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.Support.3.141.0\lib\net45\WebDriver.Support.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APITests\AuthorizationTests.cs" />
-    <Compile Include="APITests\PetsTests.cs" />
+    <Compile Include="Pages\MainPage.cs" />
+    <Compile Include="Pages\PagesElements\MainPageElements.cs" />
+    <Compile Include="Pages\PagesElements\NavigationMenuElements.cs" />
+    <Compile Include="Tests\APITests\AuthorizationTests.cs" />
+    <Compile Include="Tests\APITests\PetsTests.cs" />
     <Compile Include="Base\BaseAPITest.cs" />
     <Compile Include="Base\BaseWebTest.cs" />
     <Compile Include="Pages\BasePage.cs" />
@@ -82,7 +88,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UITests\" />
+    <Folder Include="Tests\UITests\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

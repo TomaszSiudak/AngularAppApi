@@ -3,6 +3,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
+using System;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
 
 namespace Framework.Base
 {
@@ -20,9 +23,13 @@ namespace Framework.Base
             switch (browserType)
             {
                 case BrowserType.Firefox:
+                    new DriverManager().SetUpDriver(new FirefoxConfig());
                     return new FirefoxDriver(WebDriverOptions.GetFirefoxOptions());
-                default:
+                case BrowserType.Chrome:
+                    new DriverManager().SetUpDriver(new ChromeConfig());
                     return new ChromeDriver(WebDriverOptions.GetChromeOptions());
+                default:
+                    throw new Exception("Unspecified browser");
             }
         }
 
@@ -31,9 +38,13 @@ namespace Framework.Base
             switch (browserType)
             {
                 case BrowserType.Firefox:
+                    new DriverManager().SetUpDriver(new FirefoxConfig());
                     return new RemoteWebDriver(WebDriverOptions.GetFirefoxOptions());
-                default:
+                case BrowserType.Chrome:
+                    new DriverManager().SetUpDriver(new ChromeConfig());
                     return new RemoteWebDriver(WebDriverOptions.GetChromeOptions());
+                default:
+                    throw new Exception("Unspecified browser");
             }
         }
 
