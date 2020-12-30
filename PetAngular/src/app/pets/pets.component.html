@@ -1,5 +1,5 @@
 
-<div class="text-center mt-3">
+<div id="photosHeader" class="text-center mt-3">
   <h2>Znaleziono - {{pagination.totalCount}} zwierzaków</h2>
 </div>
 
@@ -8,7 +8,7 @@
     <form class="form-inline justify-content-center" #form="ngForm" (ngSubmit)="getPets()" novalidate>
         <div class="form-group px-2">
             <label for="gender">Płeć: </label>
-            <select class="form-control ml-1" style="width: 130px" id="gender"
+            <select id="genderFilter" class="form-control ml-1" style="width: 130px" id="gender"
               [(ngModel)]="petParams.gender" name="gender">
               <option *ngFor="let gender of genders" [value]="gender.value">
                 {{gender.display}}
@@ -18,15 +18,15 @@
 
         <div class="form-group px-2">
             <label for="type">Typ: </label>
-            <select class="form-control ml-1" style="width: 130px" id="type"
+            <select id="typeFilter" class="form-control ml-1" style="width: 130px" id="type"
               [(ngModel)]="petParams.type" name="type"> 
               <option *ngFor="let type of types" [value]="type.value">
                 {{type.display}}
               </option>
             </select>
           </div>
-        <button type="submit" class="btn btn-primary" style="margin-left:10px">Zastosuj</button>
-        <button type="button" class="btn btn-info" (click)="resetFilters()" style="margin-left:10px">
+        <button id="applyBtn" type="submit" class="btn btn-primary" style="margin-left:10px">Zastosuj</button>
+        <button id="resetBtn" type="button" class="btn btn-info" (click)="resetFilters()" style="margin-left:10px">
             Resetuj filter
         </button>
       </form>
@@ -44,7 +44,7 @@
               </div>
               <div class="card-footer">
               <small class="text-muted">{{pet.city}}</small>
-              <li class="list-inline-item like"><button *ngIf="!isProfileOfCurrentUser(pet.id)" class="btn btn-danger btn-sm likeButton" (click)="addLike(pet.id, pet.name)"><i class="fa fa-heart"></i></button></li>
+              <li class="list-inline-item like"><button id="likeBtn" *ngIf="!isProfileOfCurrentUser(pet.id)" class="btn btn-danger btn-sm likeButton" (click)="addLike(pet.id, pet.name)"><i class="fa fa-heart"></i></button></li>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
 </div>
 
 <div class="d-flex justify-content-center">
-  <pagination [boundaryLinks]="true" 
+  <pagination id="pageNumbers" [boundaryLinks]="true" 
             [itemsPerPage] = "pagination.pageSize" [totalItems]="pagination.totalCount" [(ngModel)]="pagination.currentPage"
             (pageChanged)="pageChanged($event)"
             previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
