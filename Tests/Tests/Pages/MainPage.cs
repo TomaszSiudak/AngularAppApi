@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tests.Pages.PagesElements;
+using Framework.Extensions;
 
 namespace Tests.Pages
 {
@@ -18,7 +19,7 @@ namespace Tests.Pages
 
         protected override void WaitTillPageIsVisible()
         {
-            //Wait.Until(ExpectedConditions.);
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(MainPageElements.MainPageHeader));
         }
     }
 }

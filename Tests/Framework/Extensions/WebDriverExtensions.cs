@@ -30,5 +30,20 @@ namespace Framework.Extensions
             }
             return webElements;
         }
+
+        public static void TakeScreenshot(IWebDriver driver, string testName)
+        {
+            string dirPath = "";
+
+            ((ITakesScreenshot)driver)
+                .GetScreenshot()
+                .SaveAsFile($"{dirPath}\\{testName}_{DateTime.Now:HH-mm}.jpg", ScreenshotImageFormat.Jpeg);
+        }
+
+        public static void WaitForAjax(this IWebDriver driver, int timeout = 20)
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+            wait.Until(d => (bool)((IJavaScriptExecutor)d).ExecuteScript("return jQuery.active == 0"));
+        }
     }
 }

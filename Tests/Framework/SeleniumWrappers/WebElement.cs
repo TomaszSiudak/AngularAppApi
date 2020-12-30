@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Framework.SeleniumWrappers
         public By BySelector => selector;
         public bool Displayed => webElement.Displayed;
         public bool Enabled => webElement.Enabled;
+        public Size Size => webElement.Size;
 
         public WebElement(IWebDriver driver, IWebElement webElement, By bySelector)
         {
@@ -33,7 +35,28 @@ namespace Framework.SeleniumWrappers
         }
 
         public string GetAttribute(string attribute) => webElement.GetAttribute(attribute);
-        public string GetText() => webElement.Text;
+        public string GetText()
+        {
+            if (webElement.TagName == "input" || webElement.TagName == "textarea")
+                return GetAttribute("value");
+            else
+                return webElement.Text;
+        }
+
+        public bool HasAttribute(string attribute)
+        {
+            bool result = false;
+            try
+            {
+                string value = GetAttribute(attribute);
+                if (value != null)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception) { }
+            return result;
+        }
 
         public void TypeText(string text)
         {
