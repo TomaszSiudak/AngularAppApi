@@ -67,7 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\EditProfilePage.cs" />
     <Compile Include="Pages\MainPage.cs" />
+    <Compile Include="Pages\PagesElements\EditPhotosCard.cs" />
+    <Compile Include="Pages\PagesElements\EditProfileElements.cs" />
     <Compile Include="Pages\ProfilePage.cs" />
     <Compile Include="Pages\PagesElements\Card.cs" />
     <Compile Include="Pages\PagesElements\MainPageElements.cs" />

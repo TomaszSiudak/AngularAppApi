@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-md-7">
       <div class="prog-page">
-        <div class="header-title header-btn">
+        <div id="editProfileHeader" class="header-title header-btn">
           <div class="header-info">
             <h2><i class="fa fa-paw"></i>Edycja</h2>
           </div>
@@ -27,11 +27,11 @@
                 <form #editForm="ngForm" id="edit" (ngSubmit)="update()">
                 <div class="info">
                   <label><i class="fa fa-paw"></i><strong>Imię: </strong></label>
-                  <input type="text" class="form-control" name="name" [(ngModel)]="pet.name" >
+                  <input id="editProfileName" type="text" class="form-control" name="name" [(ngModel)]="pet.name" >
                 </div>
                 <div class="info">
                   <label><i class="fa fa-calendar"></i><strong>Wiek: </strong></label>
-                  <input type="number" class="form-control" name="age" [(ngModel)]="pet.age" min="1" max="30">
+                  <input id="editProfileAge" type="number" class="form-control" name="age" [(ngModel)]="pet.age" min="1" max="30">
                 </div>
                 <div class="info">
                   <label><i class="fa fa-venus-mars "></i><strong>Płeć: </strong></label>
@@ -42,11 +42,11 @@
                 </div>
                 <div class="info">
                   <label><i class="fa fa-map-marker"></i><strong>Miasto: </strong></label>
-                  <input type="text" class="form-control" name="city" [(ngModel)]="pet.city">
+                  <input id="editProfileCity" type="text" class="form-control" name="city" [(ngModel)]="pet.city">
                 </div>
                 <div class="info">
                         <label><i class="fa fa-map-marker"></i><strong>Opis: </strong></label>
-                    <textarea class="form-control" name="description" rows="4" 
+                    <textarea id="editProfileDescription" class="form-control" name="description" rows="4" 
                         [(ngModel)]="pet.description">
                     </textarea>
                 </div>
@@ -56,8 +56,8 @@
           </div>
           <div class="card-footer">
             <div class="btn-group d-flex">
-              <button class="btn btn-secondary backbutton" form="edit" [routerLink]="['/pets/', pet?.id]"><i class="fa fa-arrow-left fa-lg"></i>  Powrót do profilu</button>
-              <button [disabled]="!editForm.dirty" class="btn btn-success button" form="edit"><i class="fa fa-floppy-o fa-lg" ></i>   Zapisz zmiany</button>
+              <button id="backBtn" class="btn btn-secondary backbutton" form="edit" [routerLink]="['/pets/', pet?.id]"><i class="fa fa-arrow-left fa-lg"></i>  Powrót do profilu</button>
+              <button id="saveBtn" [disabled]="!editForm.dirty" class="btn btn-success button" form="edit"><i class="fa fa-floppy-o fa-lg" ></i>   Zapisz zmiany</button>
             </div>
           </div>
         </div>
@@ -65,20 +65,20 @@
     </div>
       <div class="col-md-5">
           <tabset class="tab">
-              <tab heading="Zdjęcia">
+              <tab id="photosTab" heading="Zdjęcia">
                     <div class="row">
                         <div class="col-sm-4" *ngFor="let photo of photos">
                         <img src="{{photo.url}}" class="img-thumbnail" alt="">
                             <div class="text-center">
-                            <button  id="SetPhoto" type="button" class="btn btn-sm btn-success mainPhoto" (click)="setPhoto(photo)" [disabled]="photo.mainPhoto"><i class="fa fa-picture-o"></i></button>
-                            <button type="button" class="btn btn-sm btn-danger trash" [disabled]="photo.mainPhoto" (click)="deletePhoto(photo)"><i class="fa fa-trash-o"></i></button>
+                            <button id="setPhotoBtn" type="button" class="btn btn-sm btn-success mainPhoto" (click)="setPhoto(photo)" [disabled]="photo.mainPhoto"><i class="fa fa-picture-o"></i></button>
+                            <button id="deletePhotoBtn" type="button" class="btn btn-sm btn-danger trash" [disabled]="photo.mainPhoto" (click)="deletePhoto(photo)"><i class="fa fa-trash-o"></i></button>
                         </div>
                         </div>
                     </div>
                     <div class="row fileuploader">
                             <div class="col-md-6">
                                 <h5>Dodaj nowe zdjęcie</h5>               
-                                <input type="file" ng2FileSelect [uploader]="uploader" />
+                                <input id="selectPhoto" type="file" ng2FileSelect [uploader]="uploader" />
                             </div>
                     </div>
                             <div class="col-md-9" style="margin-bottom: 40px">
@@ -93,14 +93,14 @@
                                     </thead>
                                     <tbody>
                                     <tr *ngFor="let item of uploader.queue">
-                                        <td><strong>{{ item?.file?.name }}</strong></td>
-                                        <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                                        <td id="photoName"><strong>{{ item?.file?.name }}</strong></td>
+                                        <td id="photoSize" *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
                                         <td nowrap>
-                                            <button type="button" class="btn btn-success btn-xs"
+                                            <button id="uploadPhoto" type="button" class="btn btn-success btn-xs"
                                                     (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                                                 <span class="glyphicon glyphicon-upload"></span> Załaduj
                                             </button>
-                                            <button type="button" class="btn btn-danger btn-xs"
+                                            <button id="cancelUploadPhoto" type="button" class="btn btn-danger btn-xs"
                                                     (click)="item.remove()">
                                                 <span class="glyphicon glyphicon-trash"></span> Anuluj
                                             </button>
