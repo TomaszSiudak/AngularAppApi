@@ -11,8 +11,6 @@ namespace Framework.Base
 {
     public class WebDriverFactory
     {
-        private static string DriversDirectoryPath = "";
-
         public static IWebDriver GetWebDriver(AppConfig config)
         {
             return config.Environment.Equals(EnvironmentType.Local) ? GetLocalWebDriver(config.BrowserType) : GetRemoteWebDriver(config.BrowserType);
