@@ -68,8 +68,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pages\MainPage.cs" />
+    <Compile Include="Pages\ProfilePage.cs" />
     <Compile Include="Pages\PagesElements\Card.cs" />
     <Compile Include="Pages\PagesElements\MainPageElements.cs" />
+    <Compile Include="Pages\PagesElements\ProfileElements.cs" />
     <Compile Include="Pages\PagesElements\NavigationMenuElements.cs" />
     <Compile Include="Pages\PagesElements\PhotosPageElements.cs" />
     <Compile Include="Pages\PhotosPage.cs" />

@@ -2,12 +2,12 @@
 <div class="row">
   <div class="col-md-7">
   <div class="prog-page">
-    <div class="header-title header-btn">
+    <div id="profileHeader" class="header-title header-btn">
       <div class="header-info">
         <h2><i class="fa fa-paw"></i>Profil {{pet?.name}}</h2>
       </div>
       <div class="header-btn-edit">
-        <a *ngIf="isProfileOfCurrentUser()" [routerLink]="['/pets/edition/', pet?.id]" type="button"><i class="fa fa-edit"></i><strong>Edytuj profil</strong></a>
+        <a id="editProfileBtn" *ngIf="isProfileOfCurrentUser()" [routerLink]="['/pets/edition/', pet?.id]" type="button"><i class="fa fa-edit"></i><strong>Edytuj profil</strong></a>
       </div>
     </div>
 
@@ -18,7 +18,7 @@
             <div class="tags-label">
               <span><i class="fa fa-picture-o"></i>{{pet?.photos.length}}</span>
             </div>
-            <img src="{{pet?.photo || '../../assets/empty.jpg'}}" alt="{{pet?.name}}"/>
+            <img id="profileImage" src="{{pet?.photo || '../../assets/empty.jpg'}}" alt="{{pet?.name}}"/>
             <div class="img-title">
               <h2>{{pet?.name}}</h2>
             </div>
@@ -27,29 +27,29 @@
 
         <div class="col-md-7">
           <div class="prof-info">
-            <div class="info">
+            <div id="profileName" class="info">
               <label><i class="fa fa-paw"></i><strong>Imię: </strong></label>
               <span> {{pet?.name}}</span>
             </div>
-            <div class="info">
+            <div id="profileAge" class="info">
               <label><i class="fa fa-calendar"></i><strong>Wiek: </strong></label>
               <span> {{pet?.age}}</span>
             </div>
-            <div class="info">
+            <div id="profileGender" class="info">
               <label><i class="fa fa-venus-mars "></i><strong>Płeć: </strong></label>
               <span> {{pet?.gender}}</span>
             </div>
-            <div class="info">
+            <div id="profileCity" class="info">
               <label><i class="fa fa-map-marker"></i><strong>Miasto: </strong></label>
               <span> {{pet?.city}}</span>
             </div>
           </div>
         </div>
-            <p class="opis"> {{pet?.description}}</p>
+            <p id="profileDescription" class="opis"> {{pet?.description}}</p>
       </div>
       <div *ngIf="!isProfileOfCurrentUser()" class="card-footer">
         <div class="btn-group d-flex">
-          <button class="btn btn-primary button" (click)="addLike(pet.id, pet.name)"><i class="fa fa-thumbs-up fa-lg"></i></button>
+          <button id="profileLikeBtn" class="btn btn-primary button" (click)="addLike(pet.id, pet.name)"><i class="fa fa-thumbs-up fa-lg"></i></button>
         </div>
       </div>
     </div>
@@ -57,19 +57,19 @@
 </div>
   <div class="col-md-5">
       <tabset class="tab">
-          <tab heading="Zdjęcia">
+          <tab id="photosTab" heading="Zdjęcia">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
           </tab>
-          <tab *ngIf="isProfileOfCurrentUser()" heading="Polubienia">
+          <tab id="likersTab" *ngIf="isProfileOfCurrentUser()" heading="Polubienia">
               <div class="row">
               <div *ngFor="let pet of pets" class="col-md-6 col-sm-6">
                   <div class="col mb-4">
                     <div class="card likePhoto">
                       <div class="card-image likePhoto">
-                        <img src="{{pet.photo}}" class="card-img-top" alt="{{pet.name}}" [routerLink]="['/pets/', pet.id]" >
+                        <img id="likerCardImage" src="{{pet.photo || '../../../../assets/empty.jpg'}}" class="card-img-top" alt="{{pet.name}}" [routerLink]="['/pets/', pet.id]" >
                       </div>
-                      <div class="card-body p-2">
-                      <h5 class="card-title">{{pet.name}}, wiek: {{pet.age}}</h5>
+                      <div id="likerCardBody" class="card-body p-2">
+                      <h5 id="likerCardTitle" class="card-title">{{pet.name}}, wiek: {{pet.age}}</h5>
                       </div>
                     </div>
                   </div>

@@ -30,7 +30,7 @@ namespace Tests.Pages.PagesElements
                     var card = new Card()
                     {
                         Title = cardElement.FindWebElement(By.CssSelector(".card-title")),
-                        Image = cardElement.FindWebElement(By.CssSelector(".card-image")),
+                        Image = cardElement.FindWebElement(By.CssSelector(".card-img-top")),
                         Footer = cardElement.FindWebElement(By.CssSelector(".card-footer")),
                         LikeBtn = cardElement.FindWebElement(By.CssSelector("#likeBtn"))
                     };
