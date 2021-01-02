@@ -6,6 +6,17 @@
 @mytag
 Scenario: Log in with correct credentials
 	Given I am registered user
-	When I enter correct login and password
-	And I click Zaloguj się button
+	When I login to application
 	Then the photos page and personal links are visible
+
+@mytag
+Scenario: Try to log in with not-existing username
+	Given the username does not exist
+	When I try login to application
+	Then the user is not redirected and toast message is visible
+
+@mytag
+Scenario: Try to log in with incorrect password
+	Given the user uses incorrect password
+	When I try login to application
+	Then the user is not redirected and toast message is visible

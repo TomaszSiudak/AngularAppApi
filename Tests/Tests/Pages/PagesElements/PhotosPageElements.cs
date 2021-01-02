@@ -14,11 +14,31 @@ namespace Tests.Pages.PagesElements
     {
         private IWebDriver driver;
 
-        public WebElement PhotosPageHeader => driver.FindWebElement(By.Id("photosHeader"));
+        #region xpaths
+
+        public static By PhotosPageHeaderBy = By.Id("photosHeader");
+
+        #endregion xpaths
+
+        public WebElement PhotosPageHeader => driver.FindWebElement(PhotosPageHeaderBy);
         public WebElement ApplyBtn => driver.FindWebElement(By.Id("applyBtn"));
         public WebElement ResetFilterBtn => driver.FindWebElement(By.Id("resetBtn"));
-        public SelectElement GendersFilterComboBox { get; }
-        public SelectElement TypesFilterComboBox { get; }
+
+        public SelectElement GendersFilterComboBox
+        {
+            get
+            {
+                return new SelectElement(driver.FindElement(By.Id("gender")));
+            }
+        }
+
+        public SelectElement TypesFilterComboBox
+        {
+            get
+            {
+                return new SelectElement(driver.FindElement(By.Id("type")));
+            }
+        }
 
         public List<Card> PetCards
         {
@@ -43,8 +63,6 @@ namespace Tests.Pages.PagesElements
         public PhotosPageElements(IWebDriver driver)
         {
             this.driver = driver;
-            GendersFilterComboBox = new SelectElement(driver.FindElement(By.Id("genderFilter")));
-            TypesFilterComboBox = new SelectElement(driver.FindElement(By.Id("typeFilter")));
         }
     }
 }

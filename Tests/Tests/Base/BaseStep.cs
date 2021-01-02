@@ -29,18 +29,5 @@ namespace Tests.Base
             }
         }
 
-        private BasePage currentPage;
-
-        public BasePage CurrentPage
-        {
-            get { return currentPage; }
-            set
-            {
-                ScenarioContext.Current["class"] = value;
-                currentPage = ScenarioContext.Current.Get<BasePage>("class"); 
-            }
-        }
-
-
     }
 }

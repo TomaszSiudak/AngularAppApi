@@ -15,7 +15,7 @@ namespace Tests.Pages.PagesElements
         public WebElement EditProfileBtn => driver.FindWebElement(By.CssSelector("#editProfileBtn"));
         public WebElement NameField => driver.FindWebElement(By.Id("editProfileName"));
         public WebElement AgeField => driver.FindWebElement(By.Id("editProfileAge"));
-        public SelectElement GenderComboBox { get; }
+        public SelectElement GenderComboBox { get { return  new SelectElement(driver.FindElement(By.Id("editProfileGender"))); } }
         public WebElement CityField => driver.FindWebElement(By.Id("editProfileCity"));
         public WebElement DescriptionTextArea => driver.FindWebElement(By.Id("#editProfileDescription"));
         public WebElement CancelBtn => driver.FindWebElement(By.CssSelector("#backBtn"));
@@ -49,7 +49,6 @@ namespace Tests.Pages.PagesElements
         public EditProfileElements(IWebDriver driver)
         {
             this.driver = driver;
-            GenderComboBox = new SelectElement(driver.FindElement(By.Id("editProfileGender")));
         }
     }
 }

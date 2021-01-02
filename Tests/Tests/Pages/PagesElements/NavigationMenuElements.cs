@@ -13,10 +13,17 @@ namespace Tests.Pages.PagesElements
     {
         private IWebDriver driver;
 
+        #region xpaths
+
+        public static By MyProfileBy = By.Id("myProfileLink");
+        public static By RightMenuBtnBy = By.XPath("//*[@id='dropdownMenuLink']");
+
+        #endregion xpaths
+
         public WebElement MainPage => driver.FindWebElement(By.CssSelector("#mainPageLink"));
         public WebElement Photos => driver.FindWebElement(By.CssSelector("#photosLink"));
-        public WebElement MyProfile => driver.FindWebElement(By.Id("myProfileLink"));
-        public WebElement RightMenu => driver.FindWebElement(By.XPath("//*[@id='dropdownMenuLink']"));
+        public WebElement MyProfile => driver.FindWebElement(MyProfileBy);
+        public WebElement RightMenuBtn => driver.FindWebElement(RightMenuBtnBy);
         public WebElement EditAccountBtn => driver.FindWebElement(By.Id("editAccount"));
         public WebElement LogOutBtn => driver.FindWebElement(By.Id("logOutBtn"));
         public WebElement UsernameField => driver.FindWebElement(By.CssSelector("#usernameTextBox"));

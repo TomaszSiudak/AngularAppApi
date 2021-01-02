@@ -19,46 +19,27 @@ namespace Tests.Tests.UITests.Steps
         private IWebDriver Driver;
 
         private readonly IObjectContainer objectContainer;
+        private readonly ScenarioContext scenarioContext;
 
-        public WebDriverSetupHook(IObjectContainer objectContainer)
+        public WebDriverSetupHook(IObjectContainer objectContainer, ScenarioContext scenarioContext)
         {
             this.objectContainer = objectContainer;
-        }
-
-        private void SetupWebDriver()
-        {
-            AppConfig appConfig = AppConfigProvider.AppConfigInstance;
-            IWebDriver Driver = WebDriverFactory.GetWebDriver(appConfig);
-            objectContainer.RegisterInstanceAs<IWebDriver>(Driver); 
+            this.scenarioContext = scenarioContext;
         }
 
         [BeforeScenario]
         public void BeforeScenario()
         {
             AppConfig appConfig = AppConfigProvider.AppConfigInstance;
-            IWebDriver Driver = WebDriverFactory.GetWebDriver(appConfig);
+            Driver = WebDriverFactory.GetWebDriver(appConfig);
             objectContainer.RegisterInstanceAs<IWebDriver>(Driver);
-            Driver.Url = appConfig.EnvironmentURL;
         }
 
         [AfterScenario]
         public void AfterScenario()
         {
-            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
-            {
-                Driver.Quit();
-                Driver = null;
-            }
-        }
-
-        [AfterFeature]
-        public void AfterFeature()
-        {
-            if (Driver != null)
-            {
-                Driver.Quit();
-                Driver = null;
-            }
+            Driver.Quit();
+            Driver = null;
         }
     }
 }

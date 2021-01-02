@@ -10,7 +10,13 @@ namespace Tests.Pages.PagesElements
     {
         private IWebDriver driver;
 
-        public WebElement MainPageHeader => driver.FindWebElement(By.Id("mainPageHeader"));
+        #region xpaths
+
+        public static By MainPageHeaderBy = By.Id("mainPageHeader");
+
+        #endregion xpaths
+
+        public WebElement MainPageHeader => driver.FindWebElement(MainPageHeaderBy);
         public WebElement RegistrationBtn => driver.FindWebElement(By.Id("registrationBtn"));
         public WebElement UsernameField => driver.FindWebElement(By.CssSelector("#username_Registration"));
         public WebElement PasswordField => driver.FindWebElement(By.CssSelector("#password_Registration"));
@@ -19,12 +25,13 @@ namespace Tests.Pages.PagesElements
         public List<WebElement> CityField => driver.FindWebElements(By.CssSelector("#city_Registration"));
         public WebElement RegisterBtn => driver.FindWebElement(By.Id("registerBtn"));
         public WebElement CancelBtn => driver.FindWebElement(By.Id("cancelRegistrationBtn"));
-        public SelectElement TypesComboBox { get; }
+
+        public SelectElement TypesComboBox{ get { return new SelectElement(driver.FindElement(By.XPath("//*[@id='animalType_Registration']"))); } }
+
 
         public MainPageElements(IWebDriver driver)
         {
             this.driver = driver;
-            TypesComboBox = new SelectElement(driver.FindElement(By.XPath("//*[@id='animalType_Registration']")));
         }
     }
 }

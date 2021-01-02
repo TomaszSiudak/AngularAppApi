@@ -35,11 +35,36 @@ namespace Tests.Pages
             return (T)this;
         }
 
+        private void FillLoginFormCredentials(string name, string password)
+        {
+            NavigationMenuElements.UsernameField.TypeText(name);
+            NavigationMenuElements.PasswordField.TypeText(password);
+            Console.WriteLine($"Name: '{name}' and Password: '{password}' was entered");
+        }
+
         public string GetToastMessage()
         {
             IWebElement toastMessageElement = Wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.XPath(toastMessageXpath)));
             return toastMessageElement.Text;
         }
+
+
+
+        public PhotosPage Login(string name, string password)
+        {
+            FillLoginFormCredentials(name, password);
+            NavigationMenuElements.LogInBtn.Click();
+            var photosPage = new PhotosPage(Driver);
+            photosPage.WaitTillPageIsVisible();
+            return photosPage;
+        }
+
+        public void TryToLogin(string name, string password)
+        {
+            FillLoginFormCredentials(name, password);
+            NavigationMenuElements.LogInBtn.Click();
+        }
+
 
         protected abstract void WaitTillPageIsVisible();
     }

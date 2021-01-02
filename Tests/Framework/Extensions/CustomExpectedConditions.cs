@@ -17,12 +17,12 @@ namespace Framework.Extensions
 
         public static Func<IWebDriver, bool> ElementExists(WebElement element)
         {
-            return driver => element.Displayed;
+            return driver => element.IsVisible();
         }
 
         public static Func<IWebDriver, bool> ElementToBeClickable(WebElement element)
         {
-            return driver => element.Displayed && element.Enabled;
+            return driver => element.IsVisible() && element.IsEnabled();
         }
 
         public static Func<IWebDriver, bool> ElementToBeClickable(By locator)
@@ -79,7 +79,7 @@ namespace Framework.Extensions
             {
                 int elementHeight = element.Size.Height;
                 int elementWidth = element.Size.Width;
-                return element.Displayed && (elementHeight > 0 && elementWidth > 0);
+                return element.IsVisible() && (elementHeight > 0 && elementWidth > 0);
             };
         }
 
@@ -89,7 +89,7 @@ namespace Framework.Extensions
             {
                 int elementHeight = element.Size.Height;
                 int elementWidth = element.Size.Width;
-                return (!element.Displayed) || elementHeight == 0 && elementWidth == 0;
+                return (!element.IsVisible()) || elementHeight == 0 && elementWidth == 0;
             };
         }
 

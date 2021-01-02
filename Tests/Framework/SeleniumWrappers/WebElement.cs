@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Framework.SeleniumWrappers
@@ -17,8 +18,6 @@ namespace Framework.SeleniumWrappers
         private By selector;
 
         public By BySelector => selector;
-        public bool Displayed => webElement.Displayed;
-        public bool Enabled => webElement.Enabled;
         public Size Size => webElement.Size;
 
         public WebElement(IWebDriver driver, IWebElement webElement, By bySelector)
@@ -64,10 +63,17 @@ namespace Framework.SeleniumWrappers
             return result;
         }
 
+        public bool IsEnabled() => webElement.Enabled;
+        public bool IsVisible() => webElement.Displayed;
+
         public void TypeText(string text)
         {
             webElement.Clear();
-            webElement.SendKeys(text);
+            for (int i = 0; i < text.Length; i++)
+            {
+                webElement.SendKeys($"{text[i]}");
+                Thread.Sleep(50);
+            }
         }
 
         private void WaitElementIsClickable(By selector, int defaultTime = 5)
