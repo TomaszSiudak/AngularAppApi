@@ -1,4 +1,7 @@
-﻿using Framework.Helpers;
+﻿using FluentAssertions;
+using FluentAssertions.Execution;
+using Framework.Constants;
+using Framework.Helpers;
 using Framework.Models;
 using OpenQA.Selenium;
 using System;
@@ -8,6 +11,7 @@ using System.Text;
 using TechTalk.SpecFlow;
 using Tests.Base;
 using Tests.Pages;
+using Tests.Pages.PagesElements;
 
 namespace Tests.Tests.UITests.Steps
 {
@@ -53,19 +57,25 @@ namespace Tests.Tests.UITests.Steps
         [When(@"I click register btn")]
         public void WhenIClickRegisterBtn()
         {
-            ScenarioContext.Current.Pending();
+            MainPage.RegisterPet();
         }
 
         [Then(@"the pet is registered and toast message is visible")]
         public void ThenThePetIsRegisteredAndToastMessageIsVisible()
         {
-            ScenarioContext.Current.Pending();
+            using (new AssertionScope())
+            {
+                MainPage.IsElementVisible(MainPageElements.RegistrationFormBy).Should().BeFalse("Registration form should be closed after successfull registration");
+                SqlHelper.Pets.IsPetInDb(pet.Name).Should().BeTrue("The newly created pet should be stored into DB");
+                MainPage.GetToastMessage().Should().BeEquivalentTo(Messages.RegistrationSuccessfull);
+            }
         }
 
         [Then(@"I am able to log in")]
         public void ThenIAmAbleToLogIn()
         {
-            ScenarioContext.Current.Pending();
+            var PhotosPage = MainPage.Login(pet.Name, pet.Password);
+            PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
         }
 
     }

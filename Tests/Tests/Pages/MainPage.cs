@@ -40,7 +40,13 @@ namespace Tests.Pages
         internal void OpenRegistrationForm()
         {
             MainPageElements.RegistrationBtn.Click();
-            Wait.Until(CustomExpectedConditions.ElementIsVisible(MainPageElements.UsernameField));
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(MainPageElements.RegistrationFormBy));
+        }
+
+        internal void RegisterPet()
+        {
+            MainPageElements.RegisterPetBtn.Click();
+            Wait.Until(CustomExpectedConditions.InvisibilityOfElement(MainPageElements.RegistrationFormBy));
         }
 
         protected override void WaitTillPageIsVisible()

@@ -1,5 +1,6 @@
 ﻿using BoDi;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Framework.Constants;
 using Framework.Extensions;
 using Framework.Helpers.SqlHelper;
@@ -36,7 +37,7 @@ namespace Tests.Tests.UITests.Steps
         [Given(@"I am registered user")]
         public void GivenIAmRegisteredUser()
         {
-            pet = SqlHelper.Pets.GetRandomPet();            
+            pet = SqlHelper.Pets.GetRandomPet();
         }
 
         [Given(@"the username does not exist")]
@@ -55,7 +56,7 @@ namespace Tests.Tests.UITests.Steps
         [When(@"I login to application")]
         public void WhenILoginToApplication()
         {
-            PhotosPage =  MainPage.Login(pet.Name, pet.Password);
+            PhotosPage = MainPage.Login(pet.Name, pet.Password);
             scenarioContext.Add("toast", MainPage.GetToastMessage());
         }
 
@@ -70,10 +71,13 @@ namespace Tests.Tests.UITests.Steps
         [Then(@"the photos page and personal links are visible")]
         public void ThenThePhotosPageAndPersonalLinksAreVisible()
         {
-            PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible after login");
-            PhotosPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
-            PhotosPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
-            scenarioContext["toast"].Should().BeEquivalentTo(Messages.LoginSuccessfull);
+            using (new AssertionScope())
+            {
+                PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
+                PhotosPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
+                PhotosPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
+                scenarioContext["toast"].Should().BeEquivalentTo(Messages.LoginSuccessfull);
+            }
             //Assert.IsTrue(PhotosPage.PhotosPageElements.PhotosPageHeader.IsVisible(), "Photos page header should be visible");
         }
 
@@ -81,10 +85,13 @@ namespace Tests.Tests.UITests.Steps
         [Then(@"the user is not redirected and toast message is visible")]
         public void ThenTheUserIsNotRedirectedAndToastMessageIsVisible()
         {
-            MainPage.IsElementVisible(MainPageElements.MainPageHeaderBy).Should().BeTrue("User should NOT be redirected after trying to login with incorrect credentials");
-            MainPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeFalse("'Mój profil' link should NOT be visible after trying to login with incorrect credentials");
-            MainPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeFalse("'Moje konto' btn should NOT be visible after trying to login with incorrect credentials");
-            scenarioContext["toast"].Should().BeEquivalentTo(Messages.IncorrectLoginOrPassword);
+            using (new AssertionScope())
+            {
+                MainPage.IsElementVisible(MainPageElements.MainPageHeaderBy).Should().BeTrue("User should NOT be redirected after trying to login with incorrect credentials");
+                MainPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeFalse("'Mój profil' link should NOT be visible after trying to login with incorrect credentials");
+                MainPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeFalse("'Moje konto' btn should NOT be visible after trying to login with incorrect credentials");
+                scenarioContext["toast"].Should().BeEquivalentTo(Messages.IncorrectLoginOrPassword);
+            }
         }
 
     }

@@ -45,7 +45,9 @@ namespace Tests.Pages
         public string GetToastMessage()
         {
             IWebElement toastMessageElement = Wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.XPath(toastMessageXpath)));
-            return toastMessageElement.Text;
+            string message = toastMessageElement.Text;
+            Wait.Until(CustomExpectedConditions.InvisibilityOfElement(By.XPath(toastMessageXpath)));
+            return message;
         }
 
         public bool IsElementVisible(By selector)
