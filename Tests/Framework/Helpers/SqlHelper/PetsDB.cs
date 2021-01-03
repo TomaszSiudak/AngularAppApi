@@ -10,7 +10,7 @@ namespace Framework.Helpers.SqlHelper
 
         public bool IsPetInDb(string name)
         {
-            string query = $"SELECT TOP 1 * FROM dbo.Pets WHERE Name = '{name}'";
+            string query = $"SELECT * FROM dbo.Pets WHERE Name = '{name}'";
 
             return ExecuteCommand(query).Count == 1 ? true : false;
         }

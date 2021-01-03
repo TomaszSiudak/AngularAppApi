@@ -36,16 +36,11 @@ namespace Tests.Tests.UITests.Steps
             MainPage.OpenRegistrationForm();
         }
 
-        /*[Given(@"the pet data is prepared")]
-        public void GivenThePetDataIsPrepared()
-        {
-            pet = new Pet() { Name = $"NewUser{StringHelper.GenerateRandomNumberString(3)}", Password = "test", Age = 1, City = "Rzym", Gender = "Female", Type = "Kot" };
-        }*/
-
         [Given(@"the pet data is prepared Username = ""(.*)"", Password = ""(.*)"", ConfirmPassword = ""(.*)"", City = ""(.*)"", Gender = ""(.*)"", Type = ""(.*)""")]
-        public void GivenThePetDataIsPreparedUsernamePasswordConfirmPasswordCityGenderType(string username, string pass, string confirmPass, string city, string gender, string type)
+        public void GivenThePetDataIsPreparedUsernamePasswordConfirmPasswordCityGenderType(string petName, string pass, string confirmPass, string city, string gender, string type)
         {
-            pet = new Pet() { Name = $"{username}{StringHelper.GenerateRandomNumberString(3)}", Password = pass, ConfirmPassword = confirmPass, Age = 1, City = city, Gender = gender, Type = type };
+            string name = petName.Equals(Variables.DefaultPet.Name) || string.IsNullOrEmpty(petName) ? petName : $"{petName}{StringHelper.GenerateRandomNumberString(3)}";
+            pet = new Pet() { Name = name, Password = pass, ConfirmPassword = confirmPass, Age = 1, City = city, Gender = gender, Type = type };
         }
 
         [When(@"I fill the form")]
@@ -54,14 +49,21 @@ namespace Tests.Tests.UITests.Steps
             MainPage.FillTheRegistrationForm(pet);
         }
 
-        [When(@"I click register btn")]
-        public void WhenIClickRegisterBtn()
+        [When(@"I register pet")]
+        public void WhenIRegisterPet()
         {
             MainPage.RegisterPet();
         }
 
-        [Then(@"the pet is registered and toast message is visible")]
-        public void ThenThePetIsRegisteredAndToastMessageIsVisible()
+        [When(@"I try to register pet")]
+        public void WhenITryToRegisterPet()
+        {
+            MainPage.TryRegisterPet();
+        }
+
+
+        [Then(@"the pet is registered and user is informed")]
+        public void ThenThePetIsRegisteredAndUserIsInformed()
         {
             using (new AssertionScope())
             {
@@ -77,6 +79,30 @@ namespace Tests.Tests.UITests.Steps
             var PhotosPage = MainPage.Login(pet.Name, pet.Password);
             PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
         }
+
+        [Then(@"the pet is NOT registered and user is informed")]
+        public void ThenThePetIsNOTRegisteredAndUserIsInformed()
+        {
+            using (new AssertionScope())
+            {
+                MainPage.GetToastMessage().Should().BeEquivalentTo(Messages.PetAlreadyExists);
+                MainPage.IsElementVisible(MainPageElements.RegistrationFormBy).Should().BeTrue("Registration form should be still visible after trying to register pet with existing name");
+                SqlHelper.Pets.IsPetInDb(pet.Name).Should().BeTrue($"The pet with existing name {pet.Name} should be only one in DB");
+            }
+        }
+
+        [Then(@"the pet is NOT registered and hint ""(.*)"" is present")]
+        public void ThenThePetIsNOTRegisteredAndHintIsPresent(string hint)
+        {
+            using (new AssertionScope())
+            {
+                MainPage.GetRegistrationFormVisibleHintText().Should().BeEquivalentTo(hint);
+                MainPage.IsElementVisible(MainPageElements.RegistrationFormBy).Should().BeTrue("Registration form should be still visible after trying to register pet with incorrect data");
+                SqlHelper.Pets.IsPetInDb(pet.Name).Should().BeFalse($"The pet with inccorect data should NOT be stored into DB");
+            }
+        }
+
+
 
     }
 }

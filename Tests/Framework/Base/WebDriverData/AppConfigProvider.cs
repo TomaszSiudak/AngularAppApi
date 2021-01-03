@@ -22,7 +22,8 @@ namespace Framework.Base.WebDriverData
                     BrowserType = (BrowserType)Enum.Parse(typeof(BrowserType), ConfigurationManager.AppSettings["browserType"]),
                     Environment = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), ConfigurationManager.AppSettings["environment"]),
                     EnvironmentURL = ConfigurationManager.AppSettings["environmentURL"],
-                    GridUrl = ConfigurationManager.AppSettings["gridURL"]
+                    GridUrl = ConfigurationManager.AppSettings["gridURL"],
+                    ScreenshotsDirPath = ConfigurationManager.AppSettings["screenshotsDir"]
                 };
             } 
         }

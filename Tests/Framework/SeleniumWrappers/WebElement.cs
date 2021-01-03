@@ -69,10 +69,11 @@ namespace Framework.SeleniumWrappers
         public void TypeText(string text)
         {
             webElement.Clear();
+            if (string.IsNullOrEmpty(text)) webElement.SendKeys(text); //if string text is empty, focus on element but leave it empty on purpose
             for (int i = 0; i < text.Length; i++)
             {
                 webElement.SendKeys($"{text[i]}");
-                Thread.Sleep(50);
+                Thread.Sleep(40);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Framework.SeleniumWrappers;
+﻿using Framework.Base.WebDriverData;
+using Framework.SeleniumWrappers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -31,9 +32,9 @@ namespace Framework.Extensions
             return webElements;
         }
 
-        public static void TakeScreenshot(IWebDriver driver, string testName)
+        public static void TakeScreenshot(this IWebDriver driver, string testName)
         {
-            string dirPath = "";
+            string dirPath = $@"{AppConfigProvider.AppConfigInstance.ScreenshotsDirPath}";
 
             ((ITakesScreenshot)driver)
                 .GetScreenshot()

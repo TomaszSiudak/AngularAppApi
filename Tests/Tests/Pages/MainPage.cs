@@ -30,6 +30,8 @@ namespace Tests.Pages
             MainPageElements.CityField.TypeText(pet.City);
         }
 
+        public string GetRegistrationFormVisibleHintText() => Driver.FindWebElements(By.CssSelector(".invalid-feedback")).FirstOrDefault(el => el.IsVisible()).GetText();
+
         public MainPage GoToMainPage()
         {
             Driver.Url = URL;
@@ -48,6 +50,9 @@ namespace Tests.Pages
             MainPageElements.RegisterPetBtn.Click();
             Wait.Until(CustomExpectedConditions.InvisibilityOfElement(MainPageElements.RegistrationFormBy));
         }
+
+        internal void TryRegisterPet() => MainPageElements.RegisterPetBtn.Click();
+
 
         protected override void WaitTillPageIsVisible()
         {

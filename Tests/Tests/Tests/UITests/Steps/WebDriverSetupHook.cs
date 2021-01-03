@@ -1,6 +1,7 @@
 ﻿using BoDi;
 using Framework.Base;
 using Framework.Base.WebDriverData;
+using Framework.Extensions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
@@ -38,6 +39,10 @@ namespace Tests.Tests.UITests.Steps
         [AfterScenario]
         public void AfterScenario()
         {
+            if(scenarioContext.TestError != null)
+            {
+                Driver.TakeScreenshot(scenarioContext.ScenarioInfo.Title);
+            }
             Driver.Quit();
             Driver = null;
         }

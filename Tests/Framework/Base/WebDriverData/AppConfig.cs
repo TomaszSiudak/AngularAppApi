@@ -14,6 +14,7 @@ namespace Framework.Base
         public EnvironmentType Environment { get; set; }
         public string EnvironmentURL { get; set; }
         public string GridUrl { get; set; }
+        public string ScreenshotsDirPath { get; set; }
 
     }
 }
