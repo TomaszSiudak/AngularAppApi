@@ -22,8 +22,8 @@ namespace Tests.Pages.PagesElements
         public WebElement PasswordField => driver.FindWebElement(By.CssSelector("#password_Registration"));
         public WebElement ConfirmPasswordField => driver.FindWebElement(By.CssSelector("#confirmPassword_Registration"));
         public List<WebElement> GendersRadioBtns => driver.FindWebElements(By.CssSelector("#genderRadioBtn_Registration"));
-        public List<WebElement> CityField => driver.FindWebElements(By.CssSelector("#city_Registration"));
-        public WebElement RegisterBtn => driver.FindWebElement(By.Id("registerBtn"));
+        public WebElement CityField => driver.FindWebElement(By.CssSelector("#city_Registration"));
+        public WebElement RegisterPetBtn => driver.FindWebElement(By.Id("registerBtn"));
         public WebElement CancelBtn => driver.FindWebElement(By.Id("cancelRegistrationBtn"));
 
         public SelectElement TypesComboBox{ get { return new SelectElement(driver.FindElement(By.XPath("//*[@id='animalType_Registration']"))); } }

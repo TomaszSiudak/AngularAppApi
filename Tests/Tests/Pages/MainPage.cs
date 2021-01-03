@@ -6,6 +6,7 @@ using System.Text;
 using Tests.Pages.PagesElements;
 using Framework.Extensions;
 using Framework.Base.WebDriverData;
+using Framework.Models;
 
 namespace Tests.Pages
 {
@@ -19,12 +20,27 @@ namespace Tests.Pages
             MainPageElements = new MainPageElements(driver);
         }
 
+        internal void FillTheRegistrationForm(Pet pet)
+        {
+            MainPageElements.UsernameField.TypeText(pet.Name);
+            MainPageElements.PasswordField.TypeText(pet.Password);
+            MainPageElements.ConfirmPasswordField.TypeText(pet.ConfirmPassword);
+            MainPageElements.GendersRadioBtns.First(el => el.GetText().Equals(pet.Gender)).Click();
+            MainPageElements.TypesComboBox.SelectByText(pet.Type);
+            MainPageElements.CityField.TypeText(pet.City);
+        }
 
         public MainPage GoToMainPage()
         {
             Driver.Url = URL;
             WaitTillPageIsVisible();
             return this;
+        }
+
+        internal void OpenRegistrationForm()
+        {
+            MainPageElements.RegistrationBtn.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(MainPageElements.UsernameField));
         }
 
         protected override void WaitTillPageIsVisible()

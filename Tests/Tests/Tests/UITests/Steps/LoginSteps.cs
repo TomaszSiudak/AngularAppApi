@@ -70,9 +70,9 @@ namespace Tests.Tests.UITests.Steps
         [Then(@"the photos page and personal links are visible")]
         public void ThenThePhotosPageAndPersonalLinksAreVisible()
         {
-            Driver.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible after login");
-            Driver.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
-            Driver.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
+            PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible after login");
+            PhotosPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
+            PhotosPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
             scenarioContext["toast"].Should().BeEquivalentTo(Messages.LoginSuccessfull);
             //Assert.IsTrue(PhotosPage.PhotosPageElements.PhotosPageHeader.IsVisible(), "Photos page header should be visible");
         }
@@ -81,9 +81,9 @@ namespace Tests.Tests.UITests.Steps
         [Then(@"the user is not redirected and toast message is visible")]
         public void ThenTheUserIsNotRedirectedAndToastMessageIsVisible()
         {
-            Driver.IsElementVisible(MainPageElements.MainPageHeaderBy).Should().BeTrue("User should NOT be redirected after trying to login with incorrect credentials");
-            Driver.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeFalse("'Mój profil' link should NOT be visible after trying to login with incorrect credentials");
-            Driver.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeFalse("'Moje konto' btn should NOT be visible after trying to login with incorrect credentials");
+            MainPage.IsElementVisible(MainPageElements.MainPageHeaderBy).Should().BeTrue("User should NOT be redirected after trying to login with incorrect credentials");
+            MainPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeFalse("'Mój profil' link should NOT be visible after trying to login with incorrect credentials");
+            MainPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeFalse("'Moje konto' btn should NOT be visible after trying to login with incorrect credentials");
             scenarioContext["toast"].Should().BeEquivalentTo(Messages.IncorrectLoginOrPassword);
         }
 

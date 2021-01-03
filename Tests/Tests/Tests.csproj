@@ -123,6 +123,7 @@
     <Compile Include="Base\BaseStep.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\UITests\Steps\RegistrationSteps.cs" />
     <Compile Include="Tests\UITests\Steps\WebDriverSetupHook.cs" />
     <Compile Include="Tests\UITests\Steps\LoginSteps.cs" />
   </ItemGroup>
@@ -130,6 +131,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Tests\UITests\Features\Login.feature" />
+    <None Include="Tests\UITests\Features\Registration.feature" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\Framework.csproj">

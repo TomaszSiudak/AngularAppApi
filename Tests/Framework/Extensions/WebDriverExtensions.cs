@@ -31,20 +31,6 @@ namespace Framework.Extensions
             return webElements;
         }
 
-        public static bool IsElementVisible(this IWebDriver webDriver, By selector)
-        {
-            bool displayed;
-            try
-            {
-                displayed = webDriver.FindElement(selector).Displayed;
-            }
-            catch (WebDriverException)
-            {
-                return false;
-            }
-            return displayed;
-        }
-
         public static void TakeScreenshot(IWebDriver driver, string testName)
         {
             string dirPath = "";

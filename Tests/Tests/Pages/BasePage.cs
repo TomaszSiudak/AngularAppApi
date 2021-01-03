@@ -48,7 +48,19 @@ namespace Tests.Pages
             return toastMessageElement.Text;
         }
 
-
+        public bool IsElementVisible(By selector)
+        {
+            bool displayed;
+            try
+            {
+                displayed = Driver.FindElement(selector).Displayed;
+            }
+            catch (WebDriverException)
+            {
+                return false;
+            }
+            return displayed;
+        }
 
         public PhotosPage Login(string name, string password)
         {
