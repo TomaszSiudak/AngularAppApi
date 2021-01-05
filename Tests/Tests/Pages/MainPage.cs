@@ -12,7 +12,6 @@ namespace Tests.Pages
 {
     public class MainPage : BasePage
     {
-        private static string URL = AppConfigProvider.AppConfigInstance.EnvironmentURL;
         public MainPageElements MainPageElements { get; }
 
         public MainPage(IWebDriver driver) : base(driver)
@@ -31,13 +30,6 @@ namespace Tests.Pages
         }
 
         public string GetRegistrationFormVisibleHintText() => Driver.FindWebElements(By.CssSelector(".invalid-feedback")).FirstOrDefault(el => el.IsVisible()).GetText();
-
-        public MainPage GoToMainPage()
-        {
-            Driver.Url = URL;
-            WaitTillPageIsVisible();
-            return this;
-        }
 
         internal void OpenRegistrationForm()
         {

@@ -101,6 +101,7 @@
     <Compile Include="Extensions\CustomExpectedConditions.cs" />
     <Compile Include="Extensions\RESTExtensions.cs" />
     <Compile Include="Extensions\WebDriverExtensions.cs" />
+    <Compile Include="Helpers\AuthenticationHelper.cs" />
     <Compile Include="Helpers\SqlHelper\LikesDB.cs" />
     <Compile Include="Helpers\SqlHelper\PetsDB.cs" />
     <Compile Include="Helpers\SqlHelper\SqlHelper.cs" />

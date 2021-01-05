@@ -1,5 +1,10 @@
-﻿using Framework.Extensions;
+﻿using Framework.Base.WebDriverData;
+using Framework.Extensions;
+using Framework.Helpers;
+using Framework.Models;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Html5;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -12,6 +17,8 @@ namespace Tests.Pages
 {
     public abstract class BasePage
     {
+        protected virtual string URL { get { return AppConfigProvider.AppConfigInstance.EnvironmentURL; } }
+
         #region xpaths
 
         public static string toastMessageXpath = "//*[contains(@class, 'ajs-message')]";
@@ -27,7 +34,13 @@ namespace Tests.Pages
             Driver = driver;
             Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(defaultWaitTime));
             NavigationMenuElements = new NavigationMenuElements(Driver);
+        }
 
+        public void AuthenticatePet(Pet pet)
+        {
+            var token =  AuthenticationHelper.GetToken(pet);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            js.ExecuteScript("localStorage.setItem(arguments[0],arguments[1])", "token", token);
         }
 
         public T As<T>() where T : BasePage
@@ -50,6 +63,12 @@ namespace Tests.Pages
             return message;
         }
 
+        public void GoToMainPage()
+        {
+            Driver.Url = URL;
+            WaitTillPageIsVisible();
+        }
+
         public bool IsElementVisible(By selector)
         {
             bool displayed;
@@ -64,11 +83,11 @@ namespace Tests.Pages
             return displayed;
         }
 
-        public PhotosPage Login(string name, string password)
+        public PetsPage Login(string name, string password)
         {
             FillLoginFormCredentials(name, password);
             NavigationMenuElements.LogInBtn.Click();
-            var photosPage = new PhotosPage(Driver);
+            var photosPage = new PetsPage(Driver);
             photosPage.WaitTillPageIsVisible();
             return photosPage;
         }

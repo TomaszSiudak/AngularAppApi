@@ -115,14 +115,15 @@
     <Compile Include="Pages\PagesElements\MainPageElements.cs" />
     <Compile Include="Pages\PagesElements\ProfileElements.cs" />
     <Compile Include="Pages\PagesElements\NavigationMenuElements.cs" />
-    <Compile Include="Pages\PagesElements\PhotosPageElements.cs" />
-    <Compile Include="Pages\PhotosPage.cs" />
+    <Compile Include="Pages\PagesElements\PetsPageElements.cs" />
+    <Compile Include="Pages\PetsPage.cs" />
     <Compile Include="Tests\APITests\AuthorizationTests.cs" />
     <Compile Include="Tests\APITests\PetsTests.cs" />
     <Compile Include="Base\BaseAPITest.cs" />
     <Compile Include="Base\BaseStep.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\UITests\Steps\FilteringSteps.cs" />
     <Compile Include="Tests\UITests\Steps\RegistrationSteps.cs" />
     <Compile Include="Tests\UITests\Steps\WebDriverSetupHook.cs" />
     <Compile Include="Tests\UITests\Steps\LoginSteps.cs" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Tests\UITests\Features\Filtering.feature" />
     <None Include="Tests\UITests\Features\Login.feature" />
     <None Include="Tests\UITests\Features\Registration.feature" />
   </ItemGroup>

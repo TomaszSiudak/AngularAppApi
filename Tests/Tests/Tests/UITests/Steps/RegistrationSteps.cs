@@ -27,7 +27,6 @@ namespace Tests.Tests.UITests.Steps
             this.scenarioContext = scenarioContext;
             Driver = driver;
             MainPage = mainPage;
-            MainPage.GoToMainPage();
         }
 
         [Given(@"the registration form is opened")]
@@ -77,7 +76,7 @@ namespace Tests.Tests.UITests.Steps
         public void ThenIAmAbleToLogIn()
         {
             var PhotosPage = MainPage.Login(pet.Name, pet.Password);
-            PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
+            PhotosPage.IsElementVisible(PetsPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
         }
 
         [Then(@"the pet is NOT registered and user is informed")]

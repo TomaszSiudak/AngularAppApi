@@ -34,6 +34,7 @@ namespace Tests.Tests.UITests.Steps
             AppConfig appConfig = AppConfigProvider.AppConfigInstance;
             Driver = WebDriverFactory.GetWebDriver(appConfig);
             objectContainer.RegisterInstanceAs<IWebDriver>(Driver);
+            Driver.Url = appConfig.EnvironmentURL;
         }
 
         [AfterScenario]

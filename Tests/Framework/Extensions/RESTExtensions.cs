@@ -1,5 +1,6 @@
 ﻿using Framework.API;
 using Framework.Constants;
+using Framework.Helpers;
 using Framework.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,7 +19,7 @@ namespace Framework.Extensions
         {
             request.RequestFormat = requestFormat;
             request.AddHeader("Content-Type", contentType);
-            if (withAuthorization) request.AddHeader("Authorization", string.Format("Bearer {0}", GetToken(petToAuthorize)));
+            if (withAuthorization) request.AddHeader("Authorization", string.Format("Bearer {0}", AuthenticationHelper.GetToken(petToAuthorize)));
         }
 
         public static JObject GetJObjectFromResponse(this IRestResponse response)
@@ -31,7 +32,5 @@ namespace Framework.Extensions
             return JsonConvert.DeserializeObject<T>(response.Content);
         }
 
-
-        private static string GetToken(Pet pet) => new AuthorizationAPI().Login(pet == null ? Variables.DefaultPet : pet).GetJObjectFromResponse().Value<string>("token");
     }
 }

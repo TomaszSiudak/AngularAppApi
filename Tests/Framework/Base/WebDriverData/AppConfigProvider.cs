@@ -17,7 +17,7 @@ namespace Framework.Base.WebDriverData
             get
             {
                 if (_appConfig != null) return _appConfig;
-                return new AppConfig()
+                _appConfig = new AppConfig()
                 {
                     BrowserType = (BrowserType)Enum.Parse(typeof(BrowserType), ConfigurationManager.AppSettings["browserType"]),
                     Environment = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), ConfigurationManager.AppSettings["environment"]),
@@ -25,6 +25,7 @@ namespace Framework.Base.WebDriverData
                     GridUrl = ConfigurationManager.AppSettings["gridURL"],
                     ScreenshotsDirPath = ConfigurationManager.AppSettings["screenshotsDir"]
                 };
+                return _appConfig;
             } 
         }
         private AppConfigProvider() { }

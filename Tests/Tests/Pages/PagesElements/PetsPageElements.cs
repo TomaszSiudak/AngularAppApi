@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tests.Pages.PagesElements
 {
-    public class PhotosPageElements
+    public class PetsPageElements
     {
         private IWebDriver driver;
 
@@ -20,7 +21,7 @@ namespace Tests.Pages.PagesElements
 
         #endregion xpaths
 
-        public WebElement PhotosPageHeader => driver.FindWebElement(PhotosPageHeaderBy);
+        public WebElement PetsPageHeader => driver.FindWebElement(PhotosPageHeaderBy);
         public WebElement ApplyBtn => driver.FindWebElement(By.Id("applyBtn"));
         public WebElement ResetFilterBtn => driver.FindWebElement(By.Id("resetBtn"));
 
@@ -45,6 +46,7 @@ namespace Tests.Pages.PagesElements
             get
             {
                 List<Card> cards = new List<Card>();
+                Thread.Sleep(1000);
                 foreach (var cardElement in driver.FindWebElements(By.XPath("//*[@class='card']")))
                 {
                     var card = new Card()
@@ -60,7 +62,7 @@ namespace Tests.Pages.PagesElements
             }
         }
 
-        public PhotosPageElements(IWebDriver driver)
+        public PetsPageElements(IWebDriver driver)
         {
             this.driver = driver;
         }

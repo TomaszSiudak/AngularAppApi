@@ -9,7 +9,7 @@
     "City": "Warszawa",
     "Photos": [
       {
-        "url": "https://images.unsplash.com/photo-1516371535707-512a1e83bb9a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
+        "url": "https://images.unsplash.com/photo-1514917151705-150d9bcf5acd?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
         "MainPhoto": true,
         "description": "Non deserunt labore sunt ex laboris et adipisicing ullamco officia minim."
       }
@@ -17,7 +17,7 @@
   },
   {
     "Name": "Pulex",
-    "Gender": "female",
+    "Gender": "male",
     "Type": "dog",
     "Age": 4,
     "Password": "test",
@@ -25,7 +25,7 @@
     "City": "Radom",
     "Photos": [
       {
-        "url": "https://images.unsplash.com/photo-1492534513006-37715f336a39?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
+        "url": "https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
         "MainPhoto": true,
         "description": "Elit culpa eu excepteur ut elit tempor nulla duis dolore."
       }
@@ -33,14 +33,15 @@
   },
   {
     "Name": "Salazar",
-    "Gender": "female",
-    "Age": 1,
+    "Gender": "male",
+    "Age": 5,
+    "Type": "rabbit",
     "Password": "test",
     "Description": "Ea  ad enim sunt qui. Ullte consequat aute eu. Nisi velit in sunt labore nulla sunt quis amet enim. Nulla sint mollit cupidatat aliqua ex adipisicing sint id tempor officia incididunt irure enim.\r\n",
     "City": "Katowice",
     "Photos": [
       {
-        "url": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEwNTI2N30",
+        "url": "https://images.unsplash.com/photo-1604382779311-2860c170d9e0?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEwNTI2N30",
         "MainPhoto": true,
         "description": "Veniam dolore nisi magna laboris minim id pariatur officia."
       }
@@ -50,6 +51,7 @@
     "Name": "Zosia",
     "Gender": "female",
     "Age": 9,
+    "Type": "dog",
     "Password": "test",
     "Description": "Enim eiusmod uis. Deserunt ullamco quis qui cillum consequat esse sunt in dolore nulla sit officia voluptate. Tempor pariatur exercitation pariatur reprehenderit. Incididunt nulla magna exercitation officia enim veniam adipisicing laboris proident nisi id Lorem.\r\n",
     "City": "Kielce",
@@ -65,6 +67,7 @@
     "Name": "Stasia",
     "Gender": "female",
     "Age": 7,
+    "Type": "cat",
     "Password": "test",
     "Description": "Eiusmod dolot excepteur eu aliquip. Nulla non ipsum in id eu consequat sint do non tempor aute incididunt do duis. Nostrud veniam ea in do aliqua mollit sit magna qui.\r\n",
     "City": "Poznañ",
@@ -80,6 +83,7 @@
     "Name": "Tom",
     "Gender": "male",
     "Age": 2,
+    "Type": "cat",
     "Password": "test",
     "Description": "Dolor voluptatt cupidatat Lorem ullamco ullamco ut magna minim consectetur consectetur. Quis labore nostrud minim dolor.\r\n",
     "City": "Berlin",
@@ -92,24 +96,26 @@
     ]
   },
   {
-    "Name": "Rex",
+    "Name": "Max",
     "Gender": "male",
-    "Age": 6,
+    "Age": 16,
     "Password": "test",
+    "Type": "parrot",
     "Description": "Nostrud reprehenderit m ipsum reprehenderit consequat minim. Nisi id est et consequat reprehenderit tempor fugiat aliquip mollit aute consectetur culpa. Ut amet aliqua minim magna. Velit dolore consectetur culpa ea magna nisi eu sit velit.\r\n",
     "City": "Londyn",
     "Photos": [
       {
-        "url": "https://images.unsplash.com/photo-1492534513006-37715f336a39?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
+        "url": "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
         "MainPhoto": true,
         "description": "Cupidataum velit minim non minim tempor ipsum excepteur."
       }
     ]
   },
   {
-    "Name": "Zdzislaw",
-    "Gender": "male",
+    "Name": "Fiona",
+    "Gender": "female",
     "Age": 2,
+    "Type": "rabbit",
     "Password": "test",
     "Description": "Mollit cillum eexcepteur ut dolor nisi consequat mollit quis. Nisi irure quis et id amet aliqua.\r\n",
     "City": "Bytom",
@@ -125,6 +131,7 @@
     "Name": "Dunbar",
     "Gender": "male",
     "Age": 4,
+    "Type": "rabbit",
     "Password": "test",
     "Description": "Aliqua nisi labore tempor adipisicing. Lorem in ut enim quis dolor magna commodo nisi ad voluptate et excepteur aliqua. Ea nostrud velit laborum sit nisi cillum proident nisi.\r\n",
     "City": "Zabrze",

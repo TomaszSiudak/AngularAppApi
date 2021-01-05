@@ -24,14 +24,13 @@ namespace Tests.Tests.UITests.Steps
         private Pet pet;
         private readonly ScenarioContext scenarioContext;
         private MainPage MainPage;
-        private PhotosPage PhotosPage;
+        private PetsPage PetsPage;
 
         public LoginSteps(ScenarioContext scenarioContext, IWebDriver driver, MainPage mainPage)
         {
             this.scenarioContext = scenarioContext;
             Driver = driver;
             MainPage = mainPage;
-            MainPage.GoToMainPage();
         }
 
         [Given(@"I am registered user")]
@@ -56,7 +55,7 @@ namespace Tests.Tests.UITests.Steps
         [When(@"I login to application")]
         public void WhenILoginToApplication()
         {
-            PhotosPage = MainPage.Login(pet.Name, pet.Password);
+            PetsPage = MainPage.Login(pet.Name, pet.Password);
             scenarioContext.Add("toast", MainPage.GetToastMessage());
         }
 
@@ -73,9 +72,9 @@ namespace Tests.Tests.UITests.Steps
         {
             using (new AssertionScope())
             {
-                PhotosPage.IsElementVisible(PhotosPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
-                PhotosPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
-                PhotosPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
+                PetsPage.IsElementVisible(PetsPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
+                PetsPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
+                PetsPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
                 scenarioContext["toast"].Should().BeEquivalentTo(Messages.LoginSuccessfull);
             }
             //Assert.IsTrue(PhotosPage.PhotosPageElements.PhotosPageHeader.IsVisible(), "Photos page header should be visible");
