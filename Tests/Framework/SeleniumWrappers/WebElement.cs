@@ -39,6 +39,17 @@ namespace Framework.SeleniumWrappers
             return new WebElement(driver, element, selector);
         }
 
+        public List<WebElement> FindWebElements(By selector)
+        {
+            List<WebElement> webElements = new List<WebElement>();
+            var elements = webElement.FindElements(selector);
+            foreach (var element in elements)
+            {
+                webElements.Add(new WebElement(driver, element, selector));
+            }
+            return webElements;
+        }
+
         public string GetAttribute(string attribute) => webElement.GetAttribute(attribute);
         public string GetText()
         {

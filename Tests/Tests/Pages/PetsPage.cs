@@ -6,6 +6,9 @@ using System.Text;
 using Tests.Pages.PagesElements;
 using Framework.Extensions;
 using Framework.Base.WebDriverData;
+using Framework.Models;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Tests.Pages
 {
@@ -24,6 +27,32 @@ namespace Tests.Pages
             if (gender != null) SetGenderComboBox(gender.ToLower());
             if (type != null) SetTypeComboBox(type.ToLower());
             PetsPageElements.ApplyBtn.Click();
+            Thread.Sleep(1000);
+        }
+
+        internal List<Pet> GetPetsFromCards()
+        {
+            List<Pet> pets = new List<Pet>();
+            int i = 0;
+            foreach (var page in PetsPageElements.PageNumbers)
+            {
+                Driver.FindElements(page.BySelector)[i].Click();
+                Wait.Until(Driver => PetsPageElements.PageNumbers[i].GetAttribute("class").Contains("active"));
+                Thread.Sleep(1000); // wait till page will be refreshed
+                foreach (var card in PetsPageElements.PetCards)
+                {
+                    string titleText = card.Title.GetText();
+                    var pet = new Pet()
+                    {
+                        Name = Regex.Match(titleText, @"^\w+,").Value.Trim(','),
+                        Age = int.Parse(Regex.Match(titleText, @"\d+$").Value),
+                        City = card.Footer.GetText()
+                    };
+                    pets.Add(pet);
+                }
+                i++;
+            }
+            return pets;
         }
 
         public PetsPage GoToPhotosPage()

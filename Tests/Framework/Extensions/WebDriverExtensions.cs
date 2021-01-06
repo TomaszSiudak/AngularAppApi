@@ -23,7 +23,7 @@ namespace Framework.Extensions
         {
             List<WebElement> webElements = new List<WebElement>();
             WebDriverWait Wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(waitTime));
-            IReadOnlyCollection<IWebElement> elements = Wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.PresenceOfAllElementsLocatedBy(selector));
+            IReadOnlyCollection<IWebElement> elements = webDriver.FindElements(selector);
 
             foreach (var element in elements)
             {

@@ -3,6 +3,7 @@ using FluentAssertions.Execution;
 using Framework.Constants;
 using Framework.Helpers;
 using Framework.Models;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Tests.Tests.UITests.Steps
         private readonly ScenarioContext _scenarioContext;
         private PetsPage PetsPage;
         private string gender;
+        private string type;
 
         public FilteringSteps(ScenarioContext scenarioContext, IWebDriver driver, PetsPage petsPage)
         {
@@ -45,14 +47,56 @@ namespace Tests.Tests.UITests.Steps
             PetsPage.FilterPets(gender: gender);
         }
 
-
-        [Then(@"I see only pets with given criteria")]
-        public void ThenISeeOnlyPetsWithGivenCriteria()
+        [When(@"I filter pets by Type ""(.*)""")]
+        public void WhenIFilterPetsByType(string type)
         {
-            int numberOfPets = PetsPage.PetsPageElements.PetCards.Count;
-            var pets = SqlHelper.Pets.GetPetsByCriterium("Gender", gender).Count;
-            numberOfPets.Should().Be(pets);
+            this.type = type;
+            PetsPage.FilterPets(type: type);
+        }
 
+
+        [Then(@"I see only pets with given gender")]
+        public void ThenISeeOnlyPetsWithGivenGender()
+        {
+            var pets = PetsPage.GetPetsFromCards();
+            var petsFromDBWithGivenGender = SqlHelper.Pets.GetPetsByCriterium("Gender", gender).Count;
+            using (new AssertionScope())
+            {
+                VerifyResultsGender(pets.Select(pet => pet.Name).ToList(), gender).Should().BeTrue($"All pets taken from UI should be of given gender '{gender}'");
+                pets.Count.Should().Be(petsFromDBWithGivenGender, $"The number of retrieved cards from UI should be equal to number of pets in DB with given gender '{gender}'");
+            } 
+        }
+
+        [Then(@"I see only pets with given type")]
+        public void ThenISeeOnlyPetsWithGivenType()
+        {
+            var pets = PetsPage.GetPetsFromCards();
+            var petsFromDBWithGivenType = SqlHelper.Pets.GetPetsByCriterium("Type", type).Count;
+            using (new AssertionScope())
+            {
+                VerifyResultsType(pets.Select(pet => pet.Name).ToList(), type).Should().BeTrue($"All pets taken from UI should be of given type '{type}'");
+                pets.Count.Should().Be(petsFromDBWithGivenType, $"The number of retrieved cards from UI should be equal to number of pets in DB with given type '{type}'");
+            }
+        }
+
+        private bool VerifyResultsGender(List<string> petsNames, string gender)
+        {
+            var petsFromDb = new List<Pet>();
+            foreach (var name in petsNames)
+            {
+                petsFromDb.Add(SqlHelper.Pets.GetPetByName(name));
+            }
+            return petsFromDb.All(pet => pet.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private bool VerifyResultsType(List<string> petsNames, string type)
+        {
+            var petsFromDb = new List<Pet>();
+            foreach (var name in petsNames)
+            {
+                petsFromDb.Add(SqlHelper.Pets.GetPetByName(name));
+            }
+            return petsFromDb.All(pet => pet.Type.Equals(type, StringComparison.OrdinalIgnoreCase));
         }
 
     }

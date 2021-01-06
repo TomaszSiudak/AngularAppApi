@@ -17,8 +17,8 @@ export class PetsComponent implements OnInit {
   pageSize = 8;
   pagination: Pagination;
   genders = [{value: 'female', display: 'Female'}, {value: 'male', display: 'Male'} ];
-  types = [{value: 'dog', display: 'Pies'}, {value: 'cat', display: 'Kot'},
-   {value: 'rabbit', display: 'Królik'}, {value: 'hamster', display: 'Chomik'}, {value: 'parrot', display: 'Papuga'} ];
+  types = [{value: 'dog', display: 'Dog'}, {value: 'cat', display: 'Cat'},
+   {value: 'rabbit', display: 'Rabbit'}, {value: 'hamster', display: 'Hamster'}, {value: 'parrot', display: 'Parrot'} ];
    petParams: any = {};
 
 

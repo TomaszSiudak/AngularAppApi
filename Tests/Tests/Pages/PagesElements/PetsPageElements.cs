@@ -46,7 +46,6 @@ namespace Tests.Pages.PagesElements
             get
             {
                 List<Card> cards = new List<Card>();
-                Thread.Sleep(1000);
                 foreach (var cardElement in driver.FindWebElements(By.XPath("//*[@class='card']")))
                 {
                     var card = new Card()
@@ -54,13 +53,15 @@ namespace Tests.Pages.PagesElements
                         Title = cardElement.FindWebElement(By.CssSelector(".card-title")),
                         Image = cardElement.FindWebElement(By.CssSelector(".card-img-top")),
                         Footer = cardElement.FindWebElement(By.CssSelector(".card-footer")),
-                        LikeBtn = cardElement.FindWebElement(By.CssSelector("#likeBtn"))
+                        LikeBtn = cardElement.FindWebElements(By.CssSelector("#likeBtn")).FirstOrDefault()
                     };
                     cards.Add(card);
                 }
                 return cards;
             }
         }
+
+        public List<WebElement> PageNumbers => driver.FindWebElements(By.XPath("//li[contains(@class, 'pagination-page')]"));
 
         public PetsPageElements(IWebDriver driver)
         {
