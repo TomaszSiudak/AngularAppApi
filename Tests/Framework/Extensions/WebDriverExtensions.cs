@@ -46,5 +46,15 @@ namespace Framework.Extensions
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
             wait.Until(d => (bool)((IJavaScriptExecutor)d).ExecuteScript("return jQuery.active == 0"));
         }
+
+        public static void WaitForAngularLoad(this IWebDriver driver)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+
+            string angularReadyScript = "return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1";
+            
+            Func<IWebDriver, bool> angularLoad = dr => bool.Parse(((IJavaScriptExecutor)driver).ExecuteScript(angularReadyScript).ToString());
+            wait.Until(angularLoad);
+        }
     }
 }

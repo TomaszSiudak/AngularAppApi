@@ -54,6 +54,11 @@ namespace Tests.Tests.UITests.Steps
             PetsPage.FilterPets(type: type);
         }
 
+        [When(@"I remove applied filter")]
+        public void WhenIRemoveAppliedFilter()
+        {
+            PetsPage.RemoveFilter();
+        }
 
         [Then(@"I see only pets with given gender")]
         public void ThenISeeOnlyPetsWithGivenGender()
@@ -79,24 +84,53 @@ namespace Tests.Tests.UITests.Steps
             }
         }
 
+        [Then(@"I see only pets with given gender and type")]
+        public void ThenISeeOnlyPetsWithGivenGenderAndType()
+        {
+            var pets = PetsPage.GetPetsFromCards();
+            var petsFromDBWithGivenType = SqlHelper.Pets.GetPetsByCriterium("Type", type).Where(pet => pet.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase)).Count();
+            using (new AssertionScope())
+            {
+                VerifyResultsGenderAndType(pets.Select(pet => pet.Name).ToList(), gender, type).Should().BeTrue($"All pets taken from UI should be of given gender '{gender}' and type '{type}'");
+                pets.Count.Should().Be(petsFromDBWithGivenType, $"The number of retrieved cards from UI should be equal to number of pets in DB with given gender '{gender}' and type '{type}'");
+            }
+        }
+
+        [Then(@"I see all pets")]
+        public void ThenISeeAllPets()
+        {
+            var petsFromUI = PetsPage.GetPetsFromCards();
+            var petsFromDB = SqlHelper.Pets.GetPets().Count;
+            petsFromUI.Count.Should().Be(petsFromDB, $"The number of retrieved cards from UI should be equal to number of pets in DB after resetting filter");
+
+        }
+
+
+
         private bool VerifyResultsGender(List<string> petsNames, string gender)
         {
-            var petsFromDb = new List<Pet>();
-            foreach (var name in petsNames)
-            {
-                petsFromDb.Add(SqlHelper.Pets.GetPetByName(name));
-            }
+            var petsFromDb = GetPetsByNameFromDB(petsNames);
             return petsFromDb.All(pet => pet.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase));
         }
 
         private bool VerifyResultsType(List<string> petsNames, string type)
         {
-            var petsFromDb = new List<Pet>();
+            var petsFromDb = GetPetsByNameFromDB(petsNames);
+            return petsFromDb.All(pet => pet.Type.Equals(type, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private bool VerifyResultsGenderAndType(List<string> petsNames, string gender, string type)
+        {
+            var petsFromDb = GetPetsByNameFromDB(petsNames);
+            return petsFromDb.All(pet => pet.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase) && pet.Type.Equals(type, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private IEnumerable<Pet> GetPetsByNameFromDB(List<string> petsNames)
+        {
             foreach (var name in petsNames)
             {
-                petsFromDb.Add(SqlHelper.Pets.GetPetByName(name));
+                yield return SqlHelper.Pets.GetPetByName(name);
             }
-            return petsFromDb.All(pet => pet.Type.Equals(type, StringComparison.OrdinalIgnoreCase));
         }
 
     }

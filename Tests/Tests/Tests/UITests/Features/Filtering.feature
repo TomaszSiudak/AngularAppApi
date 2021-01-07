@@ -25,3 +25,21 @@ Examples:
 	| Rabbit |
 	| Parrot |
 	| Hamster|
+
+Scenario Outline: Filters pets by Gender and Type
+	Given I am logged in at photos url
+	When I filter pets by Type "<type>"
+	And I filter pets by Gender "<gender>"
+	Then I see only pets with given gender and type
+Examples:
+    | type   | gender |
+    | Dog    | Male   |
+    | Cat	 | Female |
+	| Rabbit | Female |
+
+
+Scenario: Reset filter
+	Given I am logged in at photos url
+	When I filter pets by Type "Cat"
+	And I remove applied filter
+	Then I see all pets

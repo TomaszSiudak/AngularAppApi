@@ -27,7 +27,8 @@ namespace Tests.Pages
             if (gender != null) SetGenderComboBox(gender.ToLower());
             if (type != null) SetTypeComboBox(type.ToLower());
             PetsPageElements.ApplyBtn.Click();
-            Thread.Sleep(1000);
+            //Thread.Sleep(1000);
+            Driver.WaitForAngularLoad();
         }
 
         internal List<Pet> GetPetsFromCards()
@@ -38,7 +39,7 @@ namespace Tests.Pages
             {
                 Driver.FindElements(page.BySelector)[i].Click();
                 Wait.Until(Driver => PetsPageElements.PageNumbers[i].GetAttribute("class").Contains("active"));
-                Thread.Sleep(1000); // wait till page will be refreshed
+                Driver.WaitForAngularLoad();
                 foreach (var card in PetsPageElements.PetCards)
                 {
                     string titleText = card.Title.GetText();
@@ -60,6 +61,12 @@ namespace Tests.Pages
             Driver.Url = URL;
             WaitTillPageIsVisible();
             return this;
+        }
+
+        internal void RemoveFilter()
+        {
+            PetsPageElements.ResetFilterBtn.Click();
+            Driver.WaitForAngularLoad();
         }
 
         private void SetGenderComboBox(string gender)
