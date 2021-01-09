@@ -5,7 +5,7 @@
 
 @mytag
 Scenario Outline: Filters pets by Gender
-	Given I am logged in at photos url
+	Given I am logged in as default user
 	When I filter pets by Gender "<gender>"
 	Then I see only pets with given gender
 Examples:
@@ -15,7 +15,7 @@ Examples:
 
 
 Scenario Outline: Filters pets by Type
-	Given I am logged in at photos url
+	Given I am logged in as default user
 	When I filter pets by Type "<type>"
 	Then I see only pets with given type
 Examples:
@@ -27,7 +27,7 @@ Examples:
 	| Hamster|
 
 Scenario Outline: Filters pets by Gender and Type
-	Given I am logged in at photos url
+	Given I am logged in as default user
 	When I filter pets by Type "<type>"
 	And I filter pets by Gender "<gender>"
 	Then I see only pets with given gender and type
@@ -39,7 +39,7 @@ Examples:
 
 
 Scenario: Reset filter
-	Given I am logged in at photos url
+	Given I am logged in as default user
 	When I filter pets by Type "Cat"
 	And I remove applied filter
 	Then I see all pets

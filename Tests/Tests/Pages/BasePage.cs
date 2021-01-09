@@ -76,6 +76,15 @@ namespace Tests.Pages
             return new ProfilePage(Driver);
         }
 
+        public EditProfilePage GoToMyProfileEdition()
+        {
+            NavigationMenuElements.RightMenuBtn.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(By.CssSelector(".dropdown-menu")));
+            NavigationMenuElements.EditAccountBtn.Click();
+            Driver.WaitForAngularLoad();
+            return new EditProfilePage(Driver);
+        }
+
         public PetsPage GoToPetsPage()
         {
             NavigationMenuElements.Photos.Click();

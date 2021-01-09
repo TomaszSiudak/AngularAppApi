@@ -19,6 +19,12 @@ namespace Tests.Pages
             EditProfileElements = new EditProfilePageElements(driver);
         }
 
+        internal void CancelEdition()
+        {
+            EditProfileElements.BackBtn.Click();
+            Driver.WaitForAngularLoad();
+        }
+
         internal void EditPet(Pet pet)
         {
             if (!string.IsNullOrEmpty(pet.Name)) EditProfileElements.NameField.TypeText(pet.Name);

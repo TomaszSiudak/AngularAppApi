@@ -6,7 +6,7 @@
 
 Scenario: Register Pet
 	Given the registration form is opened
-	And the pet data is prepared Username = "NewUser", Password = "test", ConfirmPassword = "test", City = "Rzym", Gender = "female", Type = "Kot"
+	And the pet data is prepared Username = "NewUser", Password = "test", ConfirmPassword = "test", City = "Rzym", Gender = "female", Type = "Cat"
 	When I fill the form
 	And I register pet
 	Then the pet is registered and user is informed
@@ -15,7 +15,7 @@ Scenario: Register Pet
 
 Scenario: Try Register Pet with existing name
 	Given the registration form is opened
-	And the pet data is prepared Username = "Tom", Password = "test", ConfirmPassword = "test", City = "Londyn", Gender = "male", Type = "Pies"
+	And the pet data is prepared Username = "Tom", Password = "test", ConfirmPassword = "test", City = "Londyn", Gender = "male", Type = "Dog"
 	When I fill the form
 	And I try to register pet
 	Then the pet is NOT registered and user is informed
@@ -23,7 +23,7 @@ Scenario: Try Register Pet with existing name
 
 Scenario: Try Register Pet without name
 	Given the registration form is opened
-	And the pet data is prepared Username = "", Password = "test", ConfirmPassword = "test", City = "Londyn", Gender = "male", Type = "Królik"
+	And the pet data is prepared Username = "", Password = "test", ConfirmPassword = "test", City = "Londyn", Gender = "male", Type = "Rabbit"
 	When I fill the form
 	And I try to register pet
 	Then the pet is NOT registered and hint "Nazwa użytkownika nie może być pusta" is present
@@ -31,7 +31,7 @@ Scenario: Try Register Pet without name
 
 Scenario: Try Register Pet not matching passwords
 	Given the registration form is opened
-	And the pet data is prepared Username = "NewUser", Password = "Test123", ConfirmPassword = "Test12", City = "Londyn", Gender = "male", Type = "Chomik"
+	And the pet data is prepared Username = "NewUser", Password = "Test123", ConfirmPassword = "Test12", City = "Londyn", Gender = "male", Type = "Hamster"
 	When I fill the form
 	And I try to register pet
 	Then the pet is NOT registered and hint "Potwierdzenie hasła jest inne niż powyżej. Sprawdź ponownie." is present
@@ -39,7 +39,7 @@ Scenario: Try Register Pet not matching passwords
 
 Scenario: Try Register Pet with too short password
 	Given the registration form is opened
-	And the pet data is prepared Username = "NewUser", Password = "Abc", ConfirmPassword = "Abc", City = "Londyn", Gender = "male", Type = "Papuga"
+	And the pet data is prepared Username = "NewUser", Password = "Abc", ConfirmPassword = "Abc", City = "Londyn", Gender = "male", Type = "Parrot"
 	When I fill the form
 	And I try to register pet
 	Then the pet is NOT registered and hint "Hasło musi zawierać co najmniej 4 znaki" is present

@@ -106,7 +106,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 9
  testRunner.And("the pet data is prepared Username = \"NewUser\", Password = \"test\", ConfirmPassword" +
-                        " = \"test\", City = \"Rzym\", Gender = \"female\", Type = \"Kot\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " = \"test\", City = \"Rzym\", Gender = \"female\", Type = \"Cat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
  testRunner.When("I fill the form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -156,7 +156,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 18
  testRunner.And("the pet data is prepared Username = \"Tom\", Password = \"test\", ConfirmPassword = \"" +
-                        "test\", City = \"Londyn\", Gender = \"male\", Type = \"Pies\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "test\", City = \"Londyn\", Gender = \"male\", Type = \"Dog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
  testRunner.When("I fill the form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -203,7 +203,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 26
  testRunner.And("the pet data is prepared Username = \"\", Password = \"test\", ConfirmPassword = \"tes" +
-                        "t\", City = \"Londyn\", Gender = \"male\", Type = \"Królik\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "t\", City = \"Londyn\", Gender = \"male\", Type = \"Rabbit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 27
  testRunner.When("I fill the form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -251,7 +251,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 34
  testRunner.And("the pet data is prepared Username = \"NewUser\", Password = \"Test123\", ConfirmPassw" +
-                        "ord = \"Test12\", City = \"Londyn\", Gender = \"male\", Type = \"Chomik\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "ord = \"Test12\", City = \"Londyn\", Gender = \"male\", Type = \"Hamster\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 35
  testRunner.When("I fill the form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -299,7 +299,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 42
  testRunner.And("the pet data is prepared Username = \"NewUser\", Password = \"Abc\", ConfirmPassword " +
-                        "= \"Abc\", City = \"Londyn\", Gender = \"male\", Type = \"Papuga\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "= \"Abc\", City = \"Londyn\", Gender = \"male\", Type = \"Parrot\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 43
  testRunner.When("I fill the form", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

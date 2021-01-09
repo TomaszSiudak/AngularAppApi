@@ -22,11 +22,12 @@ namespace Tests.Tests.UITests.Steps
     {
         private readonly ScenarioContext scenarioContext;
 
-        public ProfileSteps(ScenarioContext scenarioContext, IWebDriver driver, MainPage mainPage, ProfilePage profilePage)
+        public ProfileSteps(ScenarioContext scenarioContext, IWebDriver driver, MainPage mainPage, PetsPage petsPage, ProfilePage profilePage)
         {
             this.scenarioContext = scenarioContext;
             Driver = driver;
             MainPage = mainPage;
+            PetsPage = petsPage;
             ProfilePage = profilePage;
         }
 
@@ -37,16 +38,31 @@ namespace Tests.Tests.UITests.Steps
             new AuthorizationAPI().AddPet(pet);
         }
 
-        [When(@"I go to My Profile")]
-        public void WhenIGoToMyProfile()
+        [Given(@"I am existing user")]
+        public void GivenIAmExistingUser()
         {
-            ProfilePage = MainPage.GoToMyProfile();
+            pet = SqlHelper.Pets.GetRandomPet();
+            scenarioContext.Add("pet", pet);
         }
+
+        [Given(@"I am logged in")]
+        public void GivenIAmLoggedIn()
+        {
+            MainPage.AuthenticatePet(pet);
+            PetsPage.NavigateToPetsPage();
+        }
+
 
         [Given(@"I am at my current account")]
         public void GivenIAmAtMyCurrentAccount()
         {
             MainPage.Login(pet.Name, pet.Password).GoToMyProfile();
+        }
+
+        [When(@"I go to My Profile")]
+        public void WhenIGoToMyProfile()
+        {
+            ProfilePage = MainPage.GoToMyProfile();
         }
 
         [When(@"I go to edition of My Profile")]
@@ -55,12 +71,19 @@ namespace Tests.Tests.UITests.Steps
             EditProfilePage = ProfilePage.GoToEditPage();
         }
 
+        [When(@"I go to edition of My Profile via button in right navigation menu")]
+        public void WhenIGoToEditionOfMyProfileViaButtonInRightNavigationMenu()
+        {
+            EditProfilePage = MainPage.GoToMyProfileEdition();
+        }
+
+
         [When(@"I edit pet fields Username = ""(.*)"", Age = (.*), City = ""(.*)"", Gender = ""(.*)"", Description = ""(.*)""")]
         public void WhenIEditPetFieldsUsernameAgeCityGenderDescription(string name, int age, string city, string gender, string desc)
         {
-            string petname = string.IsNullOrEmpty(name) ? name : $"{name}{StringHelper.GenerateRandomNumberString(3)}";
+            string petname = name.Equals(Variables.DefaultPet.Name) || string.IsNullOrEmpty(name) ? name : $"{name}{StringHelper.GenerateRandomNumberString(3)}";
             var dataForPetEdition = new Pet() { Name = petname, Age = age, Gender = gender, City = city, Description = desc };
-            scenarioContext.Add("pet", dataForPetEdition);
+            scenarioContext.Add("editPet", dataForPetEdition);
             EditProfilePage.EditPet(dataForPetEdition);
         }
 
@@ -69,6 +92,12 @@ namespace Tests.Tests.UITests.Steps
         {
             var toastMessage = EditProfilePage.SaveEdition();
             scenarioContext.Add("toast", toastMessage);
+        }
+
+        [When(@"I cancel current changes")]
+        public void WhenICancelCurrentChanges()
+        {
+            EditProfilePage.CancelEdition();
         }
 
 
@@ -88,6 +117,40 @@ namespace Tests.Tests.UITests.Steps
                 Assert.IsTrue(pet.Description.Contains(petFromUI.Description), "Actual profile Description value should match expected");
             });
         }
+
+        [Then(@"I see edited data of my account")]
+        public void ThenISeeEditedDataOfMyData()
+        {
+            var editedPet = scenarioContext["editPet"] as Pet;
+            var petFromUI = ProfilePage.GetPetFromProfile();
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(Messages.SavedChanges, scenarioContext["toast"].ToString(), "Actual toast message after save of edition must match expected");
+                Assert.AreEqual(pet.Name, petFromUI.Name, "Actual profile Name value should match expected after edition");
+                Assert.AreEqual(editedPet.Age, petFromUI.Age, "Actual edited profile Age value should match expected after edition");
+                Assert.AreEqual(editedPet.Gender, petFromUI.Gender, "Actual edited profile Gender value should match expected  after edition");
+                Assert.AreEqual(editedPet.City, petFromUI.City, "Actual edited profile City value should match expected  after edition");
+                Assert.IsTrue(editedPet.Description.Contains(petFromUI.Description), "Actual edited profile Description value should match expected  after edition");
+            });
+        }
+
+        [Then(@"I see old data of my account")]
+        public void ThenISeeOldDataOfMyAccount()
+        {
+            string expectedHeader = $"Profil {pet.Name}";
+            var petFromUI = ProfilePage.GetPetFromProfile();
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedHeader, ProfilePage.GetPetProfileNameHeader(), "Profile header should remain the same after cancelling edition");
+                Assert.AreEqual(pet.Name, petFromUI.Name, "Actual profile Name value should remain the same after cancelling edition");
+                Assert.AreEqual(pet.Age, petFromUI.Age, "Actual edited profile Age value should remain the same after cancelling edition");
+                Assert.AreEqual(pet.Gender, petFromUI.Gender, "Actual edited profile Gender value should remain the same after cancelling edition");
+                Assert.AreEqual(pet.City, petFromUI.City, "Actual edited profile City value should remain the same after cancelling edition");
+                Assert.IsTrue(pet.Description.Contains(petFromUI.Description), "Actual edited profile Description value should remain the same after cancelling edition");
+            });
+        }
+
+
 
 
     }

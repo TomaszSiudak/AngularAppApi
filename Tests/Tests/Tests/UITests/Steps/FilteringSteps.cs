@@ -30,13 +30,13 @@ namespace Tests.Tests.UITests.Steps
             PetsPage = petsPage;
         }
 
-        [Given(@"I am logged in at photos url")]
-        public void GivenIAmLoggedInAtPhotosUrl()
+        [Given(@"I am logged in as default user")]
+        public void GivenIAmLoggedInAsDefaultUser()
         {
             pet = SqlHelper.Pets.GetPetByName(Variables.DefaultPet.Name);
             _scenarioContext.Add("pet", pet);
             PetsPage.AuthenticatePet(pet);
-            PetsPage.NavigateToPetsPage();
+            PetsPage = PetsPage.NavigateToPetsPage();
         }
 
 
