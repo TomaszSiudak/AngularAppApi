@@ -6,7 +6,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Tests.Pages.PagesElements
 {
-    public class EditProfileElements
+    public class EditProfilePageElements
     {
         private IWebDriver driver;
 
@@ -17,8 +17,8 @@ namespace Tests.Pages.PagesElements
         public WebElement AgeField => driver.FindWebElement(By.Id("editProfileAge"));
         public SelectElement GenderComboBox { get { return  new SelectElement(driver.FindElement(By.Id("editProfileGender"))); } }
         public WebElement CityField => driver.FindWebElement(By.Id("editProfileCity"));
-        public WebElement DescriptionTextArea => driver.FindWebElement(By.Id("#editProfileDescription"));
-        public WebElement CancelBtn => driver.FindWebElement(By.CssSelector("#backBtn"));
+        public WebElement DescriptionTextArea => driver.FindWebElement(By.Id("editProfileDescription"));
+        public WebElement BackBtn => driver.FindWebElement(By.CssSelector("#backBtn"));
         public WebElement SaveBtn => driver.FindWebElement(By.CssSelector("#saveBtn"));
 
 
@@ -46,7 +46,7 @@ namespace Tests.Pages.PagesElements
         public WebElement UploadPhotoBtn => driver.FindWebElement(By.CssSelector("#uploadPhoto"));
         public WebElement CancelUploadBtn => driver.FindWebElement(By.CssSelector("#cancelUploadPhoto"));
 
-        public EditProfileElements(IWebDriver driver)
+        public EditProfilePageElements(IWebDriver driver)
         {
             this.driver = driver;
         }

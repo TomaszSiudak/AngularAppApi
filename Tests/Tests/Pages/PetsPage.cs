@@ -27,7 +27,6 @@ namespace Tests.Pages
             if (gender != null) SetGenderComboBox(gender.ToLower());
             if (type != null) SetTypeComboBox(type.ToLower());
             PetsPageElements.ApplyBtn.Click();
-            //Thread.Sleep(1000);
             Driver.WaitForAngularLoad();
         }
 
@@ -56,7 +55,7 @@ namespace Tests.Pages
             return pets;
         }
 
-        public PetsPage GoToPhotosPage()
+        public PetsPage NavigateToPetsPage()
         {
             Driver.Url = URL;
             WaitTillPageIsVisible();

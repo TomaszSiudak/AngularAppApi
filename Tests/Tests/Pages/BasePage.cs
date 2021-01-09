@@ -69,6 +69,20 @@ namespace Tests.Pages
             WaitTillPageIsVisible();
         }
 
+        public ProfilePage GoToMyProfile()
+        {
+            NavigationMenuElements.MyProfile.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(ProfilePageElements.ProfilePageHeaderBy));
+            return new ProfilePage(Driver);
+        }
+
+        public PetsPage GoToPetsPage()
+        {
+            NavigationMenuElements.Photos.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(PetsPageElements.PetsPageHeaderBy));
+            return new PetsPage(Driver);
+        }
+
         public bool IsElementVisible(By selector)
         {
             bool displayed;

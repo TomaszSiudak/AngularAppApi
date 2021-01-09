@@ -19,9 +19,7 @@ namespace Tests.Tests.UITests.Steps
     [Binding]
     public sealed class FilteringSteps : BaseStep
     {
-
         private readonly ScenarioContext _scenarioContext;
-        private PetsPage PetsPage;
         private string gender;
         private string type;
 
@@ -35,8 +33,10 @@ namespace Tests.Tests.UITests.Steps
         [Given(@"I am logged in at photos url")]
         public void GivenIAmLoggedInAtPhotosUrl()
         {
-            PetsPage.AuthenticatePet(Variables.DefaultPet);
-            PetsPage.GoToPhotosPage();
+            pet = SqlHelper.Pets.GetPetByName(Variables.DefaultPet.Name);
+            _scenarioContext.Add("pet", pet);
+            PetsPage.AuthenticatePet(pet);
+            PetsPage.NavigateToPetsPage();
         }
 
 

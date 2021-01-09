@@ -17,11 +17,11 @@ namespace Tests.Pages.PagesElements
 
         #region xpaths
 
-        public static By PhotosPageHeaderBy = By.Id("photosHeader");
+        public static By PetsPageHeaderBy = By.Id("photosHeader");
 
         #endregion xpaths
 
-        public WebElement PetsPageHeader => driver.FindWebElement(PhotosPageHeaderBy);
+        public WebElement PetsPageHeader => driver.FindWebElement(PetsPageHeaderBy);
         public WebElement ApplyBtn => driver.FindWebElement(By.Id("applyBtn"));
         public WebElement ResetFilterBtn => driver.FindWebElement(By.Id("resetBtn"));
 

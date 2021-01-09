@@ -21,10 +21,7 @@ namespace Tests.Tests.UITests.Steps
     [Binding]
     public sealed class LoginSteps : BaseStep
     {
-        private Pet pet;
         private readonly ScenarioContext scenarioContext;
-        private MainPage MainPage;
-        private PetsPage PetsPage;
 
         public LoginSteps(ScenarioContext scenarioContext, IWebDriver driver, MainPage mainPage)
         {
@@ -72,7 +69,7 @@ namespace Tests.Tests.UITests.Steps
         {
             using (new AssertionScope())
             {
-                PetsPage.IsElementVisible(PetsPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
+                PetsPage.IsElementVisible(PetsPageElements.PetsPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
                 PetsPage.IsElementVisible(NavigationMenuElements.MyProfileBy).Should().BeTrue("'Mój profil' link should be visible after login");
                 PetsPage.IsElementVisible(NavigationMenuElements.RightMenuBtnBy).Should().BeTrue("'Moje konto' btn should be visible after login");
                 scenarioContext["toast"].Should().BeEquivalentTo(Messages.LoginSuccessfull);

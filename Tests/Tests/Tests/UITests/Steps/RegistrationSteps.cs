@@ -19,8 +19,6 @@ namespace Tests.Tests.UITests.Steps
     public sealed class RegistrationSteps : BaseStep
     {
         private readonly ScenarioContext scenarioContext;
-        private Pet pet;
-        private MainPage MainPage;
 
         public RegistrationSteps(ScenarioContext scenarioContext, IWebDriver driver, MainPage mainPage)
         {
@@ -76,7 +74,7 @@ namespace Tests.Tests.UITests.Steps
         public void ThenIAmAbleToLogIn()
         {
             var PhotosPage = MainPage.Login(pet.Name, pet.Password);
-            PhotosPage.IsElementVisible(PetsPageElements.PhotosPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
+            PhotosPage.IsElementVisible(PetsPageElements.PetsPageHeaderBy).Should().BeTrue("User should redirected after login and photos page header should be visible");
         }
 
         [Then(@"the pet is NOT registered and user is informed")]

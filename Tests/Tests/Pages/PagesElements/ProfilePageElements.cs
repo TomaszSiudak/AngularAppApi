@@ -9,9 +9,15 @@ using System.Threading.Tasks;
 
 namespace Tests.Pages.PagesElements
 {
-    public class ProfileElements
+    public class ProfilePageElements
     {
         private IWebDriver driver;
+
+        #region xpaths
+
+        public static By ProfilePageHeaderBy = By.CssSelector("#profileHeader");
+
+        #endregion xpaths
 
         public WebElement ProfileHeader => driver.FindWebElement(By.CssSelector("#profileHeader"));
         public WebElement EditProfileBtn => driver.FindWebElement(By.CssSelector("#editProfileBtn"));
@@ -19,7 +25,7 @@ namespace Tests.Pages.PagesElements
         public WebElement Age => driver.FindWebElement(By.Id("profileAge"));
         public WebElement Gender => driver.FindWebElement(By.Id("profileGender"));
         public WebElement City => driver.FindWebElement(By.Id("profileCity"));
-        public WebElement Description => driver.FindWebElement(By.Id("#profileDescription"));
+        public WebElement Description => driver.FindWebElement(By.Id("profileDescription"));
         public WebElement LikeBtn => driver.FindWebElement(By.CssSelector("#profileLikeBtn"));
         public WebElement PhotosTab => driver.FindWebElement(By.XPath("//a[@aria-controls='photosTab']"));
         public WebElement LikesTab => driver.FindWebElement(By.XPath("//a[@aria-controls='likersTab']"));
@@ -43,7 +49,7 @@ namespace Tests.Pages.PagesElements
         }
 
 
-        public ProfileElements(IWebDriver driver)
+        public ProfilePageElements(IWebDriver driver)
         {
             this.driver = driver;
         }
