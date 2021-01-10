@@ -108,11 +108,20 @@ namespace Tests.Pages
 
         public PetsPage Login(string name, string password)
         {
+            if (IsElementVisible(NavigationMenuElements.RightMenuBtnBy)) LogOut();
             FillLoginFormCredentials(name, password);
             NavigationMenuElements.LogInBtn.Click();
             var photosPage = new PetsPage(Driver);
             photosPage.WaitTillPageIsVisible();
             return photosPage;
+        }
+
+        private void LogOut()
+        {
+            NavigationMenuElements.RightMenuBtn.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(By.CssSelector(".dropdown-menu")));
+            NavigationMenuElements.LogOutBtn.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(NavigationMenuElements.PasswordField));
         }
 
         public void TryToLogin(string name, string password)

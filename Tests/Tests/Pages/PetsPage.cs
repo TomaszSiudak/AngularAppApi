@@ -55,6 +55,11 @@ namespace Tests.Pages
             return pets;
         }
 
+        internal void LikePet(Pet likedPet)
+        {
+            ClickCardElementOfDesiredPet(likedPet, CardElement.LikeBtn);
+        }
+
         public PetsPage NavigateToPetsPage()
         {
             Driver.Url = URL;
@@ -83,5 +88,39 @@ namespace Tests.Pages
             Wait.Until(CustomExpectedConditions.ElementIsVisible(PetsPageElements.PetsPageHeader));
         }
 
+        internal void VisitPetProfile(Pet likedPet)
+        {
+            ClickCardElementOfDesiredPet(likedPet, CardElement.Image);
+            Driver.WaitForAngularLoad();
+        }
+
+        private void ClickCardElementOfDesiredPet(Pet likedPet, CardElement cardElement)
+        {
+            int i = 0;
+            while (i < PetsPageElements.PageNumbers.Count)
+            {
+                Driver.FindElements(PetsPageElements.PageNumbers[i].BySelector)[i].Click();
+                Driver.WaitForAngularLoad();
+                var likedPetCard = PetsPageElements.PetCards.FirstOrDefault(card => Regex.Match(card.Title.GetText(), @"^\w+,").Value.Trim(',').Equals(likedPet.Name));
+                if (likedPetCard != null)
+                {
+                    switch (cardElement)
+                    {
+                        case CardElement.Image:
+                            likedPetCard.Image.Click();
+                            break;
+                        case CardElement.LikeBtn:
+                            likedPetCard.LikeBtn.Click();
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+                i++;
+            }
+        }
+
+        private enum CardElement { Image, LikeBtn }
     }
 }

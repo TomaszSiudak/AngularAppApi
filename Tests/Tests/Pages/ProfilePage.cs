@@ -34,6 +34,26 @@ namespace Tests.Pages
             };
         }
 
+        internal List<Pet> GetPetsWhichLikedMyProfile()
+        {
+            List<Pet> pets = new List<Pet>();
+            ProfileElements.LikesTab.Click();
+            Wait.Until(CustomExpectedConditions.ElementIsVisible(By.CssSelector("#likersTab")));
+            foreach (var card in ProfileElements.LikersCards)
+            {
+                string titleText = card.Title.GetText();
+                var pet = new Pet()
+                {
+                    Name = Regex.Match(titleText, @"^\w+,").Value.Trim(','),
+                    Age = int.Parse(Regex.Match(titleText, @"\d+$").Value),
+                    Photos = new List<Photo>() { new Photo() { Url = card.Image.GetAttribute("src") } }
+                };
+                pets.Add(pet);
+            }
+            return pets;
+        }
+
+
         internal EditProfilePage GoToEditPage()
         {
             ProfileElements.EditProfileBtn.Click();
@@ -42,6 +62,8 @@ namespace Tests.Pages
         }
 
         public string GetPetProfileNameHeader() => ProfileElements.ProfileHeader.FindWebElement(By.TagName("h2")).GetText();
+
+        internal void LikeVisitedPet() => ProfileElements.LikeBtn.Click();
 
         protected override void WaitTillPageIsVisible()
         {

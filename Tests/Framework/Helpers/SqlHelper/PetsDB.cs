@@ -1,5 +1,6 @@
 ﻿using Framework.Constants;
 using Framework.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,7 @@ namespace Framework.Helpers.SqlHelper
 {
     public class PetsDB : SqlServerClient
     {
+        private static PhotosDB PhotosDB { get; } = new PhotosDB();
 
         public bool IsPetInDb(string name)
         {
@@ -36,9 +38,19 @@ namespace Framework.Helpers.SqlHelper
             return GetPetFromDb(query);
         }
 
+        public Pet GetRandomPetByLikes(bool hasLikes = false)
+        {
+            string query =
+                $" SELECT TOP 1 * FROM dbo.Pets" +
+                $" WHERE Id {(hasLikes ? "" : "NOT")} IN (SELECT PetId FROM dbo.Likes)" +
+                $" ORDER BY NEWID()";
+
+            return GetPetFromDb(query);
+        }
+
         public List<Pet> GetPets()
         {
-            string query = $"SELECT * FROM dbo.Pets ";
+            string query = $"SELECT * FROM dbo.Pets";
 
             return GetPetsFromDb(query);
         }
@@ -67,7 +79,8 @@ namespace Framework.Helpers.SqlHelper
                     Type = row[PetsColumns.Type],
                     Description = row[PetsColumns.Description],
                     City = row[PetsColumns.City],
-                    Gender = row[PetsColumns.Gender]
+                    Gender = row[PetsColumns.Gender],
+                    Photos = PhotosDB.GetPetPhotos(row[PetsColumns.Id])
                 };
                 return pet;
             }

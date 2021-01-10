@@ -6,6 +6,7 @@ namespace Framework.Constants
         public static string RegistrationSuccessfull = "Rejestracja przebiegła pomyślnie. Można się zalogować";
         public static string LoginSuccessfull = "Udało się zalogować";
         public static string SavedChanges = "Zmiany zapisane";
+        public static string YouLikedTheUser = "Polubiłeś użytkownika ";
 
         public static string IncorrectLoginOrPassword = "Nieprawidłowy login lub hasło";
         public static string PetAlreadyExists = "Użytkownik o tej nazwie już istnieje. Wybierz inną.";
