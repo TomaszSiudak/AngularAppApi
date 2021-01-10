@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
@@ -79,6 +80,7 @@ namespace Framework.SeleniumWrappers
 
         public void TypeText(string text)
         {
+            driver.ExecuteJavaScript("arguments[0].setAttribute('style', arguments[1]);", webElement, "border: 3px solid red");
             webElement.Clear();
             if (string.IsNullOrEmpty(text)) webElement.SendKeys(text); //if string text is empty, focus on element but leave it empty on purpose
             for (int i = 0; i < text.Length; i++)

@@ -43,6 +43,7 @@ namespace Framework.Helpers.SqlHelper
             string query =
                 $" SELECT TOP 1 * FROM dbo.Pets" +
                 $" WHERE Id {(hasLikes ? "" : "NOT")} IN (SELECT PetId FROM dbo.Likes)" +
+                $" AND Name != 'Tom' " +
                 $" ORDER BY NEWID()";
 
             return GetPetFromDb(query);

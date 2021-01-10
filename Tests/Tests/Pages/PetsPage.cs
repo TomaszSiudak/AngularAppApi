@@ -95,7 +95,6 @@ namespace Tests.Pages
         {
             var foundCard = FindCardOfDesiredPet(likedPet);
             InvokeActionOnCard(foundCard, CardElement.LikeBtn);
-            Driver.WaitForAngularLoad();
         }
 
         public PetsPage NavigateToPetsPage()
