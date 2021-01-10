@@ -30,6 +30,21 @@ namespace Tests.Pages
             Driver.WaitForAngularLoad();
         }
 
+        private Card FindCardOfDesiredPet(Pet likedPet)
+        {
+            Card likedPetCard = null;
+            int i = 0;
+            while (i < PetsPageElements.PageNumbers.Count)
+            {
+                Driver.FindElements(PetsPageElements.PageNumbers[i].BySelector)[i].Click();
+                Driver.WaitForAngularLoad();
+                likedPetCard = PetsPageElements.PetCards.FirstOrDefault(card => Regex.Match(card.Title.GetText(), @"^\w+,").Value.Trim(',').Equals(likedPet.Name));
+                if (likedPetCard != null) break;
+                i++;
+            }
+            return likedPetCard;
+        }
+
         internal List<Pet> GetPetsFromCards()
         {
             List<Pet> pets = new List<Pet>();
@@ -55,9 +70,32 @@ namespace Tests.Pages
             return pets;
         }
 
+        private void InvokeActionOnCard(Card likedPetCard, CardElement cardElement)
+        {
+            switch (cardElement)
+            {
+                case CardElement.Image:
+                    likedPetCard.Image.Click();
+                    break;
+                case CardElement.LikeBtn:
+                    likedPetCard.LikeBtn.Click();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        internal bool IsLikeBtnAtListVisible(Pet pet)
+        {
+            var foundCard = FindCardOfDesiredPet(pet);
+            return foundCard.LikeBtn != null;
+        }
+
         internal void LikePet(Pet likedPet)
         {
-            ClickCardElementOfDesiredPet(likedPet, CardElement.LikeBtn);
+            var foundCard = FindCardOfDesiredPet(likedPet);
+            InvokeActionOnCard(foundCard, CardElement.LikeBtn);
+            Driver.WaitForAngularLoad();
         }
 
         public PetsPage NavigateToPetsPage()
@@ -90,35 +128,9 @@ namespace Tests.Pages
 
         internal void VisitPetProfile(Pet likedPet)
         {
-            ClickCardElementOfDesiredPet(likedPet, CardElement.Image);
+            var foundCard = FindCardOfDesiredPet(likedPet);
+            InvokeActionOnCard(foundCard, CardElement.Image);
             Driver.WaitForAngularLoad();
-        }
-
-        private void ClickCardElementOfDesiredPet(Pet likedPet, CardElement cardElement)
-        {
-            int i = 0;
-            while (i < PetsPageElements.PageNumbers.Count)
-            {
-                Driver.FindElements(PetsPageElements.PageNumbers[i].BySelector)[i].Click();
-                Driver.WaitForAngularLoad();
-                var likedPetCard = PetsPageElements.PetCards.FirstOrDefault(card => Regex.Match(card.Title.GetText(), @"^\w+,").Value.Trim(',').Equals(likedPet.Name));
-                if (likedPetCard != null)
-                {
-                    switch (cardElement)
-                    {
-                        case CardElement.Image:
-                            likedPetCard.Image.Click();
-                            break;
-                        case CardElement.LikeBtn:
-                            likedPetCard.LikeBtn.Click();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                }
-                i++;
-            }
         }
 
         private enum CardElement { Image, LikeBtn }

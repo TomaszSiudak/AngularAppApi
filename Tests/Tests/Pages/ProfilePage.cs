@@ -21,6 +21,8 @@ namespace Tests.Pages
             ProfileElements = new ProfilePageElements(driver);
         }
 
+        internal bool IsLikeBtnVisible => IsElementVisible(ProfilePageElements.LikeBtnBy);
+
         internal Pet GetPetFromProfile()
         {
             Driver.WaitForAngularLoad();

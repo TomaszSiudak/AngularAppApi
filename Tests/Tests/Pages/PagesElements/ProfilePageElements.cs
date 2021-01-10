@@ -16,6 +16,7 @@ namespace Tests.Pages.PagesElements
         #region xpaths
 
         public static By ProfilePageHeaderBy = By.CssSelector("#profileHeader");
+        public static By LikeBtnBy = By.CssSelector("#profileLikeBtn");
 
         #endregion xpaths
 

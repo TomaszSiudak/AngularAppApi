@@ -51,6 +51,29 @@ namespace Tests.Tests.UITests.Steps
             scenarioContext.Add("toast", message);
         }
 
+        [When(@"I like the profile of already liked user several times")]
+        public void WhenILikeTheProfileOfAlreadyLikedUserSeveralTimes()
+        {
+            var likedPet = SqlHelper.Pets.GetRandomPetByLikes(hasLikes: true);
+            scenarioContext.Add("likedPet", likedPet);
+            PetsPage.LikePet(likedPet);
+            PetsPage.GetToastMessage();
+            PetsPage.LikePet(likedPet);
+            string message = PetsPage.GetToastMessage();
+            scenarioContext.Add("toast", message);
+        }
+
+        [When(@"I try to add like to my own account")]
+        public void WhenITryToAddLikeToMyOwnAccount()
+        {
+            var pet = scenarioContext["pet"] as Pet;
+            bool isLikeBtnAtListVisible = PetsPage.IsLikeBtnAtListVisible(pet);
+            ProfilePage = MainPage.GoToMyProfile();
+            bool isLikeBtnAtProfileVisible = ProfilePage.IsLikeBtnVisible;
+            scenarioContext.Add("likeBtnList", isLikeBtnAtListVisible);
+            scenarioContext.Add("likeBtnProfile", isLikeBtnAtProfileVisible);
+        }
+
 
 
         [Then(@"the liked user see it on its own profile")]
@@ -72,6 +95,36 @@ namespace Tests.Tests.UITests.Steps
                 Assert.AreEqual(pet.Age, petWhichLiked.Age, "Actual profile Age value for user which liked the pet should match expected");
                 Assert.AreEqual(pet.Photos.FirstOrDefault().Url, petWhichLiked.Photos.FirstOrDefault().Url, "Actual profile URL value for user which liked the pet should match expected");
                 Assert.AreEqual(expectedNumberOfLikesInDB, petsWhichLikedTheCurrentProfile.Count, "The number of users which liked the current pet at UI should match expected number in DB");
+            });
+        }
+
+        [Then(@"the like is not added")]
+        public void ThenTheLikeIsNotAdded()
+        {
+            var pet = scenarioContext["pet"] as Pet;
+            var likedPet = scenarioContext["likedPet"] as Pet;
+            string expectedToastMessage = Messages.PetWasAlreadyLiked;
+            MainPage.Login(likedPet.Name, likedPet.Password);
+            ProfilePage = MainPage.GoToMyProfile();
+            var petsWhichLikedTheCurrentProfile = ProfilePage.GetPetsWhichLikedMyProfile();
+            var expectedNumberOfLikesInDB = SqlHelper.Likes.GetLikesOfPetById(likedPet.Id).Count;
+            var petWhichLikedNumberOfCards = petsWhichLikedTheCurrentProfile.Where(p => p.Name.Equals(pet.Name)).Count();
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedToastMessage, scenarioContext["toast"], "Actual toast message after liking the profile once again should match expected");
+                Assert.AreEqual(1, petWhichLikedNumberOfCards, "There should be only one card of the user which liked pet because like can be added only once");
+                Assert.AreEqual(expectedNumberOfLikesInDB, petsWhichLikedTheCurrentProfile.Count, "The number of users which liked the current pet at UI should match expected number in DB");
+            });
+        }
+
+        [Then(@"the buttons are NOT present")]
+        public void ThenTheButtonsAreNOTPresent()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse((bool)scenarioContext["likeBtnList"], "Like btn at Pets list should NOT be visible for its own account");
+                Assert.IsFalse((bool)scenarioContext["likeBtnProfile"], "Like btn at Profile should NOT be visible for its own account");
             });
         }
 

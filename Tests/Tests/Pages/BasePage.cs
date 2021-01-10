@@ -73,6 +73,7 @@ namespace Tests.Pages
         {
             NavigationMenuElements.MyProfile.Click();
             Wait.Until(CustomExpectedConditions.ElementIsVisible(ProfilePageElements.ProfilePageHeaderBy));
+            Driver.WaitForAngularLoad();
             return new ProfilePage(Driver);
         }
 
