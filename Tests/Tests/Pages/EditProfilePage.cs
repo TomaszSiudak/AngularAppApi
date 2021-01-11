@@ -7,6 +7,8 @@ using Tests.Pages.PagesElements;
 using Framework.Extensions;
 using OpenQA.Selenium;
 using Framework.Models;
+using System.IO;
+using System.Reflection;
 
 namespace Tests.Pages
 {
@@ -25,6 +27,8 @@ namespace Tests.Pages
             Driver.WaitForAngularLoad();
         }
 
+        internal void CancelUploadingPhoto() => EditProfileElements.CancelUploadBtn.Click();
+
         internal void EditPet(Pet pet)
         {
             if (!string.IsNullOrEmpty(pet.Name)) EditProfileElements.NameField.TypeText(pet.Name);
@@ -34,6 +38,10 @@ namespace Tests.Pages
             if (!string.IsNullOrEmpty(pet.Description)) EditProfileElements.DescriptionTextArea.TypeText(pet.Description);
         }
 
+        internal void UploadPhoto() =>EditProfileElements.UploadPhotoBtn.Click();
+
+        internal int GetNumberOfPhotos() => Driver.FindElements(By.CssSelector(".img-thumbnail")).Count;
+
         internal string SaveEdition()
         {
             EditProfileElements.SaveBtn.Click();
@@ -41,6 +49,13 @@ namespace Tests.Pages
             EditProfileElements.BackBtn.Click();
             Driver.WaitForAngularLoad();
             return message;
+        }
+
+        internal void SelectRandomPhoto()
+        {
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"TestData\Photos\cat.png");
+            Driver.FindElement(EditProfileElements.SelectFileInput.BySelector).SendKeys(path);
+            Wait.Until(CustomExpectedConditions.ElementToBeClickable(EditProfileElements.UploadPhotoBtn));
         }
 
         protected override void WaitTillPageIsVisible()
