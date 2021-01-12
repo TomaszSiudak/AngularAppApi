@@ -21,10 +21,11 @@ namespace Tests.Tests.UITests.Steps
     {
         private readonly ScenarioContext scenarioContext;
 
-        public PhotosSteps(ScenarioContext scenarioContext, EditProfilePage editProfilePage)
+        public PhotosSteps(ScenarioContext scenarioContext, ProfilePage profilePage, EditProfilePage editProfilePage)
         {
             this.scenarioContext = scenarioContext;
             EditProfilePage = editProfilePage;
+            ProfilePage = profilePage;
         }
 
         [When(@"I upload new photo")]
@@ -46,6 +47,21 @@ namespace Tests.Tests.UITests.Steps
         public void WhenICancelUpload()
         {
             EditProfilePage.CancelUploadingPhoto();
+        }
+
+        [When(@"I delete unwanted photo")]
+        public void WhenIDeleteUnwantedPhoto()
+        {
+            int numberOfPhotosBeforeDelete = EditProfilePage.GetNumberOfPhotos();
+            scenarioContext.Add("numberOfPhotosBeforeDelete", numberOfPhotosBeforeDelete);
+            EditProfilePage.DeletePhoto(1);
+            scenarioContext.Add("toast", EditProfilePage.GetToastMessage());
+        }
+
+        [When(@"I set another photo as main")]
+        public void WhenISetAnotherPhotoAsMain()
+        {
+            ScenarioContext.Current.Pending();
         }
 
         [Then(@"I do not see new photo added to my account")]
@@ -73,5 +89,27 @@ namespace Tests.Tests.UITests.Steps
             });
         }
 
+        [Then(@"I see one photo less in my account")]
+        public void ThenISeeOnePhotoLessInMyAccount()
+        {
+            int expectedNumberOfPhotosAfterDelete = Convert.ToInt16(scenarioContext["numberOfPhotosBeforeDelete"]) - 1;
+            string expectedToastMessage = Messages.PhotoDeleted;
+            int numberOfPhotosAfterDelete = EditProfilePage.GetNumberOfPhotos();
+            EditProfilePage.ReturnToProfile();
+            int numberOfPhotosAfterDeleteAtProfile = ProfilePage.GetNumberOfPhotos();
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedNumberOfPhotosAfterDelete, numberOfPhotosAfterDelete, "The actual number of photos at profile edition page after delete should match expected");
+                Assert.AreEqual(expectedNumberOfPhotosAfterDelete, numberOfPhotosAfterDeleteAtProfile, "The actual number of photos profile page after delete should match expected");
+                Assert.AreEqual(expectedToastMessage, scenarioContext["toast"], "Actual toast message after deleting photo should match expected");
+            });
+        }
+
+        [Then(@"I see main photo updated")]
+        public void ThenISeeMainPhotoUpdated()
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 }

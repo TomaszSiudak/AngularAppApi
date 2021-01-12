@@ -10,6 +10,12 @@ namespace Tests.Pages.PagesElements
     {
         private IWebDriver driver;
 
+        #region xpaths
+
+        public static By DeletePhotoBtnBy = By.CssSelector("#deletePhotoBtn");
+
+        #endregion xpaths
+
         //profile section
         public WebElement EditProfileHeader => driver.FindWebElement(By.CssSelector("#editProfileHeader"));
         public WebElement EditProfileBtn => driver.FindWebElement(By.CssSelector("#editProfileBtn"));
@@ -33,7 +39,7 @@ namespace Tests.Pages.PagesElements
                 {
                     var photo = new EditPhotosCard()
                     {
-                        Image = cardElement.FindWebElement(By.CssSelector(".image-thumbnail")),
+                        Image = cardElement.FindWebElement(By.CssSelector(".img-thumbnail")),
                         SetMainPhotoBtn = cardElement.FindWebElement(By.CssSelector("#setPhotoBtn")),
                         DeletePhotoBtn = cardElement.FindWebElement(By.CssSelector("#deletePhotoBtn"))
                     };

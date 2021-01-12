@@ -97,7 +97,7 @@ namespace Tests.Tests.UITests.Steps
         [When(@"I cancel current changes")]
         public void WhenICancelCurrentChanges()
         {
-            EditProfilePage.CancelEdition();
+            EditProfilePage.ReturnToProfile();
         }
 
 

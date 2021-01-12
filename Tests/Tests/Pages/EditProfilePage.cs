@@ -21,13 +21,9 @@ namespace Tests.Pages
             EditProfileElements = new EditProfilePageElements(driver);
         }
 
-        internal void CancelEdition()
-        {
-            EditProfileElements.BackBtn.Click();
-            Driver.WaitForAngularLoad();
-        }
-
         internal void CancelUploadingPhoto() => EditProfileElements.CancelUploadBtn.Click();
+
+        internal void DeletePhoto(int index) => Driver.FindElements(EditProfilePageElements.DeletePhotoBtnBy)[index].Click();
 
         internal void EditPet(Pet pet)
         {
@@ -38,9 +34,13 @@ namespace Tests.Pages
             if (!string.IsNullOrEmpty(pet.Description)) EditProfileElements.DescriptionTextArea.TypeText(pet.Description);
         }
 
-        internal void UploadPhoto() =>EditProfileElements.UploadPhotoBtn.Click();
-
         internal int GetNumberOfPhotos() => Driver.FindElements(By.CssSelector(".img-thumbnail")).Count;
+
+                internal void ReturnToProfile()
+        {
+            EditProfileElements.BackBtn.Click();
+            Driver.WaitForAngularLoad();
+        }
 
         internal string SaveEdition()
         {
@@ -57,6 +57,8 @@ namespace Tests.Pages
             Driver.FindElement(EditProfileElements.SelectFileInput.BySelector).SendKeys(path);
             Wait.Until(CustomExpectedConditions.ElementToBeClickable(EditProfileElements.UploadPhotoBtn));
         }
+
+        internal void UploadPhoto() => EditProfileElements.UploadPhotoBtn.Click();
 
         protected override void WaitTillPageIsVisible()
         {

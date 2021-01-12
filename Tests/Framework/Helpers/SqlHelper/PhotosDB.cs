@@ -24,7 +24,8 @@ namespace Framework.Helpers.SqlHelper
                 {
                     Id = int.Parse(row["Id"]),
                     Url = row["Url"],
-                    Description = row["Description"]
+                    Description = row["Description"],
+                    MainPhoto = Convert.ToBoolean(row["MainPhoto"])
                 };
                 photos.Add(photo);
             }
