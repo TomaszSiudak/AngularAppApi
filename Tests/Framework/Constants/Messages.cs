@@ -8,6 +8,7 @@ namespace Framework.Constants
         public static string PhotoUploadSuccessfull = "Zdjęcie zostało dodane pomyślnie.";
         public static string SavedChanges = "Zmiany zapisane";
         public static string YouLikedTheUser = "Polubiłeś użytkownika ";
+        public static string MainPhotoHasBeenChanged = "Zdjęcie główne zostało zmienione. Zmiany będą widoczne na profilu";
 
         public static string IncorrectLoginOrPassword = "Nieprawidłowy login lub hasło";
         public static string PetAlreadyExists = "Użytkownik o tej nazwie już istnieje. Wybierz inną.";

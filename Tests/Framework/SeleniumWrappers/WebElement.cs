@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Framework.Extensions;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -33,6 +34,8 @@ namespace Framework.SeleniumWrappers
             WaitElementIsClickable(selector);
             webElement.Click();
         }
+
+        public void ClickWithoutWait() => webElement.Click();
 
         public WebElement FindWebElement(By selector)
         {
@@ -93,7 +96,7 @@ namespace Framework.SeleniumWrappers
         private void WaitElementIsClickable(By selector, int defaultTime = 5)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(defaultTime));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(selector));
+            wait.Until(CustomExpectedConditions.ElementToBeClickable(selector));
         }
     }
 }

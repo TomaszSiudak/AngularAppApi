@@ -27,6 +27,7 @@ namespace Tests.Pages.PagesElements
         public WebElement Gender => driver.FindWebElement(By.Id("profileGender"));
         public WebElement City => driver.FindWebElement(By.Id("profileCity"));
         public WebElement Description => driver.FindWebElement(By.Id("profileDescription"));
+        public WebElement MainPhoto => driver.FindWebElement(By.CssSelector(".prof-page-info img"));
         public WebElement LikeBtn => driver.FindWebElement(By.CssSelector("#profileLikeBtn"));
         public WebElement PhotosTab => driver.FindWebElement(By.XPath("//a[@aria-controls='photosTab']"));
         public WebElement LikesTab => driver.FindWebElement(By.XPath("//a[@aria-controls='likersTab']"));

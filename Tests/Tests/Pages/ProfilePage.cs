@@ -65,6 +65,7 @@ namespace Tests.Pages
 
         public string GetPetProfileNameHeader() => ProfileElements.ProfileHeader.FindWebElement(By.TagName("h2")).GetText();
         internal int GetNumberOfPhotos() => Driver.FindElements(By.CssSelector("a.ngx-gallery-thumbnail")).Count;
+        internal string GetURLOfMainPhoto() => ProfileElements.MainPhoto.GetAttribute("src");
 
         internal void LikeVisitedPet() => ProfileElements.LikeBtn.Click();
 

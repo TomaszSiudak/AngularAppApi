@@ -61,7 +61,11 @@ namespace Tests.Tests.UITests.Steps
         [When(@"I set another photo as main")]
         public void WhenISetAnotherPhotoAsMain()
         {
-            ScenarioContext.Current.Pending();
+            pet = scenarioContext["pet"] as Pet;
+            string anotherPhotoUrl = pet.Photos.FirstOrDefault(ph => ph.MainPhoto != true).Url;
+            scenarioContext.Add("anotherPhotoUrl", anotherPhotoUrl);
+            EditProfilePage.SetMainPhotoByUrl(anotherPhotoUrl);
+            scenarioContext.Add("toast", EditProfilePage.GetToastMessage());
         }
 
         [Then(@"I do not see new photo added to my account")]
@@ -109,7 +113,16 @@ namespace Tests.Tests.UITests.Steps
         [Then(@"I see main photo updated")]
         public void ThenISeeMainPhotoUpdated()
         {
-            ScenarioContext.Current.Pending();
+            string expectedURLOfNewMainPhoto = scenarioContext["anotherPhotoUrl"].ToString();
+            string expectedToastMessage = Messages.MainPhotoHasBeenChanged;
+            EditProfilePage.ReturnToProfile();
+            string mainPhotoURLAfterUpdate = ProfilePage.GetURLOfMainPhoto();
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedURLOfNewMainPhoto, mainPhotoURLAfterUpdate, "Actual photo 'src' value after setting another photo as main should match expected");
+                Assert.AreEqual(expectedToastMessage, scenarioContext["toast"], "Actual toast message after setting another photo as main should match expected");
+            });
         }
     }
 }

@@ -58,6 +58,12 @@ namespace Tests.Pages
             Wait.Until(CustomExpectedConditions.ElementToBeClickable(EditProfileElements.UploadPhotoBtn));
         }
 
+        internal void SetMainPhotoByUrl(string url)
+        {
+            var searchedPhotoCard = EditProfileElements.Photos.FirstOrDefault(ph => ph.Image.GetAttribute("src").Equals(url));
+            searchedPhotoCard.SetMainPhotoBtn.ClickWithoutWait();
+        }
+
         internal void UploadPhoto() => EditProfileElements.UploadPhotoBtn.Click();
 
         protected override void WaitTillPageIsVisible()
