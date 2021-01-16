@@ -211,7 +211,7 @@ namespace Tests.APITests
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(201, actualStatusCode, $"Expected status code {201}, but was {actualStatusCode}");
-                petFromDbAfterEdit.Should().BeEquivalentTo(dataToEdit, options => options.Excluding(p => p.Password).Excluding(p => p.Type).Excluding(p => p.Id), "The Pet returned from DB should be equivalent to expected data excluding password, Id and Type");
+                petFromDbAfterEdit.Should().BeEquivalentTo(dataToEdit, options => options.Excluding(p => p.Password).Excluding(p => p.Type).Excluding(p => p.Id).Excluding(p => p.Photos), "The Pet returned from DB should be equivalent to expected data excluding password, Id and Type");
                 Assert.AreEqual(petFromDbBeforeEdit.Name, updatedPet.Name, "The returned Pet from request should have the same Name as initial Pet from Db");
             });
         }
@@ -233,7 +233,7 @@ namespace Tests.APITests
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(201, actualStatusCode, $"Expected status code {201}, but was {actualStatusCode}");
-                petFromDbAfterEdit.Should().BeEquivalentTo(dataToEdit, options => options.Excluding(p => p.Password).Excluding(p => p.Type).Excluding(p => p.Id), "The Pet returned from DB should be equivalent to expected data excluding password, Id and Type");
+                petFromDbAfterEdit.Should().BeEquivalentTo(dataToEdit, options => options.Excluding(p => p.Password).Excluding(p => p.Type).Excluding(p => p.Id).Excluding(p => p.Photos), "The Pet returned from DB should be equivalent to expected data excluding password, Id and Type");
                 Assert.AreEqual(petFromDbBeforeEdit.Name, updatedPet.Name, "The returned Pet from request should have the same Name as initial Pet from Db");
             });
         }

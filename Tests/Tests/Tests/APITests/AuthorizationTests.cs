@@ -76,7 +76,7 @@ namespace Tests.APITests
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(201, actualStatusCode, $"Expected status code {201}, but was {actualStatusCode}");
-                registeredPet.Should().BeEquivalentTo(expectedPet, options => options.Excluding(p => p.Password).Excluding(p => p.Id), "The returned object should be equivalent to expected excluding password");
+                registeredPet.Should().BeEquivalentTo(expectedPet, options => options.Excluding(p => p.Password).Excluding(p => p.Id).Excluding(p => p.Photos), "The returned object should be equivalent to expected excluding password");
                 Assert.IsTrue(string.IsNullOrEmpty(registeredPet.Password), "Password field of returned object from registration should be empty");
                 Assert.IsTrue(wasPetAddedToDb, "Newly registered Pet was not added to Sql Server Db");
             });

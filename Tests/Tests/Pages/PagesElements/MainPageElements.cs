@@ -13,7 +13,7 @@ namespace Tests.Pages.PagesElements
         #region xpaths
 
         public static By MainPageHeaderBy = By.Id("mainPageHeader");
-        public static By RegistrationFormBy = By.Id("registration_Div");
+        public static By RegistrationFormBy = By.Id("registrationForm");
 
         #endregion xpaths
 

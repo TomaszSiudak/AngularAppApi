@@ -104,7 +104,7 @@ namespace Framework.Extensions
                     int elementWidth = element.Size.Width;
                     return (!element.Displayed) || elementHeight == 0 && elementWidth == 0;
                 }
-                catch (NoSuchElementException)
+                catch (WebDriverException)
                 {
 
                 }
