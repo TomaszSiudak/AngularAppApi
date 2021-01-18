@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    stages 
+    {
+        stage('GetCodeFromGit') 
+        {
+            steps 
+            {
+                git credentialsId: 'd9f43553-5300-4317-af72-af1c5128eaf5', url: 'https://github.com/TomaszSiudak/AngularAppApi.git'
+            }
+        }
+        stage('Build') 
+        {
+            steps
+                {
+                    bat label: 'restoreNugetLibraries',  script: '"%WORKSPACE%\\BuildTools\\nuget.exe" restore "%WORKSPACE%\\Tests\\Tests.sln"'
+                    bat label: 'buildTestsSolution', script: "\"${tool 'MSBuild'}\" \"%WORKSPACE%\\Tests\\Tests.sln\" /p:Configuration=Debug"
+                
+                }
+        }
+        /*stage ('Fill DB with tests data')   
+        {
+            steps
+            {
+                    bat label: 'Fill DB', script: '"%WORKSPACE%\\Tests\\TestDataProvider\\bin\\Debug\\TestDataProvider.exe"'
+            }
+        }*/
+        stage ('Run Tests')   
+        {
+            steps
+            {
+                    bat label: 'Start IIS', script: 'net start w3svc'
+                    sleep 5
+                    powershell('Invoke-WebRequest http://localhost:5000 -Method "GET"' )
+                    sleep 10
+            }
+        }*/
+    }
+}

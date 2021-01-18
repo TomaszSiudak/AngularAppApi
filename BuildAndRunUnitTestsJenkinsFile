@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    stages 
+    {
+        stage('GetCodeFromGit') 
+        {
+            steps 
+            {
+                git credentialsId: 'd9f43553-5300-4317-af72-af1c5128eaf5', url: 'https://github.com/TomaszSiudak/AngularAppApi.git'
+            }
+        }
+        
+        stage('Build') 
+        {
+            steps
+                {
+                    bat label: 'restoreNugetLibraries',  script: '"%WORKSPACE%\\BuildTools\\nuget.exe" restore "%WORKSPACE%\\PetBookAPI\\PetBookAPI.sln"'
+                    bat label: 'buildSolution', script: 'dotnet build "%WORKSPACE%\\PetBookAPI\\PetBookAPI.sln"'
+                
+                }
+        }
+        stage ('Run Unit Tests')   
+        {
+            steps
+            {
+                    bat label: 'Run unit tests', script: 'dotnet test "%WORKSPACE%\\PetBookAPI\\Tests\\bin\\Debug\\netcoreapp2.2\\Tests.dll"'
+            }
+        }
+    }
+}
