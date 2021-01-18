@@ -42,7 +42,7 @@ pipeline {
                     bat label: 'start api',  script: 'start chrome http://localhost:5000'
                     sleep 5
                     powershell('Invoke-WebRequest http://localhost:5000 -Method "GET"' )
-                    sleep 30
+                    sleep 10
             }
         }
     }

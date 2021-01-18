@@ -15,7 +15,7 @@ namespace TestDataProvider
     {
         static void Main(string[] args)
         {
-            //Seed();
+            Seed();
         }
 
         public static void Seed()
