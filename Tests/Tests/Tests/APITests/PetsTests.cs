@@ -15,6 +15,7 @@ using Tests.Base;
 namespace Tests.APITests
 {
     [TestFixture]
+    [Category("API")]
     class PetsTests : BaseAPITest
     {
         [Test]
