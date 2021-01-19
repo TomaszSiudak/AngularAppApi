@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    stages 
+    {
+        stage('Build and run unit tests') 
+        {
+            steps 
+            {
+                build 'BuildAndRunUnitTests'
+            }
+        }
+        
+        stage('Setup tests environment') 
+        {
+            steps
+                {
+                    build 'SetupEnv'
+                }
+        }
+        stage ('Run automated tests')   
+        {
+            steps
+            {
+                build 'Tests'
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'Test' }
     stages 
     {
         stage ('CleanIIS')   
@@ -14,7 +14,7 @@ pipeline {
         {
             steps 
             {
-                git credentialsId: 'd9f43553-5300-4317-af72-af1c5128eaf5', url: 'https://github.com/TomaszSiudak/AngularAppApi.git'
+                git credentialsId: '2db24e2e-529b-4d3e-a0db-baff5090fb42', url: 'https://github.com/TomaszSiudak/AngularAppApi.git'
             }
         }
         
@@ -39,7 +39,6 @@ pipeline {
             steps
             {
                     bat label: 'Start IIS', script: 'net start w3svc'
-                    bat label: 'start api',  script: 'start chrome http://localhost:5000'
                     sleep 5
                     powershell('Invoke-WebRequest http://localhost:5000 -Method "GET"' )
                     sleep 10

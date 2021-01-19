@@ -1,5 +1,6 @@
-pipeline {
-    agent any
+pipeline 
+{
+    agent { label 'Test' }
     stages 
     {
         stage('GetCodeFromGit') 
@@ -15,7 +16,6 @@ pipeline {
                 {
                     bat label: 'restoreNugetLibraries',  script: '"%WORKSPACE%\\BuildTools\\nuget.exe" restore "%WORKSPACE%\\Tests\\Tests.sln"'
                     bat label: 'buildTestsSolution', script: "\"${tool 'MSBuild'}\" \"%WORKSPACE%\\Tests\\Tests.sln\" /p:Configuration=Debug"
-                
                 }
         }
         /*stage ('Fill DB with tests data')   
@@ -29,11 +29,16 @@ pipeline {
         {
             steps
             {
-                    bat label: 'Start IIS', script: 'net start w3svc'
-                    sleep 5
-                    powershell('Invoke-WebRequest http://localhost:5000 -Method "GET"' )
-                    sleep 10
+                    bat label: 'Run Tests', script: '"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe"  --result=nunit-result.xml --where "cat==API"  "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\Tests.dll"'
             }
-        }*/
+        }
     }
+    post 
+        {
+            always 
+            {
+                    bat label: 'Generate specflow report', script: 'livingdoc test-assembly "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\Tests.dll" -t "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\TestExecution.json"'
+                    emailext attachLog: true, attachmentsPattern: '**/LivingDoc.html, **/TestResult.xml', body: '', compressLog: true, mimeType: 'text/html', subject: 'Test results', to: 'tomaszsiudak90@gmail.com, tomaszsiudak@o2.pl'
+            }
+        }
 }
