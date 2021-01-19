@@ -60,6 +60,12 @@
     <Reference Include="Google.Protobuf, Version=3.7.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.7.0\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="LivingDoc.Dtos, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.Plus.LivingDocPlugin.3.5.286\lib\net461\LivingDoc.Dtos.dll</HintPath>
+    </Reference>
+    <Reference Include="LivingDoc.SpecFlowPlugin, Version=3.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.Plus.LivingDocPlugin.3.5.286\lib\net461\LivingDoc.SpecFlowPlugin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
