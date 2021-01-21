@@ -15,7 +15,7 @@ namespace Framework.Base
     {
         public static IWebDriver GetWebDriver(AppConfig config)
         {
-            return config.Environment.Equals(EnvironmentType.Local) ? GetLocalWebDriver(config.BrowserType) : GetRemoteWebDriver(config.BrowserType);
+            return config.Environment.Equals(EnvironmentType.Local) ? GetLocalWebDriver(config.BrowserType) : GetRemoteWebDriver(config.BrowserType, config);
         }
 
         private static IWebDriver GetLocalWebDriver(BrowserType browserType)
@@ -33,7 +33,7 @@ namespace Framework.Base
             }
         }
 
-        private static IWebDriver GetRemoteWebDriver(BrowserType browserType)
+        private static IWebDriver GetRemoteWebDriver(BrowserType browserType, AppConfig config)
         {
             switch (browserType)
             {
@@ -42,7 +42,7 @@ namespace Framework.Base
                     return new RemoteWebDriver(WebDriverOptions.GetFirefoxOptions());
                 case BrowserType.Chrome:
                     new DriverManager().SetUpDriver(new ChromeConfig());
-                    return new RemoteWebDriver(WebDriverOptions.GetChromeOptions());
+                    return new RemoteWebDriver(new Uri($"{config.GridUrl}/wd/hub"), WebDriverOptions.GetChromeOptions());
                 default:
                     throw new Exception("Unspecified browser");
             }
