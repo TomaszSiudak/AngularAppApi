@@ -7,7 +7,7 @@ pipeline
         {
             steps 
             {
-                git credentialsId: 'd9f43553-5300-4317-af72-af1c5128eaf5', url: 'https://github.com/TomaszSiudak/AngularAppApi.git'
+                git credentialsId: '2db24e2e-529b-4d3e-a0db-baff5090fb42', url: 'https://github.com/TomaszSiudak/AngularAppApi.git'
             }
         }
         stage('Build') 
@@ -18,18 +18,18 @@ pipeline
                     bat label: 'buildTestsSolution', script: "\"${tool 'MSBuild'}\" \"%WORKSPACE%\\Tests\\Tests.sln\" /p:Configuration=Debug"
                 }
         }
-        /*stage ('Fill DB with tests data')   
+       stage ('Fill DB with tests data')   
         {
             steps
             {
                     bat label: 'Fill DB', script: '"%WORKSPACE%\\Tests\\TestDataProvider\\bin\\Debug\\TestDataProvider.exe"'
             }
-        }*/
+        }
         stage ('Run Tests')   
         {
             steps
             {
-                    bat label: 'Run Tests', script: '"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe"  --result=nunit-result.xml --where "cat==API"  "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\Tests.dll"'
+                    bat label: 'Run Tests', script: '"C:\\Program Files (x86)\\NUnit.org\\nunit-console\\nunit3-console.exe"  --result=nunit-result.xml  "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\Tests.dll"'
             }
         }
     }

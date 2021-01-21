@@ -6,7 +6,8 @@ pipeline {
         {
             steps
             {
-                    bat label: 'Stop IIS', script: 'net stop W3SVC'
+                    //bat label: 'Stop IIS', script: 'net stop W3SVC'
+                    powershell('IISRESET /STOP' )
                     powershell 'Remove-Item C:\\inetpub\\wwwroot\\petbook\\* -Recurse -Force'
             }
         }
@@ -18,12 +19,22 @@ pipeline {
             }
         }
         
-        stage('Build') 
+        stage('Build Back-End') 
         {
             steps
                 {
                     bat label: 'restoreNugetLibraries',  script: '"%WORKSPACE%\\BuildTools\\nuget.exe" restore "%WORKSPACE%\\PetBookAPI\\PetBookAPI.sln"'
                     bat label: 'buildSolution', script: 'dotnet publish "%WORKSPACE%\\PetBookAPI\\PetBookAPI.sln" -c RELEASE -o C:\\inetpub\\wwwroot\\petbook'
+                
+                }
+        }
+        stage('Build Front-End') 
+        {
+            steps
+                {
+                    bat label: 'install node-modules',  script: 'cd "%WORKSPACE%\\PetAngular" && npm install'
+                    bat label: 'build angular-app',  script: 'cd "%WORKSPACE%\\PetAngular" && ng build'
+                    bat label: 'copy output to IIS server',  script: 'XCOPY "%WORKSPACE%\\PetAngular\\output\\*" "C:\\inetpub\\wwwroot\\petbookangular" /S /I /Y'
                 
                 }
         }
@@ -38,10 +49,11 @@ pipeline {
         {
             steps
             {
-                    bat label: 'Start IIS', script: 'net start w3svc'
+                    //bat label: 'Start IIS', script: 'net start w3svc'
+                    powershell('IISRESET /START' )
                     sleep 5
                     powershell('Invoke-WebRequest http://localhost:5000 -Method "GET"' )
-                    sleep 10
+                    sleep 5
             }
         }
     }
