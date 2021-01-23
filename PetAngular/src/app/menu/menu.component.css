@@ -9,6 +9,8 @@
     font-weight: bold;
   }
 
+  .bg-light{background-color:#00e6e6!important}
+
   :host button:active {
     background-color: #00e6e6;
     color: white;
