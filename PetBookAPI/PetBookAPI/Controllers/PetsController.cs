@@ -12,7 +12,7 @@ using PetBookAPI.Model;
 
 namespace PetBookAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PetsController : ControllerBase
