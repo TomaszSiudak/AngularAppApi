@@ -12,6 +12,7 @@ using Tests.Base;
 namespace Tests.APITests
 {
     [TestFixture]
+    [Category("API")]
     public class AuthorizationTests : BaseAPITest
     {
         [Test]
