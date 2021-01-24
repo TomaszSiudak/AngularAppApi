@@ -14,7 +14,7 @@ using PetBookAPI.Model;
 
 namespace PetBookAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/pets/{petId}/[controller]")]
     [ApiController]
     public class PhotoController : ControllerBase
