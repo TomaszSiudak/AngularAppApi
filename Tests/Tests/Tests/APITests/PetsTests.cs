@@ -22,7 +22,7 @@ namespace Tests.APITests
         public void AddLikeToPetTest()
         {
             Pet existingPet = Variables.DefaultPet;
-            Pet newPet = new Pet() { Name = "AddLikePet_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", City = "Katowice" };
+            Pet newPet = new Pet() { Name = "AddLikePet_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", City = "Katowice", Gender = "male" };
             AuthorizationAPI.AddPet(newPet);
             var newPetFromDb = SqlHelper.Pets.GetPetByName(newPet.Name);
             var existingPetFromDb = SqlHelper.Pets.GetPetByName(existingPet.Name);
@@ -44,7 +44,7 @@ namespace Tests.APITests
         public void AddSeveralLikesToPetTest()
         {
             Pet existingPet = Variables.DefaultPet;
-            Pet newPet = new Pet() { Name = "AddFewLikesPet_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", City = "Katowice" };
+            Pet newPet = new Pet() { Name = "AddFewLikesPet_" + StringHelper.GenerateRandomNumberString(6), Password = "test123", City = "Katowice", Gender = "male" };
             AuthorizationAPI.AddPet(newPet);
             var newPetFromDb = SqlHelper.Pets.GetPetByName(newPet.Name);
             var existingPetFromDb = SqlHelper.Pets.GetPetByName(existingPet.Name);
