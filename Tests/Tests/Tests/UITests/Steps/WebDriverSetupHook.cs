@@ -2,15 +2,8 @@
 using Framework.Base;
 using Framework.Base.WebDriverData;
 using Framework.Extensions;
-using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TechTalk.SpecFlow;
-using Tests.Pages;
 
 namespace Tests.Tests.UITests.Steps
 {

@@ -1,19 +1,13 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
+﻿
 using Framework.API;
 using Framework.Constants;
 using Framework.Helpers;
 using Framework.Models;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TechTalk.SpecFlow;
 using Tests.Base;
 using Tests.Pages;
-using Tests.Pages.PagesElements;
 
 namespace Tests.Tests.UITests.Steps
 {

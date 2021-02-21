@@ -1,11 +1,7 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Tests.Pages.PagesElements;
 using Framework.Extensions;
-using Framework.Base.WebDriverData;
 using Framework.Models;
 
 namespace Tests.Pages

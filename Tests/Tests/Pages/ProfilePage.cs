@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Tests.Pages.PagesElements;
 using Framework.Extensions;
 using OpenQA.Selenium;
 using Framework.Models;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace Tests.Pages
 {

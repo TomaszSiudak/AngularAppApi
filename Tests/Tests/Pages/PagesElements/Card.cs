@@ -1,4 +1,5 @@
 ﻿using Framework.SeleniumWrappers;
+
 namespace Tests.Pages.PagesElements
 {
     public class Card

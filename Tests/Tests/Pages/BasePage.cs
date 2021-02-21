@@ -3,14 +3,8 @@ using Framework.Extensions;
 using Framework.Helpers;
 using Framework.Models;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Html5;
-using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tests.Pages.PagesElements;
 
 namespace Tests.Pages
