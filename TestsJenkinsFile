@@ -38,7 +38,7 @@ pipeline
             always 
             {
                     bat label: 'Generate specflow report', script: 'livingdoc test-assembly "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\Tests.dll" -t "%WORKSPACE%\\Tests\\Tests\\bin\\Debug\\TestExecution.json"'
-                    emailext attachLog: true, attachmentsPattern: '**/LivingDoc.html, **/TestResult.xml', body: '', compressLog: true, mimeType: 'text/html', subject: 'Test results', to: 'tomaszsiudak90@gmail.com, tomaszsiudak@o2.pl'
+                    emailext attachLog: true, attachmentsPattern: '**/LivingDoc.html, **/nunit-result.xml', body: '${JELLY_SCRIPT,template="html"}', compressLog: true, mimeType: 'text/html', subject: 'Test results', to: 'tomaszsiudak90@gmail.com'
             }
         }
 }

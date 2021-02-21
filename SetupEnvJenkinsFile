@@ -6,9 +6,9 @@ pipeline {
         {
             steps
             {
-                    //bat label: 'Stop IIS', script: 'net stop W3SVC'
                     powershell('IISRESET /STOP' )
                     powershell 'Remove-Item C:\\inetpub\\wwwroot\\petbook\\* -Recurse -Force'
+                    powershell 'Remove-Item C:\\inetpub\\wwwroot\\petbookangular\\* -Recurse -Force'
             }
         }
         stage('GetCodeFromGit') 
@@ -49,7 +49,6 @@ pipeline {
         {
             steps
             {
-                    //bat label: 'Start IIS', script: 'net start w3svc'
                     powershell('IISRESET /START' )
                     sleep 5
                     powershell('Invoke-WebRequest http://localhost:5000 -Method "GET"' )
