@@ -51,6 +51,7 @@ export class PetsComponent implements OnInit {
       console.log(this.pagination);
     }, error => {
       console.log(error);
+      console.log(error);
     });
  }
 
